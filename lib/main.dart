@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:eating_alone/layouts/login_page.dart';
-
+import './layouts/login_page.dart';
+import './layouts/home.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
         fontFamily: 'Elice',
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFffeb56),
+          elevation: 0,
+          centerTitle: true,
+          titleTextStyle: TextStyle(fontSize: 22, letterSpacing: 3.0, color: Colors.white)
+        ),
 
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 8.0, color: Colors.black87),
@@ -17,14 +22,14 @@ void main() {
           headline3: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 4.0,color: Colors.black87),
           headline4: TextStyle(fontSize: 26, color: Colors.black87),
           headline5: TextStyle(fontSize: 18, color: Colors.black87),
-          headline6: TextStyle(fontSize: 8.0, fontStyle: FontStyle.italic, color: Colors.blueGrey),
+          headline6: TextStyle(fontSize: 18.0, fontStyle: FontStyle.italic, color: Colors.pink),
           subtitle1: TextStyle(fontSize: 18.0, fontStyle: FontStyle.italic, color: Colors.black87),
           subtitle2: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.amberAccent),
-          bodyText1: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.blue),
-          bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          bodyText1: TextStyle(fontSize: 18.0, color: Colors.blue),
+          bodyText2: TextStyle(fontSize: 14.0, color: Colors.teal),
         ),
       ),
-      home: MyApp()
+      home: const MyApp()
   ));
 }
 
@@ -43,9 +48,9 @@ class MyApp extends StatelessWidget {
               child: Text('Login Page Layout')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
               },
-              child: Text('Intro Layout')),
+              child: Text('home')),
           ElevatedButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
