@@ -6,79 +6,103 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        resizeToAvoidBottomInset : false,
-        backgroundColor:const Color(0xFFffeb56),
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: const Color(0xFFffeb56),
         body: Container(
-          margin: const EdgeInsets.all(40),
-            child: ListView(children: [
-              Row(children:[const Icon(Icons.fastfood, size: 70),Text('혼밥여지도', style:Theme.of(context).textTheme.headline1)]),
-              Center(child:Row(children:[
-                IconButton(onPressed: (){Fluttertoast.showToast(
-                    msg: "네이버로 로그인",
-                  backgroundColor: Colors.white,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM
-                );}, icon: Icon(Icons.assignment_ind)),
-                IconButton(onPressed: (){Fluttertoast.showToast(
-                  msg: "카카오톡으로 로그인",
-                );}, icon: Icon(Icons.vignette)),
-                IconButton(onPressed: (){Fluttertoast.showToast(
-                  msg: "페이스북으로 로그인",
-                );}, icon: Icon(Icons.facebook)),])),
-              Container(
-                  margin:EdgeInsets.symmetric(vertical: 5),
-                  child:TextField(
-                      decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical:8, horizontal: 13),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      border: const OutlineInputBorder(),
-                      labelText: 'ID',
-                      labelStyle: Theme.of(context).textTheme.subtitle1
-                  )),
-              ),TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical:10, horizontal: 13),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      border: const OutlineInputBorder(),
-                      labelText: 'PASSWORD',
-                      labelStyle: Theme.of(context).textTheme.subtitle1
-                  )
+            margin: const EdgeInsets.all(30),
+            child: Column(children: [
+              Container( // 타이틀
+                  height: 100,
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/tempImage.png', width: 70,
+                          height: 70,),
+                        Text('혼밥여지도', style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline1)
+                      ])),
+              Row( // 소셜로그인
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "네이버로 로그인",
+                    );
+                  }, icon: const Icon(Icons.assignment_ind)),
+                  IconButton(onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "카카오톡으로 로그인",
+                    );
+                  }, icon: const Icon(Icons.vignette)),
+                  IconButton(onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "페이스북으로 로그인",
+                    );
+                  }, icon: const Icon(Icons.facebook)),
+                ],
               ),
-
-
-
-
-              Text('헤드라인2', style:Theme.of(context).textTheme.headline2),
-              Text('헤드라인3', style:Theme.of(context).textTheme.headline3),
-              Text('헤드라인4', style:Theme.of(context).textTheme.headline4),
-              Text('헤드라인5', style:Theme.of(context).textTheme.headline5),
-              Text('헤드라인6', style:Theme.of(context).textTheme.headline6),
-              Text('서브타이틀1', style:Theme.of(context).textTheme.subtitle1),
-              Text('서브타이틀2', style:Theme.of(context).textTheme.subtitle2),
-              Text('바디1', style:Theme.of(context).textTheme.bodyText1),
-              Text('바디2', style:Theme.of(context).textTheme.bodyText2),
-              ],
-            )
-          ),
-    );
+              Container( // 아이디,비번 입력
+                  margin: const EdgeInsets.symmetric(horizontal: 50,vertical: 10),
+                  child: Column(children: const [
+                    TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 13),
+                          filled: true,
+                          fillColor: Colors.white70,
+                          border: OutlineInputBorder(),
+                          labelText: 'ID',
+                        )),
+                    SizedBox(height: 10),
+                    TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 13),
+                          filled: true,
+                          fillColor: Colors.white70,
+                          border: OutlineInputBorder(),
+                          labelText: 'PASSWORD',
+                        )),
+                  ],)
+              ),
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 80),
+                  child:Column(children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(onPressed: () {
+                            Fluttertoast.showToast(msg: "회원가입 창으로 이동",);
+                          },
+                              child: const Text('회원가입')),
+                          const SizedBox(width:30),
+                          ElevatedButton(onPressed: () {
+                            Fluttertoast.showToast(msg: "메인으로 이동",);
+                          },
+                              child: const Text(' 로그인 '))
+                        ]),
+                    TextButton(
+                        style:TextButton.styleFrom(
+                            primary:Colors.black,
+                            backgroundColor: Colors.grey,
+                            padding: const EdgeInsets.symmetric(horizontal: 36)
+                        ),
+                        onPressed: (){
+                          Fluttertoast.showToast(msg: "메인으로 이동",);
+                          },
+                        child: const Text('비회원으로 이용하기'))
+                  ])
+              ),
+              TextButton(onPressed: () {
+                Fluttertoast.showToast(msg: "회원찾기 창으로 이동",);
+              },
+                  child: const Text('아이디 혹은 비밀번호가 기억이 안난다면?'))
+            ])
+        ));
   }
-
-  ListTile _tile(String title, String subTitle, IconData icon) => ListTile(
-    title: Text(
-      title,
-//      style: TextStyle(
-//        fontWeight: FontWeight.w500,
-//        fontSize: 20,
-//      ),
-    ),
-    subtitle: Text(subTitle),
-    leading: Icon(
-      icon,
-      color: Colors.blue[500],
-    ),
-  );
 }
