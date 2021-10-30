@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './layouts/login_page.dart';
 import './layouts/home.dart';
+import './layouts/appbar.dart';
+import './layouts/drawer.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -15,17 +17,16 @@ void main() {
           centerTitle: true,
           titleTextStyle: TextStyle(fontSize: 22, letterSpacing: 3.0, color: Colors.white)
         ),
-
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 8.0, color: Colors.black87),
           headline2: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, letterSpacing: 6.0, color: Colors.black87),
           headline3: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 4.0,color: Colors.black87),
           headline4: TextStyle(fontSize: 26, color: Colors.black87),
           headline5: TextStyle(fontSize: 18, color: Colors.black87),
-          headline6: TextStyle(fontSize: 18.0, fontStyle: FontStyle.italic, color: Colors.pink),
-          subtitle1: TextStyle(fontSize: 18.0, fontStyle: FontStyle.italic, color: Colors.black87),
-          subtitle2: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.amberAccent),
-          bodyText1: TextStyle(fontSize: 18.0, color: Colors.blue),
+          headline6: TextStyle(fontSize: 18.0,  color: Colors.pink),
+          subtitle1: TextStyle(fontSize: 18.0, color: Colors.black87,letterSpacing: 1.2),
+          subtitle2: TextStyle(fontSize: 16.0, color: Colors.amberAccent),
+          bodyText1: TextStyle(fontSize: 18.0, color: Colors.black87),
           bodyText2: TextStyle(fontSize: 14.0, color: Colors.teal),
         ),
       ),
@@ -58,14 +59,9 @@ class MyApp extends StatelessWidget {
               child: Text('Intro Layout')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AppBarTest()));
               },
-              child: Text('Intro Layout')),
-          ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
-              },
-              child: Text('test')),
+              child: Text('appbar Layout')),
         ],)
     );
   }
@@ -94,6 +90,43 @@ class Test extends StatelessWidget {
               )
           ),
         )
+    );
+  }
+}
+
+
+class AppBarTest extends StatefulWidget {
+  @override
+  _AppBarTestState createState() => _AppBarTestState();
+}
+
+class _AppBarTestState extends State<AppBarTest> {
+  Appbar_mode mode = Appbar_mode.main;
+  String title = '';
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      drawer: CustomDrawer.getInstance().getDrawer(context),
+      appBar: CustomAppbar.getInstance().getAppBar(context, mode, title),
+      body: Column(children: [
+        const SizedBox(height: 50),
+        ElevatedButton(onPressed: (){
+          setState(() {
+            mode = Appbar_mode.main;
+          });}, child:const Text('main page appbar')),
+        ElevatedButton(onPressed: (){
+          setState(() {
+            mode = Appbar_mode.search;
+          });}, child: const Text('search page appbar')),
+        ElevatedButton(onPressed: (){
+          setState(() {
+            mode = Appbar_mode.detail;
+          });}, child: const Text('detail view page appbar')),
+        TextField(decoration: const InputDecoration(labelText: 'detail에 들어갈 title'),
+          onChanged: (value){setState(() {
+            title = value;
+        });},),
+      ])
     );
   }
 }
