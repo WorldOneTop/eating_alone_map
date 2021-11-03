@@ -3,6 +3,7 @@ import './layouts/login_page.dart';
 import './layouts/home.dart';
 import './layouts/appbar.dart';
 import './layouts/drawer.dart';
+import './layouts/info_house.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -21,9 +22,9 @@ void main() {
           headline1: TextStyle(fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 8.0, color: Colors.black87),
           headline2: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, letterSpacing: 6.0, color: Colors.black87),
           headline3: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 4.0,color: Colors.black87),
-          headline4: TextStyle(fontSize: 26, color: Colors.black87),
-          headline5: TextStyle(fontSize: 18, color: Colors.black87),
-          headline6: TextStyle(fontSize: 18.0,  color: Colors.pink),
+          headline4: TextStyle(fontSize: 26, color: Colors.black87,fontWeight: FontWeight.w600),
+          headline5: TextStyle(fontSize: 18, color: Colors.black87,fontWeight: FontWeight.w600),
+          headline6: TextStyle(fontSize: 18.0,  color: Colors.black87),
           subtitle1: TextStyle(fontSize: 18.0, color: Colors.black87,letterSpacing: 1.2),
           subtitle2: TextStyle(fontSize: 16.0, color: Colors.amberAccent),
           bodyText1: TextStyle(fontSize: 18.0, color: Colors.black87),
@@ -62,6 +63,11 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AppBarTest()));
               },
               child: Text('appbar Layout')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => InfoTest()));
+              },
+              child: Text('info_house , 식당간략정보')),
         ],)
     );
   }
@@ -127,6 +133,33 @@ class _AppBarTestState extends State<AppBarTest> {
             title = value;
         });},),
       ])
+    );
+  }
+}
+
+class InfoTest extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      body: ListView(children: [
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'두줄 길이의 식당 이름 및 overflow 테스트 ',category: '한식',heart: '♥', rating: 2,review: 1234 ),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'찜하지 않은 식당',category: '한식',heart: '♡', rating: 2,review: 1234 ),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'로그인 하지 않은 상태',category: '한식', rating: 2,review: 1234 ),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'리뷰가 없을 때',category: '한식',heart: '♥'),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'높이가 높을 때',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:250),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'작을경우 고정',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:50),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'이미지 테스트',image: 'assets/images/height.png'),
+        SizedBox(height: 20,),
+        InfoHouse().buildLayout(context,'이미지 테스트',image: 'assets/images/width.png'),
+        SizedBox(height: 20,),
+])
     );
   }
 }
