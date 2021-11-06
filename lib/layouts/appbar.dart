@@ -26,7 +26,7 @@ class CustomAppbar {
     } else if(mode == Appbar_mode.search) {
       searchField = CustomTextField().normalInput( hint:title_name, suffixIcon: const Icon(Icons.search),size:1);
     } else if(mode == Appbar_mode.detail) {
-      my_Title = Text(title_name,style:Theme.of(context).textTheme.subtitle1);
+      my_Title = Text(title_name,style:Theme.of(context).textTheme.bodyText1);
     }
 
     return AppBar(
