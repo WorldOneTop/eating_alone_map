@@ -5,6 +5,7 @@ import './layouts/appbar.dart';
 import './layouts/drawer.dart';
 import './layouts/info_house.dart';
 import './layouts/review.dart';
+import 'package:eating_alone/layouts/enlarge_image.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -74,6 +75,11 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewTest()));
               },
               child: Text('Review Container')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImageTest()));
+              },
+              child: Text('이미지 크게보기 창')),
         ],)
     );
   }
@@ -195,4 +201,37 @@ class ReviewTest extends StatelessWidget {
         ])
     );
   }
+}
+
+class EnlargeImageTest extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        children: [
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImage(['https://source.unsplash.com/user/c_v_r'])));
+              },
+              child: Text('이미지 하나')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImage(['https://picsum.photos/300/300','https://picsum.photos/10/30','https://picsum.photos/1000/1100','https://picsum.photos/4000/4400'])));
+              },
+              child: Text('이미지 4개(300x300),(10x30), (1000x1100), (4000x4400)')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImage(['assets/images/height.png'],isAssets: true,)));
+              },
+              child: Text('세로로 긴 이미지')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImage(['assets/images/width.png'],isAssets: true)));
+              },
+              child: Text('가로로 긴 이미지')),
+        ],
+      ),
+    );
+  }
+
 }
