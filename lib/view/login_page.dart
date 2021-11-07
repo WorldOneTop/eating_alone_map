@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import './layouts/title.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage();
@@ -12,37 +13,25 @@ class LoginPage extends StatelessWidget {
         body: Container(
             margin: const EdgeInsets.all(30),
             child: Column(children: [
-              Container( // 타이틀
-                  height: 100,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/tempImage.png', width: 70,
-                          height: 70,),
-                        Text('혼밥여지도', style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline1)
-                      ])),
+              TitleLayout(),
               Row( // 소셜로그인
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "네이버로 로그인",
-                    );
-                  }, icon: const Icon(Icons.assignment_ind)),
-                  IconButton(onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "카카오톡으로 로그인",
-                    );
-                  }, icon: const Icon(Icons.vignette)),
-                  IconButton(onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "페이스북으로 로그인",
-                    );
-                  }, icon: const Icon(Icons.facebook)),
+                  GestureDetector(
+                      onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
+                      child: Container(
+                        padding: const EdgeInsets.all(15),color: const Color(0xFFffeb56),
+                        child:Image.asset('assets/images/icon_kakaotalk.png',width: 45,height: 45))),
+                  GestureDetector(
+                      onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
+                      child: Container(
+                          padding: const EdgeInsets.all(15),color: const Color(0xFFffeb56),
+                      child: Image.asset('assets/images/icon_naver.png',width: 45,height: 45))),
+                  GestureDetector(
+                      onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
+                    child: Container(
+                        padding: const EdgeInsets.all(15),color: const Color(0xFFffeb56),
+                      child: Image.asset('assets/images/icon_facebook.png',width: 45,height: 45))),
                 ],
               ),
               Container( // 아이디,비번 입력
@@ -89,7 +78,7 @@ class LoginPage extends StatelessWidget {
                     TextButton(
                         style:TextButton.styleFrom(
                             primary:Colors.black,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: const Color(0xcaaaaaaa),
                             padding: const EdgeInsets.symmetric(horizontal: 36)
                         ),
                         onPressed: (){

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import './layouts/login_page.dart';
-import './layouts/home.dart';
-import './layouts/appbar.dart';
-import './layouts/drawer.dart';
-import './layouts/info_house.dart';
-import './layouts/review.dart';
-import 'package:eating_alone/layouts/enlarge_image.dart';
+import 'package:eating_alone/view/login_page.dart';
+import 'package:eating_alone/view/layouts/home.dart';
+import 'package:eating_alone/view/layouts/appbar.dart';
+import 'package:eating_alone/view/layouts/drawer.dart';
+import 'package:eating_alone/view/layouts/info_house.dart';
+import 'package:eating_alone/view/layouts/review.dart';
+import 'package:eating_alone/view/layouts/enlarge_image.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -25,7 +25,7 @@ void main() {
           headline2: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, letterSpacing: 6.0, color: Colors.black87),
           headline3: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 4.0,color: Colors.black87),
           headline4: TextStyle(fontSize: 26, color: Colors.black87,fontWeight: FontWeight.w600),
-          headline5: TextStyle(fontSize: 18, color: Colors.black87,fontWeight: FontWeight.w600),
+          headline5: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.w600),
           headline6: TextStyle(fontSize: 18.0,  color: Colors.black87),
           subtitle1: TextStyle(fontSize: 18.0, color: Color(0xF0777777),letterSpacing: 1.2),
           subtitle2: TextStyle(fontSize: 16.0, color: Colors.amberAccent),
@@ -124,7 +124,7 @@ class _AppBarTestState extends State<AppBarTest> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      drawer: CustomDrawer.getInstance().getDrawer(context),
+      drawer: SafeArea(child:CustomDrawer.getInstance().getDrawer(context)),
       appBar: CustomAppbar.getInstance().getAppBar(context, mode, title),
       body: Column(children: [
         const SizedBox(height: 50),
