@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField {
 
-  Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int? size,
+  static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int? size,
     var onChange, TextEditingController? controller, int fillColor = 0xb2ffffff}) {
 
     double height = 50, fontSize = 20;
@@ -17,7 +17,7 @@ class CustomTextField {
         height: height,
         child:TextField(
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(10),
+            contentPadding: const EdgeInsets.all(10),
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           fillColor: Color(fillColor),
@@ -30,5 +30,31 @@ class CustomTextField {
               onChanged: onChange,
           controller: controller,
     ));
+  }
+  static TextField passwordInput() {
+    return const TextField(
+        obscureText: true,
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+              vertical: 8, horizontal: 13),
+
+          filled: true,
+          fillColor: Colors.white70,
+          border: OutlineInputBorder(),
+          labelText: 'PASSWORD',
+        ));
+  }
+  static TextField idInput() {
+    return const TextField(
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+              vertical: 8, horizontal: 13),
+          filled: true,
+          fillColor: Colors.white70,
+          border: OutlineInputBorder(),
+          labelText: 'ID',
+        ));
   }
 }
