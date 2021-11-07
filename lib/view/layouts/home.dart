@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './drawer.dart';
+import 'package:eating_alone/view/layouts/drawer.dart';
+import 'package:eating_alone/view/layouts/title.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -17,6 +18,7 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: CustomDrawer.getInstance().getDrawer(context),
+      body: TitleLayout(),
     );
   }
 }

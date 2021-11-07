@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import './inputfield.dart';
+import 'package:eating_alone/view/layouts/inputfield.dart';
 
 enum Appbar_mode {main, search, detail}
 
