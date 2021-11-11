@@ -6,3 +6,5 @@ export './info_house.dart';
 export './inputfield.dart';
 export 'package:eating_alone/view/login_page.dart';
 export './review.dart';
+export './title.dart';
+export './area_setting.dart';

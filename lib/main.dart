@@ -6,6 +6,9 @@ import 'package:eating_alone/view/layouts/drawer.dart';
 import 'package:eating_alone/view/layouts/info_house.dart';
 import 'package:eating_alone/view/layouts/review.dart';
 import 'package:eating_alone/view/layouts/enlarge_image.dart';
+import 'package:eating_alone/view/signup_page.dart';
+import 'package:eating_alone/view/account_find_page.dart';
+import 'package:eating_alone/view/main_select.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -80,6 +83,21 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => EnlargeImageTest()));
               },
               child: Text('이미지 크게보기 창')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+              },
+              child: Text('회원가입 창')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AccountFindPage()));
+              },
+              child: Text('회원찾기 창')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
+              },
+              child: Text('메인 메뉴선택 창')),
         ],)
     );
   }
