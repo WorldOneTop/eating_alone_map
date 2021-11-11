@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
               TitleLayout(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row( // 소셜로그인
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -25,23 +25,32 @@ class LoginPage extends StatelessWidget {
                       onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
                       child: Container(
                         padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
-                        child:Image.asset('assets/images/icon_kakaotalk.png',width: 40,height: 40))),
+                        child: ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(12)),
+                            child: Image.asset('assets/images/kakaotalk.png',width: 40,height: 40))
+                          )),
                   GestureDetector(
                       onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
                       child: Container(
                           padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
-                      child: Image.asset('assets/images/icon_naver.png',width: 40,height: 40))),
+                      child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
+                          child: Image.asset('assets/images/naver.png',width: 40,height: 40))
+                      )),
                   GestureDetector(
                       onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
                     child: Container(
                         padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
-                      child: Image.asset('assets/images/icon_facebook.png',width: 40,height: 40))),
+                      child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
+                          child: Image.asset('assets/images/facebook.png',width: 40,height: 40))
+                    )),
                 ],
               ),
               Container( // 아이디,비번 입력
                   margin: const EdgeInsets.symmetric(horizontal: 50,vertical: 10),
                   child: Column(children: [
-                    CustomTextField.idInput(),
+                    CustomTextField.idInput(label: 'EMAIL'),
                     const SizedBox(height: 10),
                     CustomTextField.passwordInput(),
                   ],)
@@ -77,8 +86,8 @@ class LoginPage extends StatelessWidget {
               TextButton(onPressed: () {
                 Fluttertoast.showToast(msg: "회원찾기 창으로 이동",);
               },
-                  child: const Text('아이디 혹은 비밀번호가 기억이 안난다면?')),
-                const SizedBox(height: 40),
+                  child: const Text('비밀번호가 기억나지 않는다면')),
+                const SizedBox(height: 50),
             ])
         ));
   }
