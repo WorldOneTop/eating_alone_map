@@ -13,7 +13,7 @@ class CustomAppbar {
     return _instance;
   }
 
-  AppBar getAppBar(BuildContext context, Appbar_mode mode, String title_name) {
+  AppBar getAppBar(BuildContext context, Appbar_mode mode, String title_name, {TabBar? bottom}) {
     Text? my_Title;
     Container? searchField;
     List<Widget>? my_Actions = null;
@@ -24,7 +24,7 @@ class CustomAppbar {
         Fluttertoast.showToast(msg: "검색창으로 이동");
         })];
     } else if(mode == Appbar_mode.search) {
-      searchField = CustomTextField().normalInput( hint:title_name, suffixIcon: const Icon(Icons.search),size:1);
+      searchField = CustomTextField.normalInput( hint:title_name, suffixIcon: const Icon(Icons.search),size:1);
     } else if(mode == Appbar_mode.detail) {
       my_Title = Text(title_name,style:Theme.of(context).textTheme.bodyText1);
     }
@@ -32,12 +32,13 @@ class CustomAppbar {
     return AppBar(
     leadingWidth: 30,
     centerTitle: false,
+    bottom: bottom,
     title: mode == Appbar_mode.search ? searchField : my_Title,
     leading: mode == Appbar_mode.main ? null :
       IconButton(icon:const Icon(Icons.navigate_before), onPressed: () {
         Navigator.pop(context);
       }),
-    actions: mode == Appbar_mode.detail ? null : my_Actions
+    actions: mode == Appbar_mode.detail ? null : my_Actions,
     );
   }
 
