@@ -31,30 +31,36 @@ class CustomTextField {
           controller: controller,
     ));
   }
-  static TextField passwordInput() {
-    return const TextField(
+  static TextField passwordInput({String label ='PASSWORD',TextEditingController? controller,}) {
+    return TextField(
         obscureText: true,
-        style: TextStyle(color: Colors.black),
+        controller: controller,
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
+          contentPadding: const EdgeInsets.symmetric(
               vertical: 8, horizontal: 13),
 
           filled: true,
           fillColor: Colors.white70,
-          border: OutlineInputBorder(),
-          labelText: 'PASSWORD',
+          border: const OutlineInputBorder(),
+          labelText: label,
         ));
   }
-  static TextField idInput() {
-    return const TextField(
-        style: TextStyle(color: Colors.black),
+  static TextField idInput({String label='ID',TextEditingController? controller, String? hint, bool enable=true,String? error}) {
+    return TextField(
+        style: const TextStyle(color: Colors.black),
+        controller: controller,
+        enabled: enable,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
-              vertical: 8, horizontal: 13),
+          hintText: hint,
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: 8, horizontal: 13
+          ),
           filled: true,
           fillColor: Colors.white70,
-          border: OutlineInputBorder(),
-          labelText: 'ID',
+          border: const OutlineInputBorder(),
+          labelText: label,
+          errorText: error
         ));
   }
 }
