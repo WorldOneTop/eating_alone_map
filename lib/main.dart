@@ -9,6 +9,7 @@ import 'package:eating_alone/view/layouts/enlarge_image.dart';
 import 'package:eating_alone/view/signup_page.dart';
 import 'package:eating_alone/view/account_find_page.dart';
 import 'package:eating_alone/view/main_select.dart';
+import 'package:eating_alone/view/selected_menu.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -29,7 +30,7 @@ void main() {
           headline3: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 4.0,color: Colors.black87),
           headline4: TextStyle(fontSize: 26, color: Colors.black87,fontWeight: FontWeight.w600),
           headline5: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.w600),
-          headline6: TextStyle(fontSize: 18.0,  color: Colors.black87),
+          headline6: TextStyle(fontSize: 18.0,  color: Colors.black87,fontWeight: FontWeight.w600),
           subtitle1: TextStyle(fontSize: 18.0, color: Color(0xF0777777),letterSpacing: 1.2),
           subtitle2: TextStyle(fontSize: 16.0, color: Colors.amberAccent),
           bodyText1: TextStyle(fontSize: 18.0, color: Colors.black87,letterSpacing: 1.2),
@@ -98,6 +99,11 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
               },
               child: Text('메인 메뉴선택 창')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu('한식')));
+              },
+              child: Text('메인 메뉴선택 이후 창')),
         ],)
     );
   }
@@ -173,11 +179,11 @@ class InfoTest extends StatelessWidget {
     return  Scaffold(
       body: ListView(children: [
         SizedBox(height: 20,),
-        InfoHouse('두줄 길이의 식당 이름 및 overflow 테스트 ',category: '한식',heart: '♥', rating: 2,review: 1234 ),
+        InfoHouse('두줄 길이의 식당 이름 및 overflow 테스트 ',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
         SizedBox(height: 20,),
-        InfoHouse('찜하지 않은 식당',category: '한식',heart: '♡', rating: 2,review: 1234 ),
+        InfoHouse('찜하지 않은 식당',category: '네글자는',heart: '♡', rating: 2,review: 1234 ),
         SizedBox(height: 20,),
-        InfoHouse('로그인 하지 않은 상태',category: '한식', rating: 2,review: 1234 ),
+        InfoHouse('로그인 하지 않은 상태',category: '세글자', rating: 2,review: 1234 ),
         SizedBox(height: 20,),
         InfoHouse('리뷰가 없을 때',category: '한식',heart: '♥'),
         SizedBox(height: 20,),

@@ -4,17 +4,18 @@ import 'package:eating_alone/model/enum.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MainSelect extends StatelessWidget {
+  TabBar tabBar = const TabBar(
+      indicatorColor: Color(0xca000000),
+      labelColor: Color(0xca000000),
+      unselectedLabelColor: Color(0xFFFFFFFF),
+      tabs: [
+        Icon(Icons.home,size: 35),
+        Icon(Icons.map_outlined,size: 35),
+      ]);
 
   @override
   Widget build(BuildContext context) {
-    TabBar tabBar = const TabBar(
-        indicatorColor: Color(0xca000000),
-        labelColor: Color(0xca000000),
-        unselectedLabelColor: Color(0xFFFFFFFF),
-        tabs: [
-          Icon(Icons.home,size: 35),
-          Icon(Icons.map_outlined,size: 35),
-        ]);
+
     return DefaultTabController(
       length: 2 ,
         child: Scaffold(
