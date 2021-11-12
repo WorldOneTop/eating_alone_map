@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:eating_alone/view/layouts/inputfield.dart';
 
-enum Appbar_mode {main, search, detail}
+enum Appbar_mode {main, search, detail,menu}
 
 class CustomAppbar {
   static final CustomAppbar _instance = CustomAppbar._();
@@ -13,7 +13,7 @@ class CustomAppbar {
     return _instance;
   }
 
-  AppBar getAppBar(BuildContext context, Appbar_mode mode, String title_name, {TabBar? bottom}) {
+  AppBar getAppBar(BuildContext context, Appbar_mode mode, String title_name, {var bottom}) {
     Text? my_Title;
     Container? searchField;
     List<Widget>? my_Actions = null;
@@ -27,6 +27,11 @@ class CustomAppbar {
       searchField = CustomTextField.normalInput( hint:title_name, suffixIcon: const Icon(Icons.search),size:1);
     } else if(mode == Appbar_mode.detail) {
       my_Title = Text(title_name,style:Theme.of(context).textTheme.bodyText1);
+    }else if(mode == Appbar_mode.menu) {
+      my_Title = Text(title_name);
+      my_Actions = [IconButton( icon: const Icon(Icons.map_outlined,),onPressed: () {
+        Fluttertoast.showToast(msg: "메뉴창으로 이동");
+      })];
     }
 
     return AppBar(
