@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class InfoHouse extends StatelessWidget{
   String title,heart='',category = '?';
   String? image;
-  int? rating;
+  double? rating;
   int review=0;
   double height = 100;
 
@@ -14,6 +14,7 @@ class InfoHouse extends StatelessWidget{
   Widget build(BuildContext context) {
     String inputRating = '';
     Image inputImage;
+    int fontSize = 2 - category.length;
 
     if(review > 9999) {
       review = 9999;
@@ -48,18 +49,19 @@ class InfoHouse extends StatelessWidget{
           Expanded(flex: 3,
               child:Column(children: [
                 const SizedBox(height: 4),
-                Text(title, maxLines:height > 94 ? 2 : 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline3?.copyWith(height: 1.0),),
-                Expanded(child: Container()),
+
+                Expanded(child: Center(child:Text(title, maxLines:height > 94 ? 2 : 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),))),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('$category',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5,),
+                      Text('$category',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 22.0+fontSize),),
                       Container(height: 18,width: 3,color: const Color(0xCA333333)),
-                      Text(inputRating,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5),
+                      Text(inputRating,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6),
                       Container(height: 18,width: 3,color: const Color(0xCA333333)),
-                      Text('리뷰:$review',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5)
-                ])
+                      Text('리뷰:$review',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6)
+                ]),
+                const SizedBox(height: 4),
               ])
           )
         ],
