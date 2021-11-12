@@ -15,10 +15,18 @@ class InfoHouse extends StatelessWidget{
     String inputRating = '';
     Image inputImage;
 
+    if(review > 9999) {
+      review = 9999;
+    }
+
     if(rating != null) {
-      inputRating = '★ $rating/5 ㅣ ';
-    }if(height < 65) {
-      height = 65;
+      inputRating = '★ $rating/5';
+    }else{
+      inputRating = '별점 없음';
+    }
+
+    if(height < 68) {
+      height = 68;
     }
     if(image == null) {
       inputImage = Image.asset('assets/images/tempImage.png',fit:BoxFit.cover,height: height);
@@ -39,12 +47,19 @@ class InfoHouse extends StatelessWidget{
           ])),
           Expanded(flex: 3,
               child:Column(children: [
-                const SizedBox(height: 5),
+                const SizedBox(height: 4),
                 Text(title, maxLines:height > 94 ? 2 : 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline3?.copyWith(height: 1.0),),
                 Expanded(child: Container()),
-                Text('$category ㅣ $inputRating리뷰 수 : $review',
-                    textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline5)
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('$category',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5,),
+                      Container(height: 18,width: 3,color: const Color(0xCA333333)),
+                      Text(inputRating,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5),
+                      Container(height: 18,width: 3,color: const Color(0xCA333333)),
+                      Text('리뷰:$review',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline5)
+                ])
               ])
           )
         ],
