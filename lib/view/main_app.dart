@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './layouts/export_all.dart';
 import './main_menu.dart';
 import './main_map.dart';
+import 'package:eating_alone/model/enum.dart';
 
 class MainSelect extends StatelessWidget {
   TabBar tabBar = const TabBar(

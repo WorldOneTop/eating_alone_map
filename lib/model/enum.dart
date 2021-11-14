@@ -3,3 +3,5 @@ class DataList{
   static final List<String> areaList = ['서울', '인천', '수원', '대전', '대구', '광주', '부산'];
 
 }
+
+enum Appbar_mode {main, search, detail,menu}

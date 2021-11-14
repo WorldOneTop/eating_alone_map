@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:eating_alone/view/layouts/inputfield.dart';
+import 'package:eating_alone/model/enum.dart';
 
-enum Appbar_mode {main, search, detail,menu}
 
 class CustomAppbar {
   static final CustomAppbar _instance = CustomAppbar._();

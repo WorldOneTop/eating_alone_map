@@ -8,8 +8,9 @@ import 'package:eating_alone/view/layouts/review.dart';
 import 'package:eating_alone/view/layouts/enlarge_image.dart';
 import 'package:eating_alone/view/signup_page.dart';
 import 'package:eating_alone/view/account_find_page.dart';
-import 'package:eating_alone/view/main_select.dart';
+import 'package:eating_alone/view/main_app.dart';
 import 'package:eating_alone/view/selected_menu.dart';
+import 'package:eating_alone/model/enum.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
