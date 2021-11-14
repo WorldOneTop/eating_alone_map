@@ -8,7 +8,7 @@ class InfoHouse extends StatelessWidget{
   int review=0;
   double height = 100;
 
-  InfoHouse(this.title,{this.image,  this.category = '?', this.rating, this.review=0,this.height = 100,this.heart=''});
+  InfoHouse(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.height = 100,this.heart=''});
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +34,25 @@ class InfoHouse extends StatelessWidget{
     }else{
       inputImage = Image.network(image!,fit:BoxFit.cover,height: height);
     }
-
+//    ClipRRect(
+//        borderRadius: const BorderRadius.all(Radius.circular(30)),
+//        child: inputProfileImage)),
     return Container(
         height: height,
+        padding: const EdgeInsets.symmetric(vertical: 5),
         color: const Color(0xFFF5F5F5),
         child: Row(children: [
-          Expanded(flex: 1,child: Stack( children: [
-            GestureDetector(child:Center(child:inputImage), onTap: (){
-              Fluttertoast.showToast(msg: "이미지 새창으로 띄우기 처리");
-            },),
-            Positioned( bottom: 2, left: 4,
+          Expanded(flex: 1,child: GestureDetector(child:
+            Stack( children: [
+              ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  child:inputImage
+              ),
+              Positioned( bottom: 2, left: 4,
                 child: Text(heart,style:const TextStyle(color: Color(0xF0F86A5B), fontSize: 18)))
-          ])),
+            ]), onTap: (){
+            Fluttertoast.showToast(msg: "이미지 새창으로 띄우기 처리");
+          },)),
           Expanded(flex: 3,
               child:Column(children: [
                 const SizedBox(height: 4),
@@ -55,13 +62,12 @@ class InfoHouse extends StatelessWidget{
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('$category',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 22.0+fontSize),),
+                      Text('$category',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 18.0+fontSize),),
                       Container(height: 18,width: 3,color: const Color(0xCA333333)),
                       Text(inputRating,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6),
                       Container(height: 18,width: 3,color: const Color(0xCA333333)),
                       Text('리뷰:$review',textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline6)
                 ]),
-                const SizedBox(height: 4),
               ])
           )
         ],
