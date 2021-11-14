@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:eating_alone/model/enum.dart';
 
 class AreaSetting extends StatefulWidget {
   @override
@@ -6,7 +7,6 @@ class AreaSetting extends StatefulWidget {
 }
 
 class _AreaSettingState extends State<AreaSetting> {
-  final List<String> _valueList = ['서울', '인천', '수원', '대전', '대구', '광주', '부산'];
   String _selectedArea = '서울';
 
   @override
@@ -18,7 +18,7 @@ class _AreaSettingState extends State<AreaSetting> {
         const Expanded(child: SizedBox()),
         DropdownButton(
           hint: const Text('지역 변경'),
-          items: _valueList.map((value) {
+          items: DataList.areaList.map((value) {
             return DropdownMenuItem(
               value: value,
               child: Text(value),
