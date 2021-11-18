@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:eating_alone/model/static_functions.dart';
 
+import 'output_star.dart';
+
 class ReviewFootLayout extends StatefulWidget {
   String text;
   List<String>? images;
@@ -134,7 +136,8 @@ class ReviewContainer extends StatelessWidget {
         for(int i=1; i<=rating!;i++) {
           inputRating += '★';
         }
-        for(int i=0;i<5-inputRating.length;i++) {
+        int leftStar = 5-inputRating.length;
+        for(int i=0;i<leftStar ;i++) {
           inputRating += '☆';
         }
       }
@@ -178,7 +181,7 @@ class ReviewContainer extends StatelessWidget {
                 Row(children: [
                   Text(name, style: Theme.of(context).textTheme.headline5),
                   Expanded(child:Container()),
-                  Text(inputRating, style: Theme.of(context).textTheme.headline5)
+                  rating == null ? Container() : OutputStar(rating!,22)
                 ]),
                 Text('${time.year}.${time.month}.${time.day}',style: Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 16))
               ]))
