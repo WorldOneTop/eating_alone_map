@@ -117,7 +117,7 @@ class ReviewContainer extends StatelessWidget {
   DateTime time;
   String? profileImage;
   List<String>? hashtags, images;
-  String? rating;
+  double? rating;
 
   ReviewContainer(this.name, this.text, this.time, {this.profileImage, this.hashtags, this.images, this.rating});
 
@@ -126,11 +126,22 @@ class ReviewContainer extends StatelessWidget {
     const double profileWidth = 45 ,profileHeight = 45;
 
     Image inputProfileImage;
+    String inputRating = '';
     ListView inputHashtag = ListView(children: []);
-
+    /*점수를 별점으로*/
+    if(rating != null) {
+      if(0 <= rating! && rating! <= 5) {
+        for(int i=1; i<=rating!;i++) {
+          inputRating += '★';
+        }
+        for(int i=0;i<5-inputRating.length;i++) {
+          inputRating += '☆';
+        }
+      }
+    }
     /* 프로필 이미지 설정(기본 or 설정값)*/
     if(profileImage == null ) {
-      inputProfileImage = Image.asset('assets/images/tempImage.png',width: profileWidth,height: profileHeight,fit: BoxFit.cover,);
+      inputProfileImage = Image.asset('assets/images/defaultProfile.png',width: profileWidth,height: profileHeight,fit: BoxFit.cover,);
     }else {
       inputProfileImage = Image.network(profileImage!);
     }
@@ -167,7 +178,7 @@ class ReviewContainer extends StatelessWidget {
                 Row(children: [
                   Text(name, style: Theme.of(context).textTheme.headline5),
                   Expanded(child:Container()),
-                  Text(rating ?? '', style: Theme.of(context).textTheme.headline5)
+                  Text(inputRating, style: Theme.of(context).textTheme.headline5)
                 ]),
                 Text('${time.year}.${time.month}.${time.day}',style: Theme.of(context).textTheme.subtitle1!.copyWith(fontSize: 16))
               ]))
