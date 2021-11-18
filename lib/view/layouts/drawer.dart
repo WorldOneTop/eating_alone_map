@@ -37,7 +37,7 @@ class CustomDrawer{
                 const SizedBox(width: 10),
                 CircleAvatar(
                   backgroundImage: AssetImage(_profileImage),
-                  backgroundColor: const Color(0xFFF0F0F0F0),
+                  backgroundColor: const Color(0xFFF0F0F0),
                   radius: 30,
                 ),
                 const SizedBox(width: 15),

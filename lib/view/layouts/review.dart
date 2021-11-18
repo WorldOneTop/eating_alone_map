@@ -125,9 +125,8 @@ class ReviewContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double profileWidth = 45 ,profileHeight = 45;
 
-    Image inputProfileImage;
+    ImageProvider inputProfileImage;
     String inputRating = '';
     ListView inputHashtag = ListView(children: []);
     /*점수를 별점으로*/
@@ -144,9 +143,9 @@ class ReviewContainer extends StatelessWidget {
     }
     /* 프로필 이미지 설정(기본 or 설정값)*/
     if(profileImage == null ) {
-      inputProfileImage = Image.asset('assets/images/defaultProfile.png',width: profileWidth,height: profileHeight,fit: BoxFit.cover,);
+      inputProfileImage = AssetImage('assets/images/defaultProfile.png');//,width: profileWidth,height: profileHeight,fit: BoxFit.cover,);
     }else {
-      inputProfileImage = Image.network(profileImage!);
+      inputProfileImage = NetworkImage(profileImage!);
     }
     /* 해시태그 추가 여부에 따른 레이아웃*/
     if(hashtags != null) {
@@ -170,9 +169,11 @@ class ReviewContainer extends StatelessWidget {
           Row(children: [
           Container( // 프로필이미지
           width: 50,height: 50, margin: const EdgeInsets.symmetric(horizontal: 3),
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  child: inputProfileImage)),
+              child: CircleAvatar(
+                backgroundImage: inputProfileImage,
+                backgroundColor: const Color(0xFFF0F0F0),
+                radius: 30,
+              )),
           const SizedBox(width: 6),
           Expanded(child:
             Column( // 닉네임, 작성 시간
