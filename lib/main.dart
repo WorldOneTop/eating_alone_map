@@ -1,3 +1,6 @@
+import 'package:eating_alone/view/create_review.dart';
+import 'package:eating_alone/view/house_detail.dart';
+import 'package:eating_alone/view/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eating_alone/view/login_page.dart';
 import 'package:eating_alone/view/layouts/home.dart';
@@ -18,7 +21,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Elice',
-
+        scaffoldBackgroundColor: Color(0xFFFEFEFE),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFffeb56),
           elevation: 0,
@@ -105,10 +108,26 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu('한식')));
               },
               child: Text('메인 메뉴선택 이후 창')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+              },
+              child: Text('검색창 페이지')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseDetail('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
+              },
+              child: Text('식당 정보 확인 페이지')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
+              },
+              child: Text('리뷰 작성 페이지')),
         ],)
     );
   }
 }
+
 
 class Test extends StatelessWidget {
   @override
@@ -182,6 +201,8 @@ class InfoTest extends StatelessWidget {
         SizedBox(height: 20,),
         InfoHouse('두줄 길이의 식당 이름 및 overflow 테스트 ',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
         SizedBox(height: 20,),
+        InfoHouse('24시전주명가콩나물국밥 강릉점',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
+        SizedBox(height: 20,),
         InfoHouse('찜하지 않은 식당',category: '네글자는',heart: '♡', rating: 2,review: 1234 ),
         SizedBox(height: 20,),
         InfoHouse('로그인 하지 않은 상태',category: '세글자', rating: 2,review: 1234 ),
@@ -209,7 +230,9 @@ class ReviewTest extends StatelessWidget {
         SizedBox(height: 20,),
         ReviewContainer('이제일','글자만 있을 경우',DateTime.now()),
         SizedBox(height: 20,),
-        ReviewContainer('이제일','점수 4',DateTime.now(),rating: '★★★★☆',),
+        ReviewContainer('이제일','점수 4',DateTime.now(),rating: 4,),
+        SizedBox(height: 20,),
+        ReviewContainer('이제일','점수 0.5',DateTime.now(),rating: 0.5,),
         SizedBox(height: 20,),
         ReviewContainer('이제일','해쉬태그들',DateTime.now(),hashtags: ['#가나','#다라','asfdasdfadsfsadfas']),
         SizedBox(height: 20,),
