@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// 별점은 0~5로
 class OutputStar extends StatelessWidget {
   double rating;
   double size;
