@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class CustomTextField {
 
-  static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int? size,
-    var onChange, TextEditingController? controller, int fillColor = 0xb2ffffff}) {
+  static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int size = 2,
+  Function(String)? onChange,Function(String)? onSubmited, TextEditingController? controller, int fillColor = 0xb2ffffff,Color? inputColor, int? maxLines = 1}) {
 
     double height = 50, fontSize = 20;
     if(size == 1) { // 작은 사이즈
-      height = 40; fontSize = 18;
+      height = 42; fontSize = 18;
     }else if(size == 2) {} // 중간사이즈
     else if(size == 3) { //큰 사이즈
       height = 60; fontSize = 22;
@@ -16,6 +16,7 @@ class CustomTextField {
         width: width,
         height: height,
         child:TextField(
+          style: TextStyle(color: inputColor),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(10),
           focusedBorder: InputBorder.none,
@@ -27,8 +28,10 @@ class CustomTextField {
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,
       ),
+              maxLines: maxLines,
               onChanged: onChange,
           controller: controller,
+        onSubmitted: onSubmited,
     ));
   }
   static TextField passwordInput({String label ='PASSWORD',TextEditingController? controller,}) {
@@ -63,4 +66,23 @@ class CustomTextField {
           errorText: error
         ));
   }
+  static Container textInput({double? height, String hint = '입력해주세요.',  int size = 2,
+Function(String)? onChange, TextEditingController? controller, int fillColor = 0xb2ffffff})  {
+    return Container(
+        height: height,
+        child:TextField(
+        style: const TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(10),
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            fillColor: Color(fillColor),
+            filled: true,
+            hintText: hint,
+        ),
+        maxLines: null,
+        onChanged: onChange,
+        controller: controller,
+));
+}
 }
