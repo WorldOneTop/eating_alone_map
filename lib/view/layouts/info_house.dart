@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
 class InfoHouse extends StatelessWidget{
   String title,heart='',category = '?';
@@ -8,7 +9,7 @@ class InfoHouse extends StatelessWidget{
   int review=0;
   double height = 100;
 
-  InfoHouse(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.height = 100,this.heart=''});
+  InfoHouse(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.height = 102,this.heart=''});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +27,14 @@ class InfoHouse extends StatelessWidget{
       inputRating = '별점 없음';
     }
 
-    if(height < 68) {
-      height = 68;
+    if(height < 72) {
+      height = 72;
     }
     if(image == null) {
       inputImage = Image.asset('assets/images/tempImage.png',fit:BoxFit.cover,height: height);
     }else{
       inputImage = Image.network(image!,fit:BoxFit.cover,height: height);
     }
-//    ClipRRect(
-//        borderRadius: const BorderRadius.all(Radius.circular(30)),
-//        child: inputProfileImage)),
     return Container(
         height: height,
         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -56,9 +54,8 @@ class InfoHouse extends StatelessWidget{
           Expanded(flex: 3,
               child:Column(children: [
                 const SizedBox(height: 4),
-
-                Expanded(child: Center(child:Text(title, maxLines:height > 94 ? 2 : 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),))),
+              Expanded(child: Center(child:WrappedKoreanText(title,maxLines: height > 101 ? 2 : 1,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),
+              ))),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
