@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
                         child: ClipRRect(
                             borderRadius: const BorderRadius.all(Radius.circular(12)),
-                            child: Image.asset('assets/images/kakaotalk.png',width: 40,height: 40))
+                            child: Image.asset('assets/images/icons/kakaotalk.png',width: 40,height: 40))
                           )),
                   GestureDetector(
                       onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
                           padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
                       child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(12)),
-                          child: Image.asset('assets/images/naver.png',width: 40,height: 40))
+                          child: Image.asset('assets/images/icons/naver.png',width: 40,height: 40))
                       )),
                   GestureDetector(
                       onTap: (){Fluttertoast.showToast(msg: "소셜 로그인",);},
@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.all(20),color: const Color(0xFFffeb56),
                       child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(12)),
-                          child: Image.asset('assets/images/facebook.png',width: 40,height: 40))
+                          child: Image.asset('assets/images/icons/facebook.png',width: 40,height: 40))
                     )),
                 ],
               ),
