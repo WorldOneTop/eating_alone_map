@@ -127,20 +127,8 @@ class ReviewContainer extends StatelessWidget {
   Widget build(BuildContext context) {
 
     ImageProvider inputProfileImage;
-    String inputRating = '';
     ListView inputHashtag = ListView(children: []);
-    /*점수를 별점으로*/
-    if(rating != null) {
-      if(0 <= rating! && rating! <= 5) {
-        for(int i=1; i<=rating!;i++) {
-          inputRating += '★';
-        }
-        int leftStar = 5-inputRating.length;
-        for(int i=0;i<leftStar ;i++) {
-          inputRating += '☆';
-        }
-      }
-    }
+
     /* 프로필 이미지 설정(기본 or 설정값)*/
     if(profileImage == null ) {
       inputProfileImage = AssetImage('assets/images/defaultProfile.png');//,width: profileWidth,height: profileHeight,fit: BoxFit.cover,);
