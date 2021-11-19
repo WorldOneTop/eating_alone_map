@@ -62,59 +62,45 @@ class CustomDrawer{
             horizontalTitleGap: -5,
             leading: Icon(Icons.account_box,
               color: Colors.grey[850]),
-            title: const Text("계정 정보"),
+            title: const Text("계정 정보",style: TextStyle(height: 1)),
             onTap: () {
-              print("AccountInfo is Cicked");
-              Navigator.pushNamed(context, '/AccountInfo');
+              Fluttertoast.showToast(msg: "계정 정보 페이지로 이동");
             },
           ),
           ListTile(
               horizontalTitleGap: -5,
               leading: Icon(Icons.directions_run,
                 color: Colors.grey[850],),
-              title: const Text("내 활동"),
+              title: const Text("내 활동",style: TextStyle(height: 1.1)),
               onTap: () {
-                print("MyActivity is Clicked");
-                Navigator.pushNamed(context, '/MyActivity');
+                Fluttertoast.showToast(msg: "내 활동 페이지로 이동");
               }
           ),
           ListTile(
               horizontalTitleGap: -5,
               leading: Icon(Icons.content_paste_rounded,
                 color: Colors.grey[850],),
-              title: Text("공지사항"),
+              title: const Text("공지사항",style: TextStyle(height: 1.1)),
               onTap: () {
-                print("Notice is Clicked");
-                Navigator.pushNamed(context, '/Notice');
+                Fluttertoast.showToast(msg: "공지사항 페이지로 이동");
               }
           ),
           ListTile(
               horizontalTitleGap: -5,
               leading: Icon(Icons.question_answer,
                 color: Colors.grey[850],),
-              title: Text("문의하기"),
+              title: const Text("문의하기",style: TextStyle(height: 1.1)),
               onTap: () {
-                print("Question is Clicked");
-                Navigator.pushNamed(context, '/Question');
+                Fluttertoast.showToast(msg: "문의하기 페이지로 이동");
               }
           ),
-          ListTile(
-              horizontalTitleGap: -5,
-              leading: Icon(Icons.bug_report,
-                color: Colors.grey[850],),
-              title: Text("버그리포트"),
-              onTap: () {
-                print("Bug_Report is Clicked");
-                Navigator.pushNamed(context, '/BugReport');
-              }
-          ),ListTile(
+         ListTile(
               horizontalTitleGap: -5,
               leading: Icon(Icons.settings,
                 color: Colors.grey[850],),
-              title: Text("설정"),
+              title: const Text("환경설정",style: TextStyle(height: 1.1)),
               onTap: () {
-                print("Bug_Report is Clicked");
-                Navigator.pushNamed(context, '/BugReport');
+                Fluttertoast.showToast(msg: "환경설정 페이지로 이동");
               }
           ),
         ],
