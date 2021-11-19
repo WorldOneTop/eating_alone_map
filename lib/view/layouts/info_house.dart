@@ -35,7 +35,8 @@ class InfoHouse extends StatelessWidget{
     }else{
       inputImage = Image.network(image!,fit:BoxFit.cover,height: height);
     }
-    return Container(
+    return GestureDetector(onLongPress: (){Fluttertoast.showToast(msg: "좋아요 처리");},child:
+      Container(
         height: height,
         padding: const EdgeInsets.symmetric(vertical: 5),
         color: const Color(0xFFF5F5F5),
@@ -69,6 +70,6 @@ class InfoHouse extends StatelessWidget{
           )
         ],
         )
-    );
+    ));
   }
 }

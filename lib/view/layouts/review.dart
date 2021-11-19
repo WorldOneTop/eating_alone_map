@@ -163,7 +163,10 @@ class ReviewContainer extends StatelessWidget {
       );
     }
 
-    return Container(
+    return GestureDetector(onLongPress: (){
+      Fluttertoast.showToast(msg: "삭제 여부");
+    },child:
+      Container(
         margin: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(children: [
           Row(children: [
@@ -192,6 +195,6 @@ class ReviewContainer extends StatelessWidget {
     const SizedBox(height: 12),
     ReviewFootLayout(text, images,Theme.of(context).textTheme.bodyText2!, MediaQuery.of(context).size.width),
     const SizedBox(height: 5),
-    ]));
+    ])));
   }
 }
