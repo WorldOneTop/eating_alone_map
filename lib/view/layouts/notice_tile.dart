@@ -38,30 +38,25 @@ class _NoticeTileState extends State<NoticeTile> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               color: const Color(0xFdF0F0F0),
               child: const Text('답변완료', style: TextStyle(fontSize: 13))
-          ));
-      layoutTop.addAll([
-        Expanded(child:Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(child:WrappedKoreanText(widget.title, style: const TextStyle(fontSize: 20))),
-                  Container(
-                      margin: const EdgeInsets.only(left: 8),
-                      child: widget.answer == null ? null : checkAnswer)
-                ]),
-              Text(widget.date!, style: const TextStyle(fontSize: 15,color: Colors.grey))
-        ])),
-        const Icon(Icons.keyboard_arrow_down, size: 30,color: Colors.grey)
-      ]);
-      layoutText = Container(margin:const EdgeInsets.all(5),child:WrappedKoreanText(widget.text));
-
-    }
+          ));}
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if(!widget.isAnswer) {
+      layoutTop=  [Expanded(child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [ Row(children: [
+            Expanded(child:Text(widget.title, style: TextStyle(fontSize: 20, fontWeight: isFold ? null : FontWeight.bold))),
+            Container(
+                margin: const EdgeInsets.only(left: 8),
+                child: widget.answer != null && isFold ? checkAnswer: null)
+          ]),
+            Text(widget.date!, style: TextStyle(fontSize: widget.date!.isEmpty ? 0 : 15,color: Colors.grey))
+          ])),Icon(isFold ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up, size: 30,color: Colors.grey)];
+      layoutText = Container(margin:const EdgeInsets.all(5),child:Text(widget.text));
+    }
     return InkWell(
       onTap: changeFold,
       child: Container(
@@ -80,19 +75,6 @@ class _NoticeTileState extends State<NoticeTile> {
   void changeFold(){
     setState(() {
       isFold = !isFold;
-      if(!widget.isAnswer) {
-        layoutTop[0] =  Expanded(child:Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [ Row(children: [
-              Expanded(child:WrappedKoreanText(widget.title, style: TextStyle(fontSize: 20, fontWeight: isFold ? null : FontWeight.bold))),
-              Container(
-                  margin: const EdgeInsets.only(left: 8),
-                  child: widget.answer != null && isFold ? checkAnswer: null)
-            ]),
-              Text(widget.date!, style: const TextStyle(fontSize: 15,color: Colors.grey))
-            ]));
-        layoutTop[1] = Icon(isFold ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up, size: 30,color: Colors.grey);
-      }
     });
   }
 }
