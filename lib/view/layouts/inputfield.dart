@@ -67,7 +67,7 @@ class CustomTextField {
         ));
   }
   static Container textInput({double? height, String hint = '입력해주세요.',  int size = 2,
-Function(String)? onChange, TextEditingController? controller, int fillColor = 0xb2ffffff})  {
+Function(String)? onChange, TextEditingController? controller, int fillColor = 0xb2ffffff, int? minLines})  {
     return Container(
         height: height,
         child:TextField(
@@ -81,6 +81,7 @@ Function(String)? onChange, TextEditingController? controller, int fillColor = 0
             hintText: hint,
         ),
         maxLines: null,
+        minLines: minLines,
         onChanged: onChange,
         controller: controller,
 ));

@@ -47,6 +47,7 @@ class _CreateReviewState extends State<CreateReview> {
             basicStyle: const TextStyle(fontSize: 20, color: Colors.black),
             maxLines: null,
             controller: ctrHashtag,
+            minLines: 4,
             decoration: const InputDecoration(
               hintText: '리뷰를 작성해주세요.',
               filled: true,
