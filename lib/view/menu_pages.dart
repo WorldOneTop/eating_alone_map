@@ -282,12 +282,175 @@ class Question extends StatelessWidget {
         ));
   }
 }
-class QuestionReport extends StatelessWidget {
+class QuestionReport extends StatefulWidget {
+  @override
+  _QuestionReportState createState() => _QuestionReportState();
+}
+
+class _QuestionReportState extends State<QuestionReport> {
+  String? _selectedCategory;
+  bool emailReceive = false;
+  bool checkTerm = false;
+  bool openTerm = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+          children: [
+            Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
+            Row(children: [
+              Expanded(flex: 1, child: getTitleText('분류')),
+              const Expanded(flex: 1, child: SizedBox()),
+              Expanded(flex:4, child: DropdownButton(
+                value: _selectedCategory,
+                hint: const Text('분류 선택'),
+                style: const TextStyle(fontSize: 20,color: Colors.black),
+                isExpanded: true,
+                items: DataList.questionCategory.map((value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategory = value as String;
+                  });},
+              )),
+            ]),
+            const SizedBox(height:8),
+            Row(children: [
+              Expanded(flex: 1,child: getTitleText('제목')),
+              const Expanded(flex: 1,child: SizedBox()),
+              Expanded(flex: 4,child: CustomTextField.normalInput(
+                hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black
+              )),
+//        CustomTextField.normalInput(hint: '제목을 입력해주세요.')
+            ]),
+            getTitleText('문의 내용'),
+            const SizedBox(height:8),
+            CustomTextField.textInput(minLines: 4,fillColor: 0xFFF8F8F8),
+            Row(children: [getTitleText('첨부파일'),const Expanded(child: SizedBox()),imageUploadLayout(),imageUploadLayout(),imageUploadLayout()]),
+            Row(children:const [Expanded(child:SizedBox()),Text('이미지는 최대 3장까지 업로드 가능합니다.', style: TextStyle(fontSize: 14,color: Colors.grey),textAlign: TextAlign.end,)]),
+            const SizedBox(height:8),
+            Row(children: [
+              const Text('이메일로 답변받기',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,height: 1)),
+              IconButton(onPressed: (){
+                setState(() {
+                  emailReceive = !emailReceive;
+                });
+              }, icon: Icon(emailReceive ? Icons.check_box : Icons.check_box_outline_blank),iconSize: 32,)
+            ]),
+            const SizedBox(height:8),
+            Row(children: [
+              getTitleText('약관 동의'),
+              const Expanded(child: SizedBox()),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary:Color(checkTerm ? 0xFC2296F3 : 0xFFF0F0F0),padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 2)
+                ),onPressed: (){
+                  setState(() {
+                    checkTerm = !checkTerm;
+                  });
+              }, child: Row(children:[Text('개인정보 수집 및 이용 동의 ',
+                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Color(checkTerm ? 0xFFFFFFFF : 0xFF000000),height: 1.1),),
+                  Icon(checkTerm ? Icons.check_box : Icons.check_box_outline_blank,size: 20,color: checkTerm ? null : Colors.black)
+              ]))
+            ]),
+            InkWell(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children:[
+                    const Text('개인정보 수집 및 이용 동의 내용보기', style: TextStyle(fontSize: 14,color: Colors.grey)),
+                    Icon(openTerm ? Icons.arrow_drop_up : Icons.arrow_drop_down)
+                  ]),
+              onTap: (){
+                setState(() {
+                  openTerm = !openTerm;
+                });
+              },
+            ),
+            Container(child:!openTerm ? null :
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  color: const Color(0xFFF0F0F0),
+                  child: const Text('것은 거친 모래뿐일 것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아',
+                    style: TextStyle(fontSize: 15,color: Colors.black)
+                  )
+                )
+            ),
+            const SizedBox(height: 20)])),
+            Row(children: [
+              Expanded(child: InkWell(child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  color: const Color(0xFFF0F0F0),
+                  child: Center(child: getTitleText('취소'))
+              ),onTap: (){
+                Fluttertoast.showToast(msg: '취소 버튼');
+              })),
+              Expanded(child: InkWell(child:Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  color: const Color(0xFF2ECC71),
+                  child: Center(child: getTitleText('작성 완료'))
+              ),onTap: (){
+                Fluttertoast.showToast(msg: '작성 버튼');
+              })),
+            ])
+          ]);
+  }
+  Text getTitleText(String title) {
+    return Text(title,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.bold));
+  }
+  InkWell imageUploadLayout(){
+    return InkWell(child:Container(
+      color: Colors.grey[300],
+      padding: const EdgeInsets.all(20),
+      margin:  const EdgeInsets.all(8),
+      child: const Center(child: Icon(Icons.camera_alt,size: 30 ))
+    ),onTap: (){
+      Fluttertoast.showToast(msg: '이미지 업로드 버튼 ');
+    });
+  }
+}
+
+class TermDetail extends StatefulWidget {
+  @override
+  _TermDetailState createState() => _TermDetailState();
+}
+
+class _TermDetailState extends State<TermDetail> {
   @override
   Widget build(BuildContext context) {
     return Container();
   }
 }
+class CategoryDropDown extends StatefulWidget {
+  @override
+  _CategoryDropDownState createState() => _CategoryDropDownState();
+}
+
+class _CategoryDropDownState extends State<CategoryDropDown> {
+  String _selectedCategory = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton(
+      value: _selectedCategory,
+      items: DataList.questionCategory.map((value) {
+        return DropdownMenuItem(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedCategory = value as String;
+        });},
+    );
+  }
+}
+
+
 
 class MyQuestion extends StatelessWidget {
   List<Widget> test =  [
