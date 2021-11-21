@@ -1,5 +1,7 @@
 import 'package:eating_alone/view/create_review.dart';
 import 'package:eating_alone/view/house_detail.dart';
+import 'package:eating_alone/view/layouts/notice_tile.dart';
+import 'package:eating_alone/view/menu_pages.dart';
 import 'package:eating_alone/view/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eating_alone/view/login_page.dart';
@@ -123,6 +125,36 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
               },
               child: Text('리뷰 작성 페이지')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AccountInfo()));
+              },
+              child: Text('메뉴 - 계정정보')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Setting()));
+              },
+              child: Text('메뉴 - 설정')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity()));
+              },
+              child: Text('메뉴 - 내 활동')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NoticeTileTest()));
+              },
+              child: Text('notice tile layout')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Notice()));
+              },
+              child: Text('메뉴 - 공지사항')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Question()));
+              },
+              child: Text('메뉴 - 문의하기')),
         ],)
     );
   }
@@ -282,4 +314,23 @@ class EnlargeImageTest extends StatelessWidget {
     );
   }
 
+}
+
+class NoticeTileTest extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    DateTime date = DateTime.now();
+
+    return Scaffold(
+      body: ListView(children: [
+        NoticeTile('이벤트 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
+            '${date.year}-${date.month}-${date.day}',false),
+        NoticeTile('버그 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
+            '${date.year}-${date.month}-${date.day}',false),
+        NoticeTile('개인정보 관련 문의 개인 정보 관련 문의 개인정보관련문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
+            '${date.year}-${date.month}-${date.day}',false,answer: NoticeTile('개인정보 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
+            '${date.year}-${date.month}-${date.day}',true)),
+      ],),
+    );
+  }
 }
