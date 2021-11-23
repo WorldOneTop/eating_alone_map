@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:eating_alone/model/static_functions.dart';
+import 'package:eating_alone/controller/static_functions.dart';
 
 import 'output_star.dart';
 
