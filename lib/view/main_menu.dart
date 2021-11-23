@@ -1,8 +1,8 @@
 import 'package:eating_alone/model/enum.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'layouts/area_setting.dart';
+import 'selected_menu.dart';
 
 class MainMenu extends StatelessWidget {
   @override
@@ -19,7 +19,7 @@ class MainMenu extends StatelessWidget {
               shrinkWrap: true,
               crossAxisCount: 4,
               children: List.generate(DataList.menuName.length, (index) {
-                return MenuItem('assets/images/icons/${DataList.menuName[index]}.png', DataList.menuName[index]);})
+                return MenuItem('assets/images/icons/${DataList.menuName[index]}.png', DataList.menuName[index],index);})
           ),
         ]
     );
@@ -28,8 +28,9 @@ class MainMenu extends StatelessWidget {
 
 class MenuItem extends StatelessWidget {
   String image,name;
+  int index;
 
-  MenuItem(this.image,this.name);
+  MenuItem(this.image,this.name,this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,9 @@ class MenuItem extends StatelessWidget {
           ),
           Text(name,textAlign: TextAlign.center,style:const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)]
     ),
-      onTap: (){Fluttertoast.showToast(msg: "$name 메뉴 선택 창으로 이동");},
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu(name,index)));
+      },
     );
   }
 }
