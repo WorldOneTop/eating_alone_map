@@ -1,10 +1,11 @@
+import 'package:eating_alone/view/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import './layouts/title.dart';
 import './layouts/inputfield.dart';
+import 'main_app.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage();
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +63,12 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(onPressed: () {
-                            Fluttertoast.showToast(msg: "회원가입 창으로 이동",);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()),);
                           },
                               child: const Text('회원가입')),
                           const SizedBox(width:30),
                           ElevatedButton(onPressed: () {
-                            Fluttertoast.showToast(msg: "메인으로 이동",);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()),);
                           },
                               child: const Text(' 로그인 '))
                         ]),
@@ -78,7 +79,7 @@ class LoginPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 36)
                         ),
                         onPressed: (){
-                          Fluttertoast.showToast(msg: "메인으로 이동",);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()),);
                           },
                         child: const Text('비회원으로 이용하기'))
                   ])

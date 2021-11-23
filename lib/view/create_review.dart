@@ -7,12 +7,13 @@ import 'layouts/info_house.dart';
 import 'layouts/output_star.dart';
 
 class CreateReview extends StatefulWidget {
-  String title,heart,category;
-  String? image;
-  double? rating;
-  int review;
+//  String title,heart,category;
+//  String? image;
+//  double? rating;
+//  int review;
 
-  CreateReview(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
+  InfoHouse infoHouse;
+  CreateReview(this.infoHouse);
 
 
   @override
@@ -30,18 +31,18 @@ class _CreateReviewState extends State<CreateReview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.title),
-        body: Container(margin: const EdgeInsets.all(15),child:ListView(children: [
-          InfoHouse(widget.title, image: widget.image,
-              category: widget.category,
-              rating: widget.rating,
-              review: widget.review,
-              heart: widget.heart),
+        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.infoHouse.title),
+        body: Container(child:ListView(children: [
+          widget.infoHouse,
           const SizedBox(height: 10),
           Row(children:[inputRating()], mainAxisAlignment: MainAxisAlignment.center),
           const SizedBox(height: 10),
+          const Text('이미지 업로드',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
+          const SizedBox(height: 6),
           ImageUpdateList(),
           const SizedBox(height: 10),
+          const Text('리뷰 내용',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
+          const SizedBox(height: 6),
           HashTagTextField(
             decoratedStyle: const TextStyle(fontSize: 20, color: Colors.blue),
             basicStyle: const TextStyle(fontSize: 20, color: Colors.black),
@@ -56,10 +57,22 @@ class _CreateReviewState extends State<CreateReview> {
               enabledBorder: InputBorder.none,),
           ),
           const SizedBox(height: 10),
-          Row(mainAxisAlignment: MainAxisAlignment.end,children: [
-            ElevatedButton(onPressed: (){
-              Fluttertoast.showToast(msg: extractHashTags(ctrHashtag.text).toString());
-            }, child: const Text('작성 완료'))])
+          Row(children: [
+            Expanded(child: InkWell(child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                color: const Color(0xFFF0F0F0),
+                child: const Center(child: Text('취소',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)))
+            ),onTap: (){
+              Navigator.pop(context);
+            })),
+            Expanded(child: InkWell(child:Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                color: const Color(0xFF2ECC71),
+                child: const Center(child: Text('작성 완료',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)))
+            ),onTap: (){
+              Fluttertoast.showToast(msg: '작성 버튼');
+            })),
+          ])
         ])
         ));
   }
@@ -78,7 +91,7 @@ class _CreateReviewState extends State<CreateReview> {
             if(rating > 5) rating = 5;
           });
         },
-        child: OutputStar(rating,40,color:const Color(0xFFFCFC00))
+        child: OutputStar(rating,40,color:const Color(0xFFffe62e))
     );
   }
 }

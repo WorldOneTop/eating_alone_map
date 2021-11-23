@@ -2,6 +2,7 @@ import 'package:eating_alone/model/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'create_review.dart';
 import 'layouts/appbar.dart';
 import 'layouts/info_house.dart';
 import 'layouts/review.dart';
@@ -23,11 +24,13 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
   ScrollController? _scrollController;
   TabController? _tabController;
   PreferredSize? inputTabBottom;
+  InfoHouse? infoHouse;
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _tabController = TabController(vsync: this, length: 3);
-
+    infoHouse = InfoHouse(widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
     inputTabBottom= PreferredSize(
       preferredSize: Size.fromHeight(30),
       child: Container(
@@ -67,7 +70,7 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                title: InfoHouse(widget.title,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart),
+                title: infoHouse,
                 pinned: true,
                 floating: true,
                 snap: false,
@@ -97,7 +100,7 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                    child: PageReview()
+                    child: PageReview(context,infoHouse!)
                   ),
                 ],
           ),
@@ -184,6 +187,9 @@ class PageMenu extends StatelessWidget {
 
 class PageReview extends StatelessWidget {
 
+  BuildContext context;
+  InfoHouse infoHouse;
+
   List<Widget> test = [
   ReviewContainer('이제일','글자만 있을 경우',DateTime.now()),
   ReviewContainer('이제일','점수 4',DateTime.now(),rating: 4),
@@ -196,13 +202,16 @@ class PageReview extends StatelessWidget {
   DateTime.now(),images: ['https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png']),
   ];
 
+  PageReview(this.context,this.infoHouse){
+    test.insert(0,Row(children: [Expanded(child:Container()),
+      ElevatedButton(onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview(infoHouse)));
+      }, child: const Text('리뷰 작성'))]));
+  }
+
   @override
   Widget build(BuildContext context) {
-    test.insert(0,Row(children: [Expanded(child:Container()),
-        ElevatedButton(onPressed: (){
-          Fluttertoast.showToast(msg: "리뷰작성페이지",);
-          }, child: const Text('리뷰 작성'))],)
-    );
+
 
     return ListView.separated(
         itemCount: test.length,

@@ -36,7 +36,8 @@ class _EnlargeImageState extends State<EnlargeImage> {
 
 
     return Scaffold(
-        body:Stack(
+        body: GestureDetector(child:
+        Stack(
         alignment: Alignment.center,
         children: [
         SizedBox.expand(
@@ -46,10 +47,6 @@ class _EnlargeImageState extends State<EnlargeImage> {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 70,horizontal: 5),
             child: selectImage
-//            InteractiveViewer(
-//                minScale: 1,
-//                maxScale: 4,
-//                child: selectImage),
           ),
           Positioned(
               left: 2,
@@ -63,8 +60,16 @@ class _EnlargeImageState extends State<EnlargeImage> {
               right: 4,top: 25,
               child: IconButton(onPressed: (){ Navigator.pop(context); }, icon: const Icon(Icons.close,color: Colors.grey,size: 40))),
         ],
-      )
-    );
+      ),onHorizontalDragEnd: (event){
+          if(event.primaryVelocity! == 0) return;
+
+          if(event.primaryVelocity! < 0 ){
+            nextImage();
+          }else{
+            prevImage();
+          }
+        },
+    ));
   }
   void prevImage() {
     setState(() {

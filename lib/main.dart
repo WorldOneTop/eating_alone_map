@@ -1,4 +1,4 @@
-import 'package:eating_alone/view/create_review.dart';
+//import 'package:eating_alone/view/create_review.dart';
 import 'package:eating_alone/view/house_detail.dart';
 import 'package:eating_alone/view/layouts/notice_tile.dart';
 import 'package:eating_alone/view/menu_pages.dart';
@@ -8,13 +8,13 @@ import 'package:eating_alone/view/login_page.dart';
 import 'package:eating_alone/view/layouts/home.dart';
 import 'package:eating_alone/view/layouts/appbar.dart';
 import 'package:eating_alone/view/layouts/drawer.dart';
-import 'package:eating_alone/view/layouts/info_house.dart';
+//import 'package:eating_alone/view/layouts/info_house.dart';
 import 'package:eating_alone/view/layouts/review.dart';
 import 'package:eating_alone/view/layouts/enlarge_image.dart';
 import 'package:eating_alone/view/signup_page.dart';
 import 'package:eating_alone/view/account_find_page.dart';
 import 'package:eating_alone/view/main_app.dart';
-import 'package:eating_alone/view/selected_menu.dart';
+//import 'package:eating_alone/view/selected_menu.dart';
 import 'package:eating_alone/model/enum.dart';
 
 //  ThemeData 활용해 볼것
@@ -25,10 +25,9 @@ void main() {
         fontFamily: 'Elice',
         scaffoldBackgroundColor: Color(0xFFFEFEFE),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFffeb56),
+          backgroundColor: Color(0xFFffe62e),
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: TextStyle(fontSize: 22, letterSpacing: 3.0, color: Colors.white)
         ),
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 8.0, color: Colors.black87),
@@ -62,7 +61,7 @@ class MyApp extends StatelessWidget {
               child: Text('폰트 확인')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: Text('Login Page Layout')),
           ElevatedButton(
@@ -107,7 +106,7 @@ class MyApp extends StatelessWidget {
               child: Text('메인 메뉴선택 창')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu('한식')));
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu('한식')));
               },
               child: Text('메인 메뉴선택 이후 창')),
           ElevatedButton(
@@ -122,7 +121,7 @@ class MyApp extends StatelessWidget {
               child: Text('식당 정보 확인 페이지')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
               },
               child: Text('리뷰 작성 페이지')),
           ElevatedButton(
@@ -155,6 +154,11 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Question()));
               },
               child: Text('메뉴 - 문의하기')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
+              },
+              child: Text('로그인 했다 치고 시작하기')),
         ],)
     );
   }
@@ -231,23 +235,23 @@ class InfoTest extends StatelessWidget {
     return  Scaffold(
       body: ListView(children: [
         SizedBox(height: 20,),
-        InfoHouse('두줄 길이의 식당 이름 및 overflow 테스트 ',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
-        SizedBox(height: 20,),
-        InfoHouse('24시전주명가콩나물국밥 강릉점',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
-        SizedBox(height: 20,),
-        InfoHouse('찜하지 않은 식당',category: '네글자는',heart: '♡', rating: 2,review: 1234 ),
-        SizedBox(height: 20,),
-        InfoHouse('로그인 하지 않은 상태',category: '세글자', rating: 2,review: 1234 ),
-        SizedBox(height: 20,),
-        InfoHouse('리뷰가 없을 때',category: '한식',heart: '♥'),
-        SizedBox(height: 20,),
-        InfoHouse('높이가 높을 때',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:250),
-        SizedBox(height: 20,),
-        InfoHouse('작을경우 고정',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:50),
-        SizedBox(height: 20,),
-        InfoHouse('이미지 테스트',image: 'https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png'),
-        SizedBox(height: 20,),
-        InfoHouse('이미지 테스트',image: 'https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png'),
+//        InfoHouse('두줄 길이의 식당 이름 및 overflow 테스트 ',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
+//        SizedBox(height: 20,),
+//        InfoHouse('24시전주명가콩나물국밥 강릉점',category: '패스트푸드',heart: '♥', rating: 2,review: 12345 ),
+//        SizedBox(height: 20,),
+//        InfoHouse('찜하지 않은 식당',category: '네글자는',heart: '♡', rating: 2,review: 1234 ),
+//        SizedBox(height: 20,),
+//        InfoHouse('로그인 하지 않은 상태',category: '세글자', rating: 2,review: 1234 ),
+//        SizedBox(height: 20,),
+//        InfoHouse('리뷰가 없을 때',category: '한식',heart: '♥'),
+//        SizedBox(height: 20,),
+//        InfoHouse('높이가 높을 때',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:250),
+//        SizedBox(height: 20,),
+//        InfoHouse('작을경우 고정',category: '한식',heart: '♥', rating: 2,review: 1234 ,height:50),
+//        SizedBox(height: 20,),
+//        InfoHouse('이미지 테스트',image: 'https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png'),
+//        SizedBox(height: 20,),
+//        InfoHouse('이미지 테스트',image: 'https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png'),
         SizedBox(height: 20,),
 ])
     );

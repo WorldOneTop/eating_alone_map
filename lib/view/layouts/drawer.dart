@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
+import '../login_page.dart';
+import '../menu_pages.dart';
 
 class CustomDrawer{
   String _name = "로그인을 해주세요.", _location = "전국", _profileImage = 'assets/images/defaultProfile.png';
@@ -28,8 +30,7 @@ class CustomDrawer{
         children: [
           GestureDetector(
               onTap: (){
-                // 로그인 확인하는 모델 생성 이후 처리
-                Fluttertoast.showToast(msg: "로그인 페이지로 이동");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -64,7 +65,7 @@ class CustomDrawer{
               color: Colors.grey[850]),
             title: const Text("계정 정보",style: TextStyle(height: 1)),
             onTap: () {
-              Fluttertoast.showToast(msg: "계정 정보 페이지로 이동");
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountInfo()));
             },
           ),
           ListTile(
@@ -73,7 +74,7 @@ class CustomDrawer{
                 color: Colors.grey[850],),
               title: const Text("내 활동",style: TextStyle(height: 1.1)),
               onTap: () {
-                Fluttertoast.showToast(msg: "내 활동 페이지로 이동");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity()));
               }
           ),
           ListTile(
@@ -82,7 +83,7 @@ class CustomDrawer{
                 color: Colors.grey[850],),
               title: const Text("공지사항",style: TextStyle(height: 1.1)),
               onTap: () {
-                Fluttertoast.showToast(msg: "공지사항 페이지로 이동");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Notice()));
               }
           ),
           ListTile(
@@ -91,7 +92,7 @@ class CustomDrawer{
                 color: Colors.grey[850],),
               title: const Text("문의하기",style: TextStyle(height: 1.1)),
               onTap: () {
-                Fluttertoast.showToast(msg: "문의하기 페이지로 이동");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Question()));
               }
           ),
          ListTile(
@@ -100,7 +101,7 @@ class CustomDrawer{
                 color: Colors.grey[850],),
               title: const Text("환경설정",style: TextStyle(height: 1.1)),
               onTap: () {
-                Fluttertoast.showToast(msg: "환경설정 페이지로 이동");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Setting()));
               }
           ),
         ],

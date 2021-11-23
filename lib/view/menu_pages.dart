@@ -207,14 +207,14 @@ class MyHouse extends StatefulWidget {
 
 class _MyHouseState extends State<MyHouse> {
   List<Widget> test = [
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -265,7 +265,7 @@ class Question extends StatelessWidget {
             unselectedLabelColor: Color(0xca666666),
             tabs: [
               Text('문의하기', style:TextStyle(fontSize: 18.0,fontWeight: FontWeight.w600)),
-              Text('나의 문의내역', style:TextStyle(fontSize: 18.0,fontWeight: FontWeight.w600)),
+              Text('문의내역', style:TextStyle(fontSize: 18.0,fontWeight: FontWeight.w600)),
               Text('FAQ', style:TextStyle(fontSize: 18.0,fontWeight: FontWeight.w600))
             ]
         ),

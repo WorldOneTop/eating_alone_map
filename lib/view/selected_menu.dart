@@ -4,8 +4,9 @@ import 'package:eating_alone/model/enum.dart';
 
 class SelectMenu extends StatefulWidget {
   String menu;
+  int index;
 
-  SelectMenu(this.menu);
+  SelectMenu(this.menu,this.index);
 
   @override
   _SelectMenuState createState() => _SelectMenuState();
@@ -25,7 +26,8 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
     List<Text> tabList = [];
     TabBar initTabBar;
 
-    ctr = TabController(vsync: this, length: DataList.menuName.length);
+
+    ctr = TabController(vsync: this, length: DataList.menuName.length,initialIndex: widget.index);
     selectSort = SelectSort();
 
     for(int i=0; i<DataList.menuName.length; i++) {
@@ -79,24 +81,22 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
     List<Widget> test = [
       Row(mainAxisAlignment: MainAxisAlignment.end,children: [selectSort!]),
       SizedBox(height: 20,),
-      InfoHouse('강릉 육사시미',category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+      InfoHouse('강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
       SizedBox(height: 20,),
-      InfoHouse('24시 전주 명가 콩나물     국밥 강릉점',category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+      InfoHouse('24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
       SizedBox(height: 20,),
+      InfoHouse('강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
       SizedBox(height: 20,),
-      InfoHouse('강릉 육사시미',category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+      InfoHouse('24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
       SizedBox(height: 20,),
-      InfoHouse('24시 전주 명가 콩나물     국밥 강릉점',category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+      InfoHouse('강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
       SizedBox(height: 20,),
+      InfoHouse('24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
       SizedBox(height: 20,),
-      InfoHouse('강릉 육사시미',category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+      InfoHouse('강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
       SizedBox(height: 20,),
-      InfoHouse('24시 전주 명가 콩나물     국밥 강릉점',category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+      InfoHouse('24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
       SizedBox(height: 20,),
-      SizedBox(height: 20,),
-      InfoHouse('강릉 육사시미',category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-      SizedBox(height: 20,),
-      InfoHouse('24시 전주 명가 콩나물     국밥 강릉점',category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
       SizedBox(height: 20,)];
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 15),

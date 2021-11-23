@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
+import '../house_detail.dart';
+
 class InfoHouse extends StatelessWidget{
   String title,heart='',category = '?';
   String? image;
   double? rating;
   int review=0;
-  double height = 100;
+  double height = 110;
+  bool onTap;
 
-  InfoHouse(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.height = 102,this.heart=''});
+  InfoHouse(this.title,this.onTap,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +30,19 @@ class InfoHouse extends StatelessWidget{
       inputRating = '별점 없음';
     }
 
-    if(height < 72) {
-      height = 72;
-    }
     if(image == null) {
       inputImage = Image.asset('assets/images/tempImage.png',fit:BoxFit.cover,height: height);
     }else{
       inputImage = Image.network(image!,fit:BoxFit.cover,height: height);
     }
-    return GestureDetector(onLongPress: (){Fluttertoast.showToast(msg: "좋아요 처리");},child:
+    return GestureDetector(
+        onLongPress: (){
+          Fluttertoast.showToast(msg: "좋아요 처리");
+        },onTap:(){
+          if(onTap){
+            Navigator.push(context, MaterialPageRoute(builder:(context) => HouseDetail(title,image: image,category: category,rating: rating,review: review,heart: heart)),);
+          }
+    },child:
       Container(
         height: height,
         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -55,7 +62,7 @@ class InfoHouse extends StatelessWidget{
           Expanded(flex: 3,
               child:Column(children: [
                 const SizedBox(height: 4),
-              Expanded(child: Center(child:WrappedKoreanText(title,maxLines: height > 101 ? 2 : 1,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),
+              Expanded(child: Center(child:WrappedKoreanText(title,maxLines: 2 ,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),
               ))),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

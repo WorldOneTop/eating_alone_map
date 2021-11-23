@@ -33,9 +33,9 @@ class _HouseListState extends State<HouseList> {
   void initState() {
     for(int i=0;i<10;i++){
       houseList.add(SizedBox(height: 20,));
-      houseList.add(InfoHouse('강릉 육사시미',category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'));
+      houseList.add(InfoHouse('강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'));
       houseList.add(SizedBox(height: 20,));
-      houseList.add(InfoHouse('24시 전주 명가 콩나물           국밥 강릉점',category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ));
+      houseList.add(InfoHouse('24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ));
     }
   }
 
