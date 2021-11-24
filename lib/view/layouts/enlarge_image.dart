@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class EnlargeImage extends StatefulWidget {
   List<String> images;
   bool isAssets;
+  int index;
 
-  EnlargeImage(this.images,{this.isAssets = false});
+  EnlargeImage(this.images,{this.isAssets = false,this.index = 0});
 
   @override
   _EnlargeImageState createState() => _EnlargeImageState();
 }
 
 class _EnlargeImageState extends State<EnlargeImage> {
-  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,16 @@ class _EnlargeImageState extends State<EnlargeImage> {
     Widget inputTop;
 
     if(widget.isAssets) {
-      selectImage = Image.asset(widget.images[index]);
+      selectImage = Image.asset(widget.images[widget.index]);
     }else {
-      selectImage = Image.network(widget.images[index]);
+      selectImage = Image.network(widget.images[widget.index]);
     }
 
     if(widget.images.length > 1) {
       inputTop = Row(children: [
           const Icon(Icons.photo_library,color: Colors.white,size: 18),
           const SizedBox(width: 10),
-          Text('${index+1} / ${widget.images.length}', style: const TextStyle(color: Colors.white, fontSize: 18))
+          Text('${widget.index+1} / ${widget.images.length}', style: const TextStyle(color: Colors.white, fontSize: 18))
       ]);
     }else{
       inputTop = const SizedBox();
@@ -73,15 +73,15 @@ class _EnlargeImageState extends State<EnlargeImage> {
   }
   void prevImage() {
     setState(() {
-      index--;
-      if(index < 0) {
-        index = widget.images.length - 1;
+      widget.index--;
+      if(widget.index < 0) {
+        widget.index = widget.images.length - 1;
       }
     });
   }
   void nextImage() {
     setState(() {
-      index = (index+1) %widget.images.length;
+      widget.index = (widget.index+1) %widget.images.length;
     });
   }
 }

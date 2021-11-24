@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:eating_alone/controller/static_functions.dart';
 
+import 'enlarge_image.dart';
 import 'output_star.dart';
 
 class ReviewFootLayout extends StatefulWidget {
@@ -38,7 +39,9 @@ class _ReviewFootLayoutState extends State<ReviewFootLayout> {
     if(images != null) {
       final double imageSize = isFold ? 80 : screenWidth - 50;
       List<Widget> inputImages = [GestureDetector(
-        onTap: (){Fluttertoast.showToast(msg: "이미지 확대");},
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder:(context) => EnlargeImage(images!)));
+          },
         child:Image.network(images![0],fit: BoxFit.cover, width: imageSize, height: imageSize,))];
 
       if(images!.length == 1) {
@@ -66,7 +69,7 @@ class _ReviewFootLayoutState extends State<ReviewFootLayout> {
           for(int i=0;i<images!.length;i++) {
             inputTop.add(
               GestureDetector(
-                onTap: (){ Fluttertoast.showToast(msg: "이미지 확대"); },
+                onTap: (){ Navigator.push(context, MaterialPageRoute(builder:(context) => EnlargeImage(images!,index: i,))); },
                 child:Image.network(images![i],fit: BoxFit.cover, width: imageSize, height: imageSize))
             );
             inputTop.add(const SizedBox(height: 12));

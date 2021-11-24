@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
 import '../house_detail.dart';
+import 'enlarge_image.dart';
 
 class InfoHouse extends StatelessWidget{
   String title,heart='',category = '?';
@@ -57,7 +58,9 @@ class InfoHouse extends StatelessWidget{
               Positioned( bottom: 2, left: 4,
                 child: Text(heart,style:const TextStyle(color: Color(0xF0F86A5B), fontSize: 18)))
             ]), onTap: (){
-            Fluttertoast.showToast(msg: "이미지 새창으로 띄우기 처리");
+            if(image != null){
+              Navigator.push(context, MaterialPageRoute(builder:(context) => EnlargeImage([image!])));
+            }
           },)),
           Expanded(flex: 3,
               child:Column(children: [
