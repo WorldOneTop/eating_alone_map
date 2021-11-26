@@ -292,9 +292,11 @@ class _QuestionReportState extends State<QuestionReport> {
   bool emailReceive = false;
   bool checkTerm = false;
   bool openTerm = false;
+  SizedBox? marginBottom;
 
   @override
   Widget build(BuildContext context) {
+    marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 650 ? 20 : MediaQuery.of(context).size.height - 697);
     return ListView(
           children: [
             Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
@@ -325,7 +327,6 @@ class _QuestionReportState extends State<QuestionReport> {
               Expanded(flex: 4,child: CustomTextField.normalInput(
                 hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black
               )),
-//        CustomTextField.normalInput(hint: '제목을 입력해주세요.')
             ]),
             getTitleText('문의 내용'),
             const SizedBox(height:8),
@@ -353,7 +354,7 @@ class _QuestionReportState extends State<QuestionReport> {
                     checkTerm = !checkTerm;
                   });
               }, child: Row(children:[Text('개인정보 수집 및 이용 동의 ',
-                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Color(checkTerm ? 0xFFFFFFFF : 0xFF000000),height: 1.1),),
+                style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold, color: Color(checkTerm ? 0xFFFFFFFF : 0xFF000000),height: 1.1),),
                   Icon(checkTerm ? Icons.check_box : Icons.check_box_outline_blank,size: 20,color: checkTerm ? null : Colors.black)
               ]))
             ]),
@@ -379,23 +380,24 @@ class _QuestionReportState extends State<QuestionReport> {
                   )
                 )
             ),
-            const SizedBox(height: 20)])),
-            Row(children: [
-              Expanded(child: InkWell(child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  color: const Color(0xFFF0F0F0),
-                  child: Center(child: getTitleText('취소'))
-              ),onTap: (){
-                Fluttertoast.showToast(msg: '취소 버튼');
-              })),
-              Expanded(child: InkWell(child:Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  color: const Color(0xFF2ECC71),
-                  child: Center(child: getTitleText('작성 완료'))
-              ),onTap: (){
-                Fluttertoast.showToast(msg: '작성 버튼');
-              })),
-            ])
+          ])),
+    marginBottom!,
+    Row(children: [
+    Expanded(child: InkWell(child: Container(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    color: const Color(0xFFF0F0F0),
+    child: Center(child: getTitleText('취소'))
+    ),onTap: (){
+    Fluttertoast.showToast(msg: '취소 버튼');
+    })),
+    Expanded(child: InkWell(child:Container(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    color: const Color(0xFF2ECC71),
+    child: Center(child: getTitleText('작성 완료'))
+    ),onTap: (){
+    Fluttertoast.showToast(msg: '작성 버튼');
+    })),
+    ])
           ]);
   }
   Text getTitleText(String title) {
@@ -404,9 +406,9 @@ class _QuestionReportState extends State<QuestionReport> {
   InkWell imageUploadLayout(){
     return InkWell(child:Container(
       color: Colors.grey[300],
-      padding: const EdgeInsets.all(20),
-      margin:  const EdgeInsets.all(8),
-      child: const Center(child: Icon(Icons.camera_alt,size: 30 ))
+      padding: const EdgeInsets.all(15),
+      margin:  const EdgeInsets.all(6),
+      child: const Center(child: Icon(Icons.camera_alt,size: 25 ))
     ),onTap: (){
       Fluttertoast.showToast(msg: '이미지 업로드 버튼 ');
     });
