@@ -172,11 +172,9 @@ class PageMenu extends StatelessWidget {
     for(String name in menu.keys) {
       inputMenuList.add(
         Row(crossAxisAlignment:CrossAxisAlignment.start,children: [
-          Expanded(flex:2, child:Container(margin:const EdgeInsets.only(top: 5),child:const Icon(Icons.circle,size: 10,))),
-          const Text(' ',style: TextStyle(fontSize: 22)),
-          Expanded(flex:30, child:Text(name,style: const TextStyle(fontSize: 20,height: 1.2 ))),
-          Expanded(child: Container()),
-          Expanded(flex:9, child:Text('${NumberFormat.currency(locale: "ko_KR",symbol: '').format(menu[name])}원',style: const TextStyle(fontSize: 20,height: 1.2)))]
+          SizedBox(width: 20, child:Container(margin:const EdgeInsets.only(top: 5),child:const Icon(Icons.circle,size: 10,))),
+          Expanded(child:Text(name,style: const TextStyle(fontSize: 20,height: 1.2 ))),
+          Text('${NumberFormat.currency(locale: "ko_KR",symbol: '').format(menu[name])}원',style: const TextStyle(fontSize: 20,height: 1.2),textAlign: TextAlign.end,)]
         ),
       );
     }
