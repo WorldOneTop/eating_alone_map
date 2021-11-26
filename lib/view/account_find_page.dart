@@ -15,7 +15,7 @@ class AccountFindPage extends StatelessWidget {
                 children: [
                   Text('회원 찾기', style: Theme.of(context).textTheme.headline2!),
                   const SizedBox(height: 50),
-                  Text('가입한 이메일을 통해 \n초기화된 비밀번호를 보내드립니다.',
+                  Text('가입한 휴대폰 번호를 통해 \n초기화된 비밀번호를 보내드립니다.',
                       textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.blue[400])),
                   const SizedBox(height: 20),
                   SendEmail(),
@@ -23,7 +23,6 @@ class AccountFindPage extends StatelessWidget {
                 ])
         )
     );
-    //아이디가 이메일이고 특별한 정보가 없으니 비밀번호만 찾을수있게끔
   }
 }
 
@@ -35,32 +34,26 @@ class SendEmail extends StatefulWidget {
 class _SendEmailState extends State<SendEmail> {
   String? exist;
   Text? isSend;
+  String idPattern = r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$';
+  TextEditingController ctr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      CustomTextField.idInput(hint: '가입한 email',label: 'EMAIL',error: exist, enable: isSend == null),
+      CustomTextField.idInput(hint: '휴대폰 번호를 - 없이 입력해주세요.',label: 'PHONE NUMBER',error: exist, enable: isSend == null,controller: ctr),
       ElevatedButton(onPressed: isSend != null ? null :checkEmail, child: const Text('발송')),
       Container(child: isSend)
     ]);
   }
 
   void checkEmail() {
-    //if 해당 이메일 유저 없음
-    setErrorMsg();
-    //else
-    successSend();
-  }
-  void setErrorMsg() {
     setState(() {
-      exist = '존재하지 않는 이메일입니다.';
-    });
-  }
-
-  void successSend() {
-    setState(() {
-      exist = null;
-      isSend = const Text('이메일을 확인해주세요.',style: TextStyle(color: Colors.red),);
-    });
+      if(!RegExp(idPattern).hasMatch(ctr.text)){
+        exist = '휴대폰 번호 형식으로 입력해주세요.';
+      }else{
+        exist = null;
+        isSend = const Text('문자를 확인해주세요.',style: TextStyle(color: Colors.red),);
+        }
+      });
   }
 }

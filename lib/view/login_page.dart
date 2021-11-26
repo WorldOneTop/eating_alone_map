@@ -2,6 +2,7 @@ import 'package:eating_alone/view/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import './layouts/inputfield.dart';
+import 'account_find_page.dart';
 import 'main_app.dart';
 
 class LoginPage extends StatelessWidget {
@@ -111,8 +112,9 @@ class LoginPage extends StatelessWidget {
                   child: const Text('비회원으로 이용하기')),
               TextButton(
                   onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "회원찾기 창으로 이동",
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AccountFindPage()),
                     );
                   },
                   child: const Text('비밀번호가 기억나지 않는다면')),
