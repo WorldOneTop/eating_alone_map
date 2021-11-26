@@ -296,7 +296,7 @@ class _QuestionReportState extends State<QuestionReport> {
 
   @override
   Widget build(BuildContext context) {
-    marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 650 ? 20 : MediaQuery.of(context).size.height - 697);
+    marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 700 ? 20 : MediaQuery.of(context).size.height - 697);
     return ListView(
           children: [
             Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
@@ -466,13 +466,16 @@ class MyQuestion extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: test.length,
-      separatorBuilder: (context,index){
-        return const Divider();
-      },itemBuilder: (context,index){
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: ListView.separated(
+          itemCount: test.length,
+          separatorBuilder: (context,index){
+            return const Divider();
+          },itemBuilder: (context,index){
         return test[index];
-      });
+      })
+    );
   }
 }
 
@@ -556,7 +559,7 @@ class _FAQState extends State<FAQ> {
               select = index;
               a = [];
               for(int i=0;i<test[category[select]]!.length;i++){
-                a.add(NoticeTile(test[category[select]]![i][0],test[category[select]]![i][1],'',false));
+                a.add(NoticeTile(test[category[select]]![i][0],test[category[select]]![i][1],'',false,sureFold: true,));
               }
               Fluttertoast.showToast(msg: '${category[index]} 카테고리 선택');
             });

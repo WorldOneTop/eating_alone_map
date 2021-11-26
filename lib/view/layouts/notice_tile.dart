@@ -6,8 +6,9 @@ class NoticeTile extends StatefulWidget {
   String? date;
   bool isAnswer;
   NoticeTile? answer;
+  bool? sureFold;
 
-  NoticeTile(this.title, this.text,this.date,this.isAnswer,{this.answer});
+  NoticeTile(this.title, this.text,this.date,this.isAnswer,{this.answer,this.sureFold});
 
   @override
   _NoticeTileState createState() => _NoticeTileState();
@@ -21,6 +22,7 @@ class _NoticeTileState extends State<NoticeTile> {
 
   @override
   void initState() {
+
     if(!widget.isAnswer && widget.date==null){ //null safety?
       return;
     }
@@ -44,6 +46,10 @@ class _NoticeTileState extends State<NoticeTile> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.sureFold != null) {
+      isFold = widget.sureFold!;
+      widget.sureFold = null;
+    }
     if(!widget.isAnswer) {
       layoutTop=  [Expanded(child:Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +67,7 @@ class _NoticeTileState extends State<NoticeTile> {
       onTap: changeFold,
       child: Container(
         padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(left: 8),
         color: isFold ? null : const Color(0xFdF0F0F0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
