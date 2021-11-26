@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:eating_alone/controller/static_functions.dart';
 
+import '../search_page.dart';
 import 'enlarge_image.dart';
 import 'output_star.dart';
 
@@ -146,7 +147,7 @@ class ReviewContainer extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return Container(margin:const EdgeInsets.symmetric(horizontal: 4), child:ElevatedButton(
               onPressed: (){
-                Fluttertoast.showToast(msg: "검색창으로 가서 해시태그 검색");
+                Navigator.push(context, MaterialPageRoute(builder:(context) => SearchPage(initStr: hashtags![index])));
               },
               child: Text(hashtags![index],style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w100)),
               style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 1),minimumSize: Size.zero),

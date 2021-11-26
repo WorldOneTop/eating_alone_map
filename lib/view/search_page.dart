@@ -3,22 +3,35 @@ import 'layouts/appbar.dart';
 import 'package:eating_alone/model/enum.dart';
 
 class SearchPage extends StatefulWidget {
+  TextEditingController? controller;
+  String initStr;
+
+  SearchPage({this.initStr = ''}){
+    controller = TextEditingController(text: initStr);
+  }
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController controller = TextEditingController();
   List<String> default_wordList = ['자동완성 되어 보여질 식당 이름들 리스트','enum class에 저장해서 onchange event로 list update','아무 것도 입력 안했을 때는',
       '로그 관리해서 최근 검색 기록 순서대로','보여주기',
     '테스트 워드','가나다라마바사','가나다라마바','가나다라','가마바','나라마바','가나다라 가나다라 가나다라 가나다라'];
   List<RichText>? input_wordList;
+  @override
+  void initState() {
+    if(!widget.controller!.text.isEmpty) {
+      setInputWordList(widget.controller!.text);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.search, '검색어를 입력하세요.',ctr: controller,
+        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.search, '검색어를 입력하세요.',ctr: widget.controller,
             onChange: (text){setState(() {
             if(text.isEmpty) {
               input_wordList = null;
@@ -36,20 +49,20 @@ class _SearchPageState extends State<SearchPage> {
         ));
   }
   Widget wordBuilder(BuildContext context,int index) {
-    if(controller.text.isEmpty) {
+    if(widget.controller!.text.isEmpty) {
       return GestureDetector(
         onTap: (){
-          controller.text = default_wordList[index];
-          setInputWordList(controller.text);
+          widget.controller!.text = default_wordList[index];
+          setInputWordList(widget.controller!.text);
           setState(() {
           });
         },
         child: Text(default_wordList[index],overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 18),));
-    }else {
+    }else  {
       return GestureDetector(
           onTap: (){
-            controller.text = input_wordList![index].text.toPlainText();
-            setInputWordList(controller.text);
+            widget.controller!.text = input_wordList![index].text.toPlainText();
+            setInputWordList(widget.controller!.text);
             setState(() {
             });
           },
