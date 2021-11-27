@@ -7,10 +7,6 @@ import 'layouts/info_house.dart';
 import 'layouts/output_star.dart';
 
 class CreateReview extends StatefulWidget {
-//  String title,heart,category;
-//  String? image;
-//  double? rating;
-//  int review;
 
   InfoHouse infoHouse;
   CreateReview(this.infoHouse);
@@ -32,17 +28,19 @@ class _CreateReviewState extends State<CreateReview> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.infoHouse.title),
-        body: Container(child:ListView(children: [
+        body: ListView(children: [
           widget.infoHouse,
           const SizedBox(height: 10),
           Row(children:[inputRating()], mainAxisAlignment: MainAxisAlignment.center),
-          const SizedBox(height: 10),
-          const Text('이미지 업로드',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          ImageUpdateList(),
-          const SizedBox(height: 10),
-          const Text('리뷰 내용',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
+          Container(margin: const EdgeInsets.all(20),
+          child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            const Text('이미지 업로드',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
+            const SizedBox(height: 6),
+            ImageUpdateList(),
+                const SizedBox(height: 10),
+            const Text('리뷰 내용',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
           HashTagTextField(
             decoratedStyle: const TextStyle(fontSize: 20, color: Colors.blue),
             basicStyle: const TextStyle(fontSize: 20, color: Colors.black),
@@ -55,7 +53,7 @@ class _CreateReviewState extends State<CreateReview> {
               fillColor: Color(0xFBF0F0F0),
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,),
-          ),
+          )])),
           const SizedBox(height: 10),
           Row(children: [
             Expanded(child: InkWell(child: Container(
@@ -74,7 +72,7 @@ class _CreateReviewState extends State<CreateReview> {
             })),
           ])
         ])
-        ));
+        );
   }
 
   GestureDetector inputRating() {

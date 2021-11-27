@@ -65,8 +65,7 @@ class InfoHouse extends StatelessWidget{
           Expanded(flex: 3,
               child:Column(children: [
                 const SizedBox(height: 4),
-              Expanded(child: Center(child:WrappedKoreanText(title,maxLines: 2 ,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),
-              ))),
+              Expanded(child: WrappedKoreanText(title,maxLines: 2 ,textAlign: TextAlign.center,style: Theme.of(context).textTheme.headline4?.copyWith(height: 1.2),)),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

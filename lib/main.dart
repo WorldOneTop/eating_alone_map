@@ -16,6 +16,7 @@ import 'package:eating_alone/view/account_find_page.dart';
 import 'package:eating_alone/view/main_app.dart';
 //import 'package:eating_alone/view/selected_menu.dart';
 import 'package:eating_alone/model/enum.dart';
+import 'package:flutter/services.dart';
 
 //  ThemeData 활용해 볼것
 void main() {
@@ -52,8 +53,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return Scaffold(
         body:ListView(children: [
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
+              },
+              child: Text('로그인 했다 치고 시작하기')),
           ElevatedButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
@@ -154,11 +162,6 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Question()));
               },
               child: Text('메뉴 - 문의하기')),
-          ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
-              },
-              child: Text('로그인 했다 치고 시작하기')),
         ],)
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField {
 
-  static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int size = 2,
+  static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int size = 2,bool enable = true,
   Function(String)? onChange,Function(String)? onSubmited, TextEditingController? controller, int fillColor = 0xb2ffffff,Color? inputColor, int? maxLines = 1}) {
 
     double height = 50, fontSize = 20;
@@ -16,6 +16,7 @@ class CustomTextField {
         width: width,
         height: height,
         child:TextField(
+          enabled: enable,
           style: TextStyle(color: inputColor),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(10),
@@ -54,6 +55,7 @@ class CustomTextField {
         style: const TextStyle(color: Colors.black),
         controller: controller,
         enabled: enable,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintText: hint,
           contentPadding: const EdgeInsets.symmetric(

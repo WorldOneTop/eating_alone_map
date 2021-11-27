@@ -32,10 +32,10 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
     _tabController = TabController(vsync: this, length: 3);
     infoHouse = InfoHouse(widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
     inputTabBottom= PreferredSize(
-      preferredSize: Size.fromHeight(30),
+      preferredSize: const Size.fromHeight(40),
       child: Container(
         color: Colors.white,
-        height: 30,
+        height: 40,
         child: TabBar(
             controller: _tabController,
             indicatorColor: const Color(0xca000000),
