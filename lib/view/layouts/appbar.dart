@@ -54,6 +54,8 @@ class CustomAppbar {
       }),
     actions: mode == Appbar_mode.detail ? null : my_Actions,
     iconTheme: IconThemeData(size: size/3, color: Colors.white),
+    backgroundColor: const Color(0xFFffe62e),
+    elevation: 0,
     );
   }
 }

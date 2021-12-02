@@ -38,6 +38,8 @@ dependencies:
   intl: ^0.17.0
   wrapped_korean_text: ^0.0.2
   hashtagable: ^2.0.2+1
+  geolocator: ^8.0.0
+  webview_flutter: ^2.3.1
 
 dev_dependencies:
   flutter_test:

@@ -17,19 +17,19 @@ import 'package:eating_alone/view/main_app.dart';
 //import 'package:eating_alone/view/selected_menu.dart';
 import 'package:eating_alone/model/enum.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-//  ThemeData 활용해 볼것
+import 'controller/kakaomap.dart';
+
+
+String kakaoMapKey = 'e5d93034dcd03812683a64ddb4d27d70';
+
 void main() {
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Elice',
         scaffoldBackgroundColor: Color(0xFFFEFEFE),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFffe62e),
-          elevation: 0,
-          centerTitle: true,
-        ),
         textTheme: const TextTheme(
           headline1: TextStyle(fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 8.0, color: Colors.black87),
           headline2: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, letterSpacing: 6.0, color: Colors.black87),
@@ -62,6 +62,18 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MainSelect()));
               },
               child: Text('로그인 했다 치고 시작하기')),
+          ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TestMapAPI()));
+              },
+              child: Text('카카오맵 테스트')),
+          ElevatedButton(
+              onPressed: (){
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => MapTestAPP()));
+//                var test = StaticFunctions.determinePosition();
+//                StaticFunctions.determinePosition().then((value) => {Fluttertoast.showToast(msg: value)});
+              },
+              child: Text('카카오맵 테스트 샘플코드')),
           ElevatedButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
@@ -341,3 +353,39 @@ class NoticeTileTest extends StatelessWidget {
     );
   }
 }
+
+class TestMapAPI extends StatelessWidget {
+  double? width,height,ratio;
+  @override
+  Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    ratio = MediaQuery.of(context).devicePixelRatio;
+    KakaoMap kakao = KakaoMap(
+      width: width!,
+      height: height!-300,
+      ratio: ratio!,
+      centerLat: 37.566826,
+      centerLng: 126.9786567,
+      items: [KakaoMapItem('테스트1',37.566826, 126.9786567,'한식'),KakaoMapItem('테스트2',37.566826, 126.9776587,'양식')],
+      clickListener: (message){
+        Fluttertoast.showToast(msg: message.message);
+      },coordConvert: (message){
+      Fluttertoast.showToast(msg: message.message);
+    },
+    );
+    return Scaffold(
+      body:
+//      Container(padding: EdgeInsets.all(50),color:Colors.black38,child:
+      Column(children:[kakao,
+        ElevatedButton(onPressed: (){kakao.createCurrentMarker();}, child: Text('현재위치표시')),
+        ElevatedButton(onPressed: (){
+          kakao.getCurrentAddrByListener();
+          },child: Text('현재 위치 주소로'))
+          ]),
+    );
+  }
+
+}
+
+
