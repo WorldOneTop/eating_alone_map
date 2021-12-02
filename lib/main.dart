@@ -22,7 +22,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'controller/kakaomap.dart';
 
 
-String kakaoMapKey = 'e5d93034dcd03812683a64ddb4d27d70';
 
 void main() {
   runApp( MaterialApp(
