@@ -9,6 +9,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFffeb56),
         body: Column( mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -16,7 +17,6 @@ class LoginPage extends StatelessWidget {
           Text('혼밥여지도',
               style: Theme.of(context).textTheme.headline1,
               textAlign: TextAlign.center),
-          const SizedBox(height:30),
           Row(children: [
             const Expanded(
               child: SizedBox(),
@@ -125,7 +125,7 @@ class LoginPage extends StatelessWidget {
               flex: 1,
             ),
           ]),
-              const SizedBox(height: 10)
+              const SizedBox(height: 50)
         ]));
 
   }

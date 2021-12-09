@@ -34,7 +34,7 @@ class _ReviewFootLayoutState extends State<ReviewFootLayout> {
   @override
   Widget build(BuildContext context) {
     List<Widget> inputTop = [];
-    Row inputBottom;
+    Widget inputBottom;
 
     /*리뷰 이미지 처리*/
     if(images != null) {
@@ -87,27 +87,23 @@ class _ReviewFootLayoutState extends State<ReviewFootLayout> {
 
     /* 리뷰 더보기 버튼 처리 */
     if(!isFold) {
-      inputBottom = Row(children:[Expanded(child:Container()), const SizedBox(height: 5,child:Icon(Icons.arrow_drop_up))]);
+      inputBottom = const Icon(Icons.arrow_drop_up,size: 35);
     }else if(isOverflow) {
-      inputBottom = Row(children:[Expanded(child:Container()), const SizedBox(height: 5,child:Icon(Icons.arrow_drop_down))]);
+      inputBottom = const Icon(Icons.arrow_drop_down,size: 35);
     }else {
-      inputBottom = Row(children:[Expanded(child:Container())]);
+      inputBottom = Container();
     }
 
-
-
-    return GestureDetector(
-      onTap: (){
-        if(isOverflow) {
+    return InkWell(onTap: (){
+      if(isOverflow) {
           setIsFoldSwitch();
         }},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        !isFold ? Column(children: inputTop) : Row(children: inputTop),
-        inputBottom
-        ],
-      )
+      child: Stack(children:[
+          Container(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: !isFold ? Column(children: inputTop) : Row(children: inputTop)),
+          Positioned(child: inputBottom,bottom: 0 ,right: 0,)
+      ])
     );
   }
   void setIsFoldSwitch() {
@@ -142,6 +138,7 @@ class ReviewContainer extends StatelessWidget {
     /* 해시태그 추가 여부에 따른 레이아웃*/
     if(hashtags != null) {
       inputHashtag = ListView.builder(
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemCount: hashtags!.length,
           itemBuilder: (BuildContext context, int index) {
@@ -155,7 +152,7 @@ class ReviewContainer extends StatelessWidget {
       );
     }
 
-    return GestureDetector(onLongPress: (){
+    return InkWell(onLongPress: (){
       Fluttertoast.showToast(msg: "삭제 여부");
     },child:
       Container(
@@ -186,7 +183,6 @@ class ReviewContainer extends StatelessWidget {
     SizedBox(height: hashtags == null ? 0 : 25, child:inputHashtag),
     const SizedBox(height: 12),
     ReviewFootLayout(text, images,Theme.of(context).textTheme.bodyText2!, MediaQuery.of(context).size.width),
-    const SizedBox(height: 5),
     ])));
   }
 }

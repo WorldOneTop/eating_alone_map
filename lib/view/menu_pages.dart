@@ -13,7 +13,7 @@ import 'layouts/notice_tile.dart';
 class AccountInfo extends StatelessWidget {
   Map<String,String> accountTest = {
     'name':'이제일',
-    'id':'dlwpdlf147@naver.com',
+    'id':'010-5049-7758',
     'area':'강릉',
     'profileImage':'assets/images/defaultProfile.png'
   };
@@ -26,13 +26,12 @@ class AccountInfo extends StatelessWidget {
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '계정 정보'),
         body:Container(
             margin: const EdgeInsets.all(12),
-            child:ListView(children: [
+            child:ListView(physics: const BouncingScrollPhysics(),children: [
               Row(children: [
                 _profileLayout(),
                 const SizedBox(width: 20),
                 Expanded(child: Column(children: [
                   Text(accountTest['name']!,style: Theme.of(context).textTheme.headline3),
-                  Text(accountTest['id']!,style: Theme.of(context).textTheme.subtitle1),
                 ],crossAxisAlignment: CrossAxisAlignment.start,))
               ]),
               const SizedBox(height: 30),
@@ -67,13 +66,13 @@ class AccountInfo extends StatelessWidget {
       onTap: (){
         Fluttertoast.showToast(msg: '사진 등록');
       },
-      child: SizedBox(width: 60,height: 60,
+      child: SizedBox(width: 80,height: 80,
           child: Stack(children: [
             CircleAvatar(
                 backgroundImage: AssetImage(accountTest['profileImage']!),
                 backgroundColor: const Color(0xFFF0F0F0),
                 radius: 100),
-            Positioned(bottom: 4, right: 4,child: Container(
+            Positioned(bottom: 5, right: 10,child: Container(
               color: const Color(0x55000000),
               child: const Icon(Icons.content_cut,color: Colors.white,size: 18,),
             )),
@@ -89,7 +88,7 @@ class Setting extends StatelessWidget {
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '환경설정'),
         body:Container(
             margin: const EdgeInsets.all(12),
-            child:ListView(children: [
+            child:ListView(physics: const BouncingScrollPhysics(),children: [
               Text('알림',style: Theme.of(context).textTheme.subtitle1),
               Row(children: [Text(' push 알림',style: Theme.of(context).textTheme.headline5),SettingSwitch('전체알림')],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               Row(children: [Text('  이벤트 알림 수신',style: Theme.of(context).textTheme.headline5),SettingSwitch('이벤트알림')],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
@@ -156,7 +155,7 @@ class MyActivity extends StatelessWidget {
         length: 2,
         child: Scaffold(
             appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '내 활동', bottom: tabBar),
-            body: TabBarView(children: [ MyReview(),MyHouse()])
+            body: TabBarView(physics: const BouncingScrollPhysics(),children: [ MyReview(),MyHouse()])
         ));
   }
 }
@@ -191,6 +190,7 @@ class _MyReviewState extends State<MyReview> {
   Widget build(BuildContext context) {
   test[0] = Text('   총 리뷰 수 : ${test.length}',style:const TextStyle(color: Colors.grey, fontSize: 18,height: 2));
     return ListView.separated(
+        physics: const BouncingScrollPhysics(),
         itemCount: test.length,
         separatorBuilder: (context, index){
           return const Divider();
@@ -219,6 +219,7 @@ class _MyHouseState extends State<MyHouse> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        physics: const BouncingScrollPhysics(),
         itemCount: test.length,
         itemBuilder: (context, index){
           return Container(margin: const EdgeInsets.all(10),child:test[index]);
@@ -242,6 +243,7 @@ class Notice extends StatelessWidget {
     return Scaffold(
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '공지사항'),
         body:ListView.separated(
+            physics: const BouncingScrollPhysics(),
           itemCount: test.length,
           separatorBuilder: (context, index){return Divider();},
           itemBuilder: (context, index){
@@ -276,7 +278,8 @@ class Question extends StatelessWidget {
         length: 3,
         child: Scaffold(
             appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '문의하기',bottom: tabBar),
-            body: TabBarView(children: [
+            body: TabBarView(physics: const BouncingScrollPhysics(),
+                children: [
               QuestionReport(),MyQuestion(),FAQ(),
             ])
         ));
@@ -298,6 +301,7 @@ class _QuestionReportState extends State<QuestionReport> {
   Widget build(BuildContext context) {
     marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 700 ? 20 : MediaQuery.of(context).size.height - 697);
     return ListView(
+        physics: const BouncingScrollPhysics(),
           children: [
             Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
             Row(children: [
@@ -333,16 +337,7 @@ class _QuestionReportState extends State<QuestionReport> {
             CustomTextField.textInput(minLines: 4,fillColor: 0xFFF8F8F8),
             Row(children: [getTitleText('첨부파일'),const Expanded(child: SizedBox()),imageUploadLayout(),imageUploadLayout(),imageUploadLayout()]),
             Row(children:const [Expanded(child:SizedBox()),Text('이미지는 최대 3장까지 업로드 가능합니다.', style: TextStyle(fontSize: 14,color: Colors.grey),textAlign: TextAlign.end,)]),
-            const SizedBox(height:8),
-            Row(children: [
-              const Text('이메일로 답변받기',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,height: 1)),
-              IconButton(onPressed: (){
-                setState(() {
-                  emailReceive = !emailReceive;
-                });
-              }, icon: Icon(emailReceive ? Icons.check_box : Icons.check_box_outline_blank),iconSize: 32,)
-            ]),
-            const SizedBox(height:8),
+            const SizedBox(height:12),
             Row(children: [
               getTitleText('약관 동의'),
               const Expanded(child: SizedBox()),
@@ -415,42 +410,6 @@ class _QuestionReportState extends State<QuestionReport> {
   }
 }
 
-class TermDetail extends StatefulWidget {
-  @override
-  _TermDetailState createState() => _TermDetailState();
-}
-
-class _TermDetailState extends State<TermDetail> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-class CategoryDropDown extends StatefulWidget {
-  @override
-  _CategoryDropDownState createState() => _CategoryDropDownState();
-}
-
-class _CategoryDropDownState extends State<CategoryDropDown> {
-  String _selectedCategory = '';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton(
-      value: _selectedCategory,
-      items: DataList.questionCategory.map((value) {
-        return DropdownMenuItem(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (value) {
-        setState(() {
-          _selectedCategory = value as String;
-        });},
-    );
-  }
-}
 
 
 
@@ -467,8 +426,9 @@ class MyQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
           itemCount: test.length,
           separatorBuilder: (context,index){
             return const Divider();
@@ -537,6 +497,7 @@ class _FAQState extends State<FAQ> {
     );
 
     return ListView.separated(
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: test[category[select]]!.length+2,
         separatorBuilder: (context,index){

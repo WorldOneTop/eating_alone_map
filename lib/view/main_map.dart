@@ -8,7 +8,9 @@ class MainMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-      child: ListView(children: [
+      child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
         Text('주변식당',style: Theme.of(context).textTheme.headline4),
         Container(
           height: 350,

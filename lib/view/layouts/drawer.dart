@@ -26,6 +26,7 @@ class CustomDrawer{
   Drawer getDrawer(BuildContext context){
     return Drawer(
       child: ListView(
+        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         children: [
           GestureDetector(
@@ -33,7 +34,7 @@ class CustomDrawer{
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top+15,bottom: 20),
                 child: Row(children: [
                 const SizedBox(width: 10),
                 CircleAvatar(

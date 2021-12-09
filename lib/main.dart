@@ -1,4 +1,7 @@
 //import 'package:eating_alone/view/create_review.dart';
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:eating_alone/view/house_detail.dart';
 import 'package:eating_alone/view/layouts/notice_tile.dart';
 import 'package:eating_alone/view/menu_pages.dart';
@@ -68,11 +71,9 @@ class MyApp extends StatelessWidget {
               child: Text('카카오맵 테스트')),
           ElevatedButton(
               onPressed: (){
-//                Navigator.push(context, MaterialPageRoute(builder: (context) => MapTestAPP()));
-//                var test = StaticFunctions.determinePosition();
-//                StaticFunctions.determinePosition().then((value) => {Fluttertoast.showToast(msg: value)});
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TestHash()));
               },
-              child: Text('카카오맵 테스트 샘플코드')),
+              child: Text('해ㅜ시코드 테스트')),
           ElevatedButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Test()));
@@ -384,7 +385,33 @@ class TestMapAPI extends StatelessWidget {
           ]),
     );
   }
-
 }
+
+
+class TestHash extends StatefulWidget {
+  @override
+  _TestHashState createState() => _TestHashState();
+}
+
+class _TestHashState extends State<TestHash> {
+  String output = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(children: [SizedBox(height:100),
+        TextField(onSubmitted: (str){setState(() {
+          var data = utf8.encode(str); // data being hashed
+//          output = utf8.decode(sha256.convert(data).bytes,allowMalformed: true);
+          output = '${sha256.convert(data)}';
+
+        });}),
+        Text(output),
+        Text('${output.length}')
+      ])
+    );
+  }
+}
+
 
 

@@ -20,7 +20,7 @@ class MainMenu extends StatelessWidget {
       crossAxisCount = 3;
       size = 18;
     }
-    return ListView(
+    return Column(
         children: [
           const SizedBox(height: 6),
           Text('지역',style: Theme.of(context).textTheme.subtitle1),
@@ -28,6 +28,7 @@ class MainMenu extends StatelessWidget {
           Container(height: 1,color: const Color(0xa0000000),),
           const SizedBox(height: 30),
           GridView.count(
+              physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               crossAxisCount: crossAxisCount,
               mainAxisSpacing: 20,

@@ -40,6 +40,7 @@ class _SearchPageState extends State<SearchPage> {
             }});
         }),
         body:ListView.separated(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
             itemBuilder: wordBuilder,
             separatorBuilder: (BuildContext context, int index) {

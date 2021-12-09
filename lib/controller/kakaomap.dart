@@ -99,7 +99,7 @@ class KakaoMap extends StatelessWidget {
   }
 
   String _getURL() {
-    return 'https://jeil.pythonanywhere.com/for_kakao_map/?'
+    return 'https://jeil.pythonanywhere.com/kakaomap/?'
         'width=${width * ratio}&height=${height * ratio}&'
         'centerLat=$centerLat&centerLng=$centerLng&'
         'hasListener=${clickListener != null ? 1 : 0}&'

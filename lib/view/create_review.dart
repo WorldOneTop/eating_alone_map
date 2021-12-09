@@ -28,7 +28,7 @@ class _CreateReviewState extends State<CreateReview> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.infoHouse.title),
-        body: ListView(children: [
+        body: ListView(physics: const BouncingScrollPhysics(),children: [
           widget.infoHouse,
           const SizedBox(height: 10),
           Row(children:[inputRating()], mainAxisAlignment: MainAxisAlignment.center),

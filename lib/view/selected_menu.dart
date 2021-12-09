@@ -99,6 +99,7 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
       SizedBox(height: 20,),
       SizedBox(height: 20,)];
     return ListView.builder(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         itemCount: test.length,
         itemBuilder: (BuildContext context, int index){

@@ -29,7 +29,7 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: 3,initialIndex: 1);
     infoHouse = InfoHouse(widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
     inputTabBottom= PreferredSize(
       preferredSize: const Size.fromHeight(40),
@@ -179,7 +179,14 @@ class PageMenu extends StatelessWidget {
       );
     }
 
-    return ListView(children: inputMenuList,);
+    return ListView.separated(
+        physics: const BouncingScrollPhysics(),
+      itemCount: inputMenuList.length,
+      itemBuilder: (BuildContext context, int index){
+        return inputMenuList[index];
+      },separatorBuilder: (BuildContext context, int index){
+        return const SizedBox(height: 15);
+      });
   }
 }
 
