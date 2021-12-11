@@ -26,7 +26,7 @@ class MainSelect extends StatelessWidget {
             TabBarView(children: [
               Container(child: MainMenu(), margin: const EdgeInsets.symmetric(horizontal: 15)),
               MainMap()
-            ])
+            ],physics: const BouncingScrollPhysics())
         ));
   }
 }

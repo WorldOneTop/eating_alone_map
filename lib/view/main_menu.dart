@@ -23,7 +23,7 @@ class MainMenu extends StatelessWidget {
     return Column(
         children: [
           const SizedBox(height: 6),
-          Text('지역',style: Theme.of(context).textTheme.subtitle1),
+          Row(children:[Text('지역',style: Theme.of(context).textTheme.subtitle1),const Expanded(child:SizedBox())]),
           AreaSetting(),
           Container(height: 1,color: const Color(0xa0000000),),
           const SizedBox(height: 30),

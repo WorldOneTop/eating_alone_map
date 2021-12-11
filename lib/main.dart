@@ -364,7 +364,6 @@ class TestMapAPI extends StatelessWidget {
     KakaoMap kakao = KakaoMap(
       width: width!,
       height: height!-300,
-      ratio: ratio!,
       centerLat: 37.566826,
       centerLng: 126.9786567,
       items: [KakaoMapItem('테스트1',37.566826, 126.9786567,'한식'),KakaoMapItem('테스트2',37.566826, 126.9776587,'양식')],
@@ -380,7 +379,8 @@ class TestMapAPI extends StatelessWidget {
       Column(children:[kakao,
         ElevatedButton(onPressed: (){kakao.createCurrentMarker();}, child: Text('현재위치표시')),
         ElevatedButton(onPressed: (){
-          kakao.getCurrentAddrByListener();
+          kakao.createCurrentMarker();
+          kakao.getMarkerAddr();
           },child: Text('현재 위치 주소로'))
           ]),
     );
