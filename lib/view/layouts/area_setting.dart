@@ -34,9 +34,9 @@ class _AreaSettingState extends State<AreaSetting> {
     KakaoMap kakao = KakaoMap(
       width: 400,
       height: 500,
-      centerLat: 37.566826,
-      centerLng: 126.9786567,
+      centerAddr: "${_locations[0]} ${_locations[1]} ${_locations[2]}",
       hasClickListener: true,
+      zoomLevel: _locations[2].isNotEmpty ? 5 : _locations[1].isNotEmpty ? 7 : 9,
       items: [],
       coordConvert: (message){
         setState(() {

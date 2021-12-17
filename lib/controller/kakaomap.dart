@@ -1,4 +1,6 @@
 import 'package:eating_alone/controller/static_functions.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -18,7 +20,7 @@ class KakaoMapItem {
 class KakaoMap extends StatelessWidget {
   final double width, height;
   double? ratio;
-  double centerLat, centerLng;
+  String centerAddr;
   int zoomLevel;
   List<KakaoMapItem> items;
   bool hasClickListener;
@@ -31,8 +33,7 @@ class KakaoMap extends StatelessWidget {
   KakaoMap(
       {required this.width,
       required this.height,
-      required this.centerLat,
-      required this.centerLng,
+      required this.centerAddr,
       required this.items,
       this.clickListener,
       this.coordConvert,
@@ -60,6 +61,8 @@ class KakaoMap extends StatelessWidget {
                     },
                     javascriptChannels: _getChannel,
                     javascriptMode: JavascriptMode.unrestricted,
+                    gestureRecognizers:{Factory<VerticalDragGestureRecognizer>(
+                            () => VerticalDragGestureRecognizer())},
                   ),
             )),
           Positioned(child: InkWell(
@@ -103,23 +106,13 @@ class KakaoMap extends StatelessWidget {
   void getMarkerAddr(){
     controller!.runJavascript('getMarkerAddr()');
   }
-//  void getCurrentAddrByListener() {
-//    if (coordConvert!= null) {
-//      StaticFunctions.getCurrentLocation().then((value) => {
-//        if(value != null) {
-//          controller!.runJavascript('createCurrentMarker(${value[0]},${value[1]})'),
-//          controller!.runJavascript('getMarkerAddr()')
-//        }
-//      });
-//    }
-//  }
 
   String _getURL() {
     return 'https://jeil.pythonanywhere.com/kakaomap/?'
         'width=${width * ratio!}&height=${height * ratio!}&'
-        'centerLat=$centerLat&centerLng=$centerLng&'
+        'centerAddr=$centerAddr&zoomLevel=$zoomLevel&'
         'hasListener=${clickListener != null ? 1 : 0}&'
-        'zoomLevel=$zoomLevel&hasClickListener=${hasClickListener ? 1 : 0}';
+        'hasClickListener=${hasClickListener ? 1 : 0}';
   }
   void runJavascript(message) {
     controller!.runJavascript(message);

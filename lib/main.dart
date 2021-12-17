@@ -364,8 +364,7 @@ class TestMapAPI extends StatelessWidget {
     KakaoMap kakao = KakaoMap(
       width: width!,
       height: height!-300,
-      centerLat: 37.566826,
-      centerLng: 126.9786567,
+      centerAddr: '서울 중구',
       items: [KakaoMapItem('테스트1',37.566826, 126.9786567,'한식'),KakaoMapItem('테스트2',37.566826, 126.9776587,'양식')],
       clickListener: (message){
         Fluttertoast.showToast(msg: message.message);

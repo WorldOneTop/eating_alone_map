@@ -1,26 +1,44 @@
+import 'package:eating_alone/controller/kakaomap.dart';
 import 'package:flutter/material.dart';
 import 'layouts/area_setting.dart';
 import 'layouts/info_house.dart';
 
+class MainMap extends StatefulWidget {
+  @override
+  _MainMapState createState() => _MainMapState();
+}
 
-class MainMap extends StatelessWidget {
+
+class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
+  List<String> location = ['강원','강릉시','지변동'];
+  KakaoMap? kakao;
+
+
   @override
   Widget build(BuildContext context) {
+    kakao = KakaoMap(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width+80,
+      centerAddr: "${location[0]} ${location[1]} ${location[2]}",
+      zoomLevel: location[2].isNotEmpty ? 5 : location[1].isNotEmpty ? 7 : 9,
+      items: [],
+    );
+
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 15, 10, 0),
       child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
         Text('주변식당',style: Theme.of(context).textTheme.headline4),
-        Container(
-          height: 350,
-          color: Colors.blueGrey,
-          margin: const EdgeInsets.all(20)
-        ),
+        kakao!,
+        const Divider(),
         HouseList()
       ]),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class HouseList extends StatefulWidget {
