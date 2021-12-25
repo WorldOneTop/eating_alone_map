@@ -1,5 +1,6 @@
 import 'package:eating_alone/controller/query.dart';
 import 'package:eating_alone/model/model.dart';
+import 'package:eating_alone/model/providers.dart';
 import 'package:eating_alone/view/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,8 @@ import './layouts/inputfield.dart';
 import 'account_find_page.dart';
 import 'layouts/loding.dart';
 import 'main_app.dart';
+import 'package:provider/provider.dart';
+
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
@@ -110,10 +113,10 @@ class LoginPage extends StatelessWidget {
                       backgroundColor: const Color(0xcaaaaaaa),
                       padding: const EdgeInsets.symmetric(horizontal: 36)),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainSelect()),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainSelect()),
+                            (route) => false);
                   },
                   child: const Text('비회원으로 이용하기')),
               TextButton(
@@ -147,20 +150,26 @@ class LoginPage extends StatelessWidget {
       return;
     }
     LodingDialog(context);
-    UserQuery.login(user)
-        .then((value){
+    UserQuery.login(user).then((value){
           Navigator.of(context).pop();
           if(value.isNotEmpty){
             Fluttertoast.showToast(msg: value);
           }else{
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => MainSelect()),
-                    (route) => false);
-            // 로그인 정보 저장
-            SharedPreferences.getInstance().then((instance) {
-              instance.setString('id', user.getId);
-              instance.setString('password', user.getPassword);
+              // 로그인 정보 저장
+            SharedPreferences.getInstance().then((storage) {
+              storage.setString('id', user.getId);
+              storage.setString('password', user.getPassword);
+              UserQuery.userInfo(user).then((request) {
+                storage.setString('nickName',request['nickName']);
+                context.read<UserProvider>().setId = user.getId;
+                context.read<UserProvider>().setNickName = request['nickName'];
+//                context.read<UserProvider>().setImage = "";
+
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainSelect()),
+                        (route) => false);
+              });
             });
           }
         })

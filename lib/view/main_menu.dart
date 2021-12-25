@@ -1,15 +1,15 @@
 import 'package:eating_alone/model/enum.dart';
+import 'package:eating_alone/model/providers.dart';
 import 'package:flutter/material.dart';
 
 import 'layouts/area_setting.dart';
 import 'selected_menu.dart';
-
+import 'package:provider/provider.dart';
 class MainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     int crossAxisCount,size;
-
     if(MediaQuery.of(context).size.width > 760){
       crossAxisCount = 5;
       size = 28;

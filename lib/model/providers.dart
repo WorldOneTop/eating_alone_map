@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+// storage : id, password, location,  nickName
 class UserProvider extends ChangeNotifier {
-  String? _id, _nickName;
+  String _id="", _nickName="";
   Image? _image;
 
   get getId => _id;
@@ -20,25 +21,28 @@ class UserProvider extends ChangeNotifier {
     _image = image;
     notifyListeners();
   }
+  void logout(){
+    _id = "";
+    _nickName = "";
+    _image = null;
+    notifyListeners();
+  }
 }
 
 class LocationProvider extends ChangeNotifier{
-  String? _location_1, _location_2, _location_3;
+  List<String> _location = ["","",""];
 
-  get getLoc1 => _location_1;
-  get getLoc2 => _location_2;
-  get getLoc3 => _location_3;
+  List<String> getLoc() => _location;
 
-  set setLoc1(String loc){
-    _location_1 = loc;
+  void setLocIndex(String loc, int index){
+    if(0 <= index && index < 3){
+      _location[index] = loc;
+      notifyListeners();
+    }
+  }
+  set setLoc(List<String> loc){
+    _location = loc;
     notifyListeners();
   }
-  set setLoc2(String loc){
-    _location_2 = loc;
-    notifyListeners();
-  }
-  set setLoc3(String loc){
-    _location_3 = loc;
-    notifyListeners();
-  }
+
 }

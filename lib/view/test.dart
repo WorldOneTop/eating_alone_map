@@ -9,7 +9,6 @@ import 'package:eating_alone/view/menu_pages.dart';
 import 'package:eating_alone/view/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eating_alone/view/login_page.dart';
-import 'package:eating_alone/view/layouts/home.dart';
 import 'package:eating_alone/view/layouts/appbar.dart';
 import 'package:eating_alone/view/layouts/drawer.dart';
 //import 'package:eating_alone/view/layouts/info_house.dart';
@@ -59,11 +58,11 @@ class MyApp extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
               child: Text('Login Page Layout')),
-          ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-              },
-              child: Text('home')),
+//          ElevatedButton(
+//              onPressed: (){
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+//              },
+//              child: Text('home')),
           ElevatedButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AppBarTest()));
@@ -194,7 +193,7 @@ class _AppBarTestState extends State<AppBarTest> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        drawer: SafeArea(child:CustomDrawer.getInstance().getDrawer(context)),
+        drawer: SafeArea(child:CustomDrawer.getInstance()),
         appBar: CustomAppbar.getInstance().getAppBar(context, mode, title),
         body: Column(children: [
           const SizedBox(height: 50),

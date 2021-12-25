@@ -1,14 +1,18 @@
 import 'package:eating_alone/model/enum.dart';
+import 'package:eating_alone/model/providers.dart';
 import 'package:eating_alone/view/layouts/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'layouts/area_setting.dart';
 import 'layouts/info_house.dart';
 import 'layouts/inputfield.dart';
 import 'layouts/my_review.dart';
 import 'layouts/notice_tile.dart';
+import 'package:provider/provider.dart';
 
+import 'main_app.dart';
 
 class AccountInfo extends StatelessWidget {
   Map<String,String> accountTest = {
@@ -53,7 +57,18 @@ class AccountInfo extends StatelessWidget {
                       Fluttertoast.showToast(msg: '비번변경');
                     },
                     child: const Text('저장'))]),
-              const SizedBox(height: 30),
+              const Divider(height: 40,color: Colors.black54),
+              GestureDetector(onTap: (){
+                    context.read<UserProvider>().logout();
+                    SharedPreferences.getInstance().then((storage){
+                      storage.remove('id');
+                      storage.remove('password');
+                      storage.remove('nickName');
+                    });
+                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MainSelect()),(route) => false);
+                  },
+                child:Text('로그아웃',style: Theme.of(context).textTheme.headline4)),
+
               GestureDetector(onTap: (){
                   Fluttertoast.showToast(msg: '회원 탈퇴');
                 },

@@ -6,7 +6,7 @@ class DataList{
 enum Appbar_mode {main, search, detail,menu}
 
 enum URL{currentLocation, login, signUp, accoutOut, updateNickname, updateImage,
-  updatePassword, findAccount, selectMyReview, selectMyHouse, createQnA, selectMyQuestion,
+  updatePassword, findAccount, selectMyReview, selectMyHouse, createQnA, selectMyQuestion,selectUserInfo,
   selectFAQ, createReview, deleteReview, createHouse, updateHouse, selectCategoryHouse,
   selectLocationHouse, selectSearchHouse, selectHouseName, selectHouseInfo, selectHouseMenu,
   selectHouseReview, selectNotice}

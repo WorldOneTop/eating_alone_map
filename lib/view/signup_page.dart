@@ -21,6 +21,8 @@ class SignupPage extends StatelessWidget {
                   const SizedBox(height: 50),
                   CheckEmail(ctr1,ctr2),
                   const SizedBox(height: 30),
+                  CustomTextField.normalInput(hint: "닉네임",),
+                  const SizedBox(height: 20),
                   CustomTextField.passwordInput(),
                   const SizedBox(height: 40),
                   ElevatedButton(onPressed: signupCheck, child: const Text('가입하기',style:TextStyle(fontSize: 20))),

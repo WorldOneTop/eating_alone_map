@@ -13,4 +13,8 @@ class UserQuery {
     var response = await http.get(Uri.parse("${DataList.url}login?id=${user.getId}&password=${user.getPassword}"));
     return response.body;
   }
+  static Future<Map> userInfo(User user) async {
+    var response = await http.get(Uri.parse("${DataList.url}selectUserInfo?id=${user.getId}"));
+    return jsonDecode(response.body);
+  }
 }
