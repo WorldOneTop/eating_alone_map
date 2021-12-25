@@ -35,27 +35,30 @@ class CustomTextField {
         onSubmitted: onSubmited,
     ));
   }
-  static TextField passwordInput({String label ='PASSWORD',TextEditingController? controller,}) {
+  static TextField passwordInput({String label ='PASSWORD',TextEditingController? controller,Function(String)? onSubmited, FocusNode? focusNode}) {
     return TextField(
         obscureText: true,
         controller: controller,
         style: const TextStyle(color: Colors.black),
+        onSubmitted: onSubmited,
+        focusNode: focusNode,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
               vertical: 8, horizontal: 13),
-
           filled: true,
           fillColor: Colors.white70,
           border: const OutlineInputBorder(),
           labelText: label,
         ));
   }
-  static TextField idInput({String label='ID',TextEditingController? controller, String? hint, bool enable=true,String? error}) {
+  static TextField idInput({String label='ID',TextEditingController? controller, String? hint, bool enable=true,String? error,Function(String)? onSubmited}) {
     return TextField(
         style: const TextStyle(color: Colors.black),
         controller: controller,
         enabled: enable,
         keyboardType: TextInputType.number,
+        onSubmitted: onSubmited,
+        autofocus: true,
         decoration: InputDecoration(
           hintText: hint,
           contentPadding: const EdgeInsets.symmetric(

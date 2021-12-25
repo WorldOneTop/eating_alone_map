@@ -2,6 +2,10 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'enum.dart';
 
+enum Storage {
+  id, password
+}
+
 class User {
   String? _id,_password,_nickName,_image;
 
@@ -11,17 +15,21 @@ class User {
   get getImage=>_image;
 
   bool setId(String id){
-    if(10 <= id.length && id.length <= 11){
+    if((int.tryParse(id) != null) && 10 <= id.length && id.length <= 11){
       _id = id;
       return true;
     }
     return false;
   }
-
-  bool setPassword(String pwd){
-    var data = utf8.encode(pwd); // data being hashed
-    _password = '${sha256.convert(data)}';
-
+  bool setPassword(String pwd,{bool isChange = true}){
+    if(pwd.isEmpty){
+      return false;
+    }
+    if(isChange) {
+      _password = '${sha256.convert(utf8.encode(pwd))}';
+    }else{
+      _password = pwd;
+    }
     return true;
   }
   bool setNickName(String nickName){
@@ -108,7 +116,7 @@ class Review {
   }
 }
 
-class Image {
+class ModelImage {
   int?  _reviewId;
   String? _url;
 

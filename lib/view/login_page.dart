@@ -1,11 +1,20 @@
+import 'package:eating_alone/controller/query.dart';
+import 'package:eating_alone/model/model.dart';
 import 'package:eating_alone/view/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './layouts/inputfield.dart';
 import 'account_find_page.dart';
+import 'layouts/loding.dart';
 import 'main_app.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
+  FocusNode pwdNode = FocusNode();
+  TextEditingController idController = TextEditingController();
+  TextEditingController pwdController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +83,9 @@ class LoginPage extends StatelessWidget {
                                   height: 40)))),
                 ],
               ),
-                CustomTextField.idInput(label: 'PHONE NUMBER'),
+                CustomTextField.idInput(label: 'PHONE NUMBER',controller: idController,onSubmited: (str){pwdNode.requestFocus();}),
               const SizedBox(height:10),
-              CustomTextField.passwordInput(),
+              CustomTextField.passwordInput(controller: pwdController, focusNode: pwdNode,onSubmited: (str){login(context);}),
               const SizedBox(height:20),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
@@ -90,10 +99,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(width: 15),
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainSelect()),
-                      );
+                      login(context);
                     },
                     child: const Text(' 로그인 '))
               ]),
@@ -129,4 +135,39 @@ class LoginPage extends StatelessWidget {
         ]));
 
   }
+  void login(BuildContext context) {
+    User user = User();
+    if(!(user.setId(idController.text))){
+      Fluttertoast.showToast(msg: "올바른 ID를 입력해주세요.");
+      return;
+    }
+    if(!(user.setPassword(pwdController.text))){
+      Fluttertoast.showToast(msg: "비밀번호를 입력해주세요.");
+      pwdNode.requestFocus();
+      return;
+    }
+    LodingDialog(context);
+    UserQuery.login(user)
+        .then((value){
+          Navigator.of(context).pop();
+          if(value.isNotEmpty){
+            Fluttertoast.showToast(msg: value);
+          }else{
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => MainSelect()),
+                    (route) => false);
+            // 로그인 정보 저장
+            SharedPreferences.getInstance().then((instance) {
+              instance.setString('id', user.getId);
+              instance.setString('password', user.getPassword);
+            });
+          }
+        })
+        .catchError((e){
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(msg: '일시적인 오류가 발생했습니다.\n 잠시후 이용해주십시오.');
+        });
+  }
+
 }
