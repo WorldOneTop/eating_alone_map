@@ -1,20 +1,16 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:eating_alone/model/enum.dart';
+import 'package:eating_alone/model/model.dart';
 import 'package:flutter/foundation.dart';
-//import 'package:http/http.dart' as http;
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
+enum FailMsg{
+  User_DoesNotExist, User_PasswordDoNotMatch, User_AlreadyExist, House_DoesNotExist, Review_DoesNotExist, ETC
+}
 class UserQuery {
-  void getCurrentAddress(double lat, double lng, Function(JavascriptMessage) messageCallback) {
-    print("ASD?");
-    WebView(
-      initialUrl: "${DataList.url}${describeEnum(URL.currentLocation)}?lat=$lat&lng=$lng",
-//      onWebViewCreated: (controller) {
-//        this.controller = controller;
-//      },
-      javascriptChannels: {JavascriptChannel(
-          name: 'messageCallback', onMessageReceived: messageCallback)
-      },
-      javascriptMode: JavascriptMode.unrestricted,
-    );
+  static Future<String> login(User user) async {
+    var response = await http.get(Uri.parse("${DataList.url}login?id=${user.getId}&password=${user.getPassword}"));
+    return response.body;
   }
 }
