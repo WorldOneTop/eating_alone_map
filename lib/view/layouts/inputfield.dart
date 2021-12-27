@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CustomTextField {
 
   static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int size = 2,bool enable = true,
-  Function(String)? onChange,Function(String)? onSubmited, TextEditingController? controller, int fillColor = 0xb2ffffff,Color? inputColor, int? maxLines = 1}) {
+  Function(String)? onChange,Function(String)? onSubmited, TextEditingController? controller, int fillColor = 0xb2ffffff,Color? inputColor,
+  int? maxLines = 1, String? error}) {
 
     double height = 50, fontSize = 20;
     if(size == 1) { // 작은 사이즈
@@ -28,6 +29,7 @@ class CustomTextField {
           hintStyle: TextStyle(fontSize: fontSize, height: size==1 ? 1.4 : 1),
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,
+          errorText: error,
       ),
               maxLines: maxLines,
               onChanged: onChange,

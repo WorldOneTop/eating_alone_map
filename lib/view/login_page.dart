@@ -93,6 +93,7 @@ class LoginPage extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
                     onPressed: () {
+                      context.read<SMSResponse>().setIsComplete = false;
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SignupPage()),
@@ -150,7 +151,7 @@ class LoginPage extends StatelessWidget {
       return;
     }
     LodingDialog(context);
-    UserQuery.login(user).then((value){
+    UserQuery(user).login().then((value){
           Navigator.of(context).pop();
           if(value.isNotEmpty){
             Fluttertoast.showToast(msg: value);
@@ -159,7 +160,7 @@ class LoginPage extends StatelessWidget {
             SharedPreferences.getInstance().then((storage) {
               storage.setString('id', user.getId);
               storage.setString('password', user.getPassword);
-              UserQuery.userInfo(user).then((request) {
+              UserQuery(user).userInfo().then((request) {
                 storage.setString('nickName',request['nickName']);
                 context.read<UserProvider>().setId = user.getId;
                 context.read<UserProvider>().setNickName = request['nickName'];

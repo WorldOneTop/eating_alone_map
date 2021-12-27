@@ -46,3 +46,12 @@ class LocationProvider extends ChangeNotifier{
   }
 
 }
+
+class SMSResponse extends ChangeNotifier {
+  bool isComplete = false;
+
+  set setIsComplete(val){
+    isComplete = val;
+    notifyListeners();
+  }
+}

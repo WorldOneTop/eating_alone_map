@@ -1,4 +1,6 @@
+import 'package:eating_alone/controller/query.dart';
 import 'package:eating_alone/model/enum.dart';
+import 'package:eating_alone/model/model.dart';
 import 'package:eating_alone/model/providers.dart';
 import 'package:eating_alone/view/layouts/appbar.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +72,10 @@ class AccountInfo extends StatelessWidget {
                 child:Text('로그아웃',style: Theme.of(context).textTheme.headline4)),
 
               GestureDetector(onTap: (){
-                  Fluttertoast.showToast(msg: '회원 탈퇴');
+                showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return accountOutDialog(TextEditingController(), context);});
                 },
                 child:Text('회원 탈퇴',style: Theme.of(context).textTheme.headline4)),
             ]))
@@ -93,6 +98,36 @@ class AccountInfo extends StatelessWidget {
             )),
           ])),
     );
+  }
+  AlertDialog accountOutDialog(TextEditingController ctr, BuildContext context){
+    return AlertDialog(
+        title: const Text("탈퇴하시겠습니까?"),
+        content: CustomTextField.passwordInput(controller: ctr),
+        actions: <Widget>[
+          TextButton(onPressed: (){
+            if(ctr.text.isEmpty){
+              Fluttertoast.showToast(msg: "비밀번호를 입력해주세요.");
+            }else{
+              User user = User();
+              user.setId(context.read<UserProvider>().getId);
+              user.setPassword(ctr.text);
+              UserQuery(user).accoutOut().then((response) {
+                if(response.isEmpty){
+                  context.read<UserProvider>().logout();
+                  SharedPreferences.getInstance().then((storage){
+                    storage.remove('id');
+                    storage.remove('password');
+                    storage.remove('nickName');
+                  });
+                  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MainSelect()),(route) => false);
+                }else{
+                  Fluttertoast.showToast(msg: response);
+                }
+              });
+            }
+          }, child: const Text("예")),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("아니오")),
+        ]);
   }
 }
 

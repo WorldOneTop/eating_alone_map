@@ -18,6 +18,7 @@ void main() {
           providers: [
             ChangeNotifierProvider(create: (context)=>UserProvider()),
             ChangeNotifierProvider(create: (context)=>LocationProvider()),
+            ChangeNotifierProvider(create: (context)=>SMSResponse()),
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -103,7 +104,7 @@ class _SplashState extends State<Splash> {
     user.setId(id);
     user.setPassword(pwd,isChange: false);
 
-    final login = await UserQuery.login(user);
+    final login = await UserQuery(user).login();
     if(login.isNotEmpty){
       return login;
     }
