@@ -32,4 +32,12 @@ class UserQuery {
     var response = await http.get(Uri.parse("${DataList.url}accoutOut?id=${user.getId}&password=${user.getPassword}"));
     return response.body;
   }
+  Future<String> updatePwd(String newPwd) async {
+    var response = await http.get(Uri.parse("${DataList.url}updatePassword?id=${user.getId}&password=${user.getPassword}&newPassword=$newPwd"));
+    return response.body;
+  }
+  Future<String> updateName(String name) async {
+    var response = await http.get(Uri.parse("${DataList.url}updateNickname?id=${user.getId}&nickName=$name"));
+    return response.body;
+  }
 }

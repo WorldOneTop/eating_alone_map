@@ -4,13 +4,15 @@ import 'layouts/area_setting.dart';
 import 'layouts/info_house.dart';
 
 class MainMap extends StatefulWidget {
+  List<String> location;
+  MainMap(this.location);
+
   @override
   _MainMapState createState() => _MainMapState();
 }
 
 
 class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
-  List<String> location = ['강원','강릉시','지변동'];
   KakaoMap? kakao;
 
 
@@ -19,8 +21,8 @@ class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
     kakao = KakaoMap(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width+80,
-      centerAddr: "${location[0]} ${location[1]} ${location[2]}",
-      zoomLevel: location[2].isNotEmpty ? 5 : location[1].isNotEmpty ? 7 : 9,
+      centerAddr: "${widget.location[0]} ${widget.location[1]} ${widget.location[2]}",
+      zoomLevel: widget.location[2].isNotEmpty ? 5 : widget.location[1].isNotEmpty ? 7 : 9,
       items: [],
     );
 
@@ -47,7 +49,7 @@ class HouseList extends StatefulWidget {
 }
 
 class _HouseListState extends State<HouseList> {
-  List<Widget> houseList = [AreaSetting()];
+  List<Widget> houseList = [];
 
   @override
   void initState() {

@@ -1,5 +1,8 @@
 import 'package:eating_alone/controller/kakaomap.dart';
+import 'package:eating_alone/model/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AreaSetting extends StatefulWidget {
   @override
@@ -7,10 +10,10 @@ class AreaSetting extends StatefulWidget {
 }
 
 class _AreaSettingState extends State<AreaSetting> {
-  List<String> _locations = ['서울', '중구', '태평로1가'];
 
   @override
   Widget build(BuildContext context) {
+    List<String> _locations = context.watch<LocationProvider>().getLoc();
 
     return Row(
       children: [
@@ -18,7 +21,7 @@ class _AreaSettingState extends State<AreaSetting> {
 //        Text(_selectedArea, style: Theme.of(context).textTheme.headline5),
         const Expanded(child: SizedBox()),
         InkWell(
-            onTap: () { selectCurrentLocation();},
+            onTap: () { selectCurrentLocation(_locations);},
             child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(7)),
                 child: Container(color: const Color(0xFFF5F5F5),padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 6),
@@ -30,7 +33,8 @@ class _AreaSettingState extends State<AreaSetting> {
     );
   }
 
-  void selectCurrentLocation(){
+  void selectCurrentLocation(List<String> _locations ){
+
     KakaoMap kakao = KakaoMap(
       width: 400,
       height: 500,
@@ -72,16 +76,21 @@ class _AreaSettingState extends State<AreaSetting> {
     );
   }
 
-  void setLocText(String str){print(str);
+  void setLocText(String str){
     List<String> splitStr = str.split(' ');
-    _locations[0] = splitStr[0];
-    _locations[1] = splitStr[1];
+    List<String> locations = [splitStr[0], splitStr[1]];
 
     if(splitStr[0] != '세종특별자치시'){
-      _locations[2] = splitStr[2];
+      locations.add(splitStr[2]);
     }
+    context.read<LocationProvider>().setLoc = locations;
+    SharedPreferences.getInstance().then((storage){
+      storage.setStringList('location', locations);
+    });
   }
+
   Widget getLocText(int index){
+    List<String> _locations = context.watch<LocationProvider>().getLoc();
     if(index==0){
       return Text(_locations[index],style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600));
     }else if(_locations[index].isEmpty){
@@ -89,12 +98,10 @@ class _AreaSettingState extends State<AreaSetting> {
     }
     return InkWell(
       onTap: (){
-        setState(() {
-          _locations[index] = '';
-          if(index==1){
-            _locations[2] = '';
-          }
-        });
+        context.read<LocationProvider>().setLocIndex('', index);
+        if(index==1){
+          context.read<LocationProvider>().setLocIndex('', 2);
+        }
       },
       child: Stack(
           children: [

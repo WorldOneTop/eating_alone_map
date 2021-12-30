@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-class LodingDialog {
-  LodingDialog(BuildContext context) {
+class LoadingDialog {
+  LoadingDialog(BuildContext context) {
     showDialog(
         context: context,
         barrierDismissible: false,

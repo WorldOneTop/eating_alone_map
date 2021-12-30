@@ -66,10 +66,24 @@ class _SplashState extends State<Splash> {
 
   void setting() async{
     String? login = await isLoggedIn(context);
-    if(login != null){// logout or error state
+    if(login.isEmpty){// logged in
+      SharedPreferences.getInstance().then((storage){
+        context.read<UserProvider>().setId =  storage.getString('id')!;
+        context.read<UserProvider>().setNickName =  storage.getString('nickName')!;
+//        context.read<UserProvider>().setImage =  storage.getString('image')!;
+        context.read<LocationProvider>().setLoc =  storage.getStringList('location')!;
+        Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MainSelect()),(route) => false);
+      });
+    }else if(login == 'anonymous'){
+      context.read<UserProvider>().setId = "anonymous";
+      SharedPreferences.getInstance().then((storage) {
+        context.read<LocationProvider>().setLoc =  storage.getStringList('location')!;
+        Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MainSelect()),(route) => false);
+      });
+    }else{ // error or first
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context){
+          MaterialPageRoute(builder: (context) {
             if(login != 'first'){
               Fluttertoast.showToast(msg: login);
             }
@@ -78,28 +92,21 @@ class _SplashState extends State<Splash> {
               context.read<LocationProvider>().setLoc = ['서울', '중구', '태평로1가'];
             });
             return LoginPage();
-          }),
-              (route) => false);
-    }else{// logged in
-      SharedPreferences.getInstance().then((storage){
-        context.read<UserProvider>().setId =  storage.getString('id')!;
-        context.read<UserProvider>().setNickName =  storage.getString('nickName')!;
-//        context.read<UserProvider>().setImage =  storage.getString('image')!;
-        context.read<LocationProvider>().setLoc =  storage.getStringList('location')!;
-      });
-      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MainSelect()),(route) => false);
+          }),(route) => false);
     }
-
   }
 
-  Future<String?> isLoggedIn(BuildContext context) async {
+  Future<String> isLoggedIn(BuildContext context) async {
     final storage = await SharedPreferences.getInstance();
     String? id = storage.getString('id');
     String? pwd = storage.getString('password');
+    if(id == 'anonymous'){
+      return 'anonymous';
+    }
+
     if(id == null || pwd == null){
       return "first";
     }
-
     User user = User();
     user.setId(id);
     user.setPassword(pwd,isChange: false);
@@ -109,6 +116,6 @@ class _SplashState extends State<Splash> {
       return login;
     }
 
-    return null;
+    return "";
   }
 }

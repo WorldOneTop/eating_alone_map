@@ -22,7 +22,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
   void logout(){
-    _id = "";
+    _id = "anonymous";
     _nickName = "";
     _image = null;
     notifyListeners();

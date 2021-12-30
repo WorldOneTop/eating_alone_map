@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './layouts/inputfield.dart';
 import 'account_find_page.dart';
-import 'layouts/loding.dart';
+import 'layouts/loading.dart';
 import 'main_app.dart';
 import 'package:provider/provider.dart';
 
@@ -114,10 +114,13 @@ class LoginPage extends StatelessWidget {
                       backgroundColor: const Color(0xcaaaaaaa),
                       padding: const EdgeInsets.symmetric(horizontal: 36)),
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainSelect()),
-                            (route) => false);
+                    SharedPreferences.getInstance().then((storage) {
+                      storage.setString('id', "anonymous");
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => MainSelect()),
+                              (route) => false);
+                    });
                   },
                   child: const Text('비회원으로 이용하기')),
               TextButton(
@@ -150,11 +153,11 @@ class LoginPage extends StatelessWidget {
       pwdNode.requestFocus();
       return;
     }
-    LodingDialog(context);
+    LoadingDialog(context);
     UserQuery(user).login().then((value){
-          Navigator.of(context).pop();
           if(value.isNotEmpty){
             Fluttertoast.showToast(msg: value);
+            Navigator.of(context).pop();
           }else{
               // 로그인 정보 저장
             SharedPreferences.getInstance().then((storage) {
@@ -166,6 +169,7 @@ class LoginPage extends StatelessWidget {
                 context.read<UserProvider>().setNickName = request['nickName'];
 //                context.read<UserProvider>().setImage = "";
 
+                Navigator.of(context).pop();
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => MainSelect()),

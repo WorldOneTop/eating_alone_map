@@ -1,6 +1,7 @@
 import 'package:eating_alone/model/providers.dart';
 import 'package:eating_alone/view/menu_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/src/provider.dart';
 import './layouts/export_all.dart';
 import './main_menu.dart';
@@ -30,7 +31,7 @@ class MainSelect extends StatelessWidget {
           body:
             TabBarView(children: [
               Container(child: MainMenu(), margin: const EdgeInsets.symmetric(horizontal: 15)),
-              MainMap()
+              MainMap(context.read<LocationProvider>().getLoc())
             ],physics: const BouncingScrollPhysics())
         ));
   }
@@ -38,6 +39,13 @@ class MainSelect extends StatelessWidget {
 
   String _profileImage = 'assets/images/defaultProfile.png';
   Drawer customDrawer(BuildContext context){
+    String nickName = context.select<UserProvider, String>((UserProvider user){
+      if(user.getId.toString() == 'anonymous'){
+        return "로그인을 해주세요.";
+      }else{
+        return user.getNickName;
+      }
+    });
     return Drawer(
       child: ListView(
         physics: const BouncingScrollPhysics(),
@@ -45,7 +53,7 @@ class MainSelect extends StatelessWidget {
         children: [
           GestureDetector(
               onTap: (){
-                if(context.read<UserProvider>().getId.toString().isEmpty) {
+                if(nickName == '로그인을 해주세요.') {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 }
@@ -62,13 +70,7 @@ class MainSelect extends StatelessWidget {
                     const SizedBox(width: 15),
                     Expanded(child:
                     Column(children: [
-                      Text(context.select<UserProvider, String>((UserProvider user){
-                        if(user.getNickName.toString().isEmpty){
-                          return "로그인을 해주세요.";
-                        }else{
-                          return user.getNickName;
-                        }
-                      }),
+                      Text(nickName,
                         style: Theme.of(context).textTheme.headline5,overflow: TextOverflow.ellipsis,),
                       Text(context.select((LocationProvider loc){
                         return "${loc.getLoc()[0]} ${loc.getLoc()[1]}";
@@ -87,24 +89,7 @@ class MainSelect extends StatelessWidget {
                   )
               )),
           const SizedBox(height: 10),
-          ListTile(
-            horizontalTitleGap: -5,
-            leading: Icon(Icons.account_box,
-                color: Colors.grey[850]),
-            title: const Text("계정 정보",style: TextStyle(height: 1)),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountInfo()));
-            },
-          ),
-          ListTile(
-              horizontalTitleGap: -5,
-              leading: Icon(Icons.directions_run,
-                color: Colors.grey[850],),
-              title: const Text("내 활동",style: TextStyle(height: 1.1)),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity()));
-              }
-          ),
+          getUserPrivateMenu(context, nickName != '로그인을 해주세요.'),
           ListTile(
               horizontalTitleGap: -5,
               leading: Icon(Icons.content_paste_rounded,
@@ -130,6 +115,34 @@ class MainSelect extends StatelessWidget {
               title: const Text("환경설정",style: TextStyle(height: 1.1)),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Setting()));
+              }
+          ),
+        ],
+      ),
+    );
+  }
+
+  Visibility getUserPrivateMenu(BuildContext context, bool visible){
+    return Visibility(
+      visible: visible,
+      child: Column(
+        children: [
+          ListTile(
+            horizontalTitleGap: -5,
+            leading: Icon(Icons.account_box,
+                color: Colors.grey[850]),
+            title: const Text("계정 정보",style: TextStyle(height: 1)),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AccountInfo()));
+            },
+          ),
+          ListTile(
+              horizontalTitleGap: -5,
+              leading: Icon(Icons.directions_run,
+                color: Colors.grey[850],),
+              title: const Text("내 활동",style: TextStyle(height: 1.1)),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyActivity()));
               }
           ),
         ],

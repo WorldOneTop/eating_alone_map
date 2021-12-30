@@ -17,12 +17,6 @@ import 'package:provider/provider.dart';
 import 'main_app.dart';
 
 class AccountInfo extends StatelessWidget {
-  Map<String,String> accountTest = {
-    'name':'이제일',
-    'id':'010-5049-7758',
-    'area':'강릉',
-    'profileImage':'assets/images/defaultProfile.png'
-  };
   TextEditingController ctrOld = TextEditingController();
   TextEditingController ctrNew = TextEditingController();
 
@@ -37,7 +31,7 @@ class AccountInfo extends StatelessWidget {
                 _profileLayout(),
                 const SizedBox(width: 20),
                 Expanded(child: Column(children: [
-                  Text(accountTest['name']!,style: Theme.of(context).textTheme.headline3),
+                  Text(context.watch<UserProvider>().getNickName,style: Theme.of(context).textTheme.headline3),
                 ],crossAxisAlignment: CrossAxisAlignment.start,))
               ]),
               const SizedBox(height: 30),
@@ -45,25 +39,66 @@ class AccountInfo extends StatelessWidget {
               AreaSetting(),
               const SizedBox(height: 30),
               Text('닉네임 변경',style: Theme.of(context).textTheme.subtitle1!.copyWith(height: 1)),
-              CustomTextField.normalInput(hint: accountTest['name']!,fillColor: 0xFdF0F0F0),
+              CustomTextField.normalInput(hint:context.watch<UserProvider>().getNickName,fillColor: 0xFdF0F0F0,onSubmited: (String text){
+                if(text.isEmpty){
+                  Fluttertoast.showToast(msg: '변경할 닉네임을 입력해주세요.');
+                  return;
+                }else if(text.length > 20){
+                  Fluttertoast.showToast(msg: '닉네임은 20글자까지 가능합니다.');
+                  return;
+                }
+                User user = User();
+                user.setId(context.read<UserProvider>().getId);
+                user.setNickName(text);
+                UserQuery(user).updateName(text).then((response) {
+                  if(response.isEmpty){
+                    SharedPreferences.getInstance().then((storage){
+                      storage.setString('nickName', text);
+                      Fluttertoast.showToast(msg: '변경되었습니다.');
+                      context.read<UserProvider>().setNickName = text;
+                  });
+                  }else{
+                    Fluttertoast.showToast(msg: response);
+                  }
+                });
+              }),
               const SizedBox(height: 30),
               Text('현재 비밀번호',style: Theme.of(context).textTheme.subtitle1!.copyWith(height: 1)),
-              CustomTextField.passwordInput(label: ''),
+              CustomTextField.passwordInput(label: '',controller: ctrOld),
               const SizedBox(height: 20),
               Text('신규 비밀번호',style: Theme.of(context).textTheme.subtitle1!.copyWith(height: 1)),
-              CustomTextField.passwordInput(label: ''),
+              CustomTextField.passwordInput(label: '',controller: ctrNew),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(onPressed: (){
-                      Fluttertoast.showToast(msg: '비번변경');
-                    },
+                    if(ctrOld.text.isEmpty){
+                      Fluttertoast.showToast(msg: '현재 비밀번호를 입력해주세요.');
+                    }else if(ctrNew.text.isEmpty){
+                      Fluttertoast.showToast(msg: '변경할 비밀번호를 입력해주세요.');
+                    }else{
+                      User user = User();
+                      user.setId(context.read<UserProvider>().getId);
+                      user.setPassword(ctrOld.text);
+                      UserQuery(user).updatePwd(ctrNew.text).then((response) {
+                        if(response.isEmpty){
+                          SharedPreferences.getInstance().then((storage){
+                            storage.setString('password', ctrNew.text);
+                            Fluttertoast.showToast(msg: '변경되었습니다.');
+                            ctrOld.text = "";
+                            ctrNew.text = "";
+                          });
+                        }else{
+                          Fluttertoast.showToast(msg: response);
+                        }
+                      });
+                    }},
                     child: const Text('저장'))]),
               const Divider(height: 40,color: Colors.black54),
               GestureDetector(onTap: (){
                     context.read<UserProvider>().logout();
                     SharedPreferences.getInstance().then((storage){
-                      storage.remove('id');
+                      storage.setString('id','anonymous');
                       storage.remove('password');
                       storage.remove('nickName');
                     });
@@ -89,7 +124,7 @@ class AccountInfo extends StatelessWidget {
       child: SizedBox(width: 80,height: 80,
           child: Stack(children: [
             CircleAvatar(
-                backgroundImage: AssetImage(accountTest['profileImage']!),
+                backgroundImage: AssetImage('assets/images/defaultProfile.png'),
                 backgroundColor: const Color(0xFFF0F0F0),
                 radius: 100),
             Positioned(bottom: 5, right: 10,child: Container(
@@ -148,12 +183,7 @@ class Setting extends StatelessWidget {
               const SizedBox(height: 30),
               Text('기타',style: Theme.of(context).textTheme.subtitle1),
               const SizedBox(height:10),
-              GestureDetector(
-                onTap: (){
-                  Fluttertoast.showToast(msg: '로그아웃');
-                },child: Text(' 로그아웃',style: Theme.of(context).textTheme.headline5)
-              ),
-              const SizedBox(height:10),
+
               GestureDetector(
                   onTap: (){
                     Fluttertoast.showToast(msg: '최신버전입니다?');
