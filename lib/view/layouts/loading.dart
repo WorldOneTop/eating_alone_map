@@ -17,6 +17,5 @@ class LoadingDialog {
           );
         });
   }
-
 }
 

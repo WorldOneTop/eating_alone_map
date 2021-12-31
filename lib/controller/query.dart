@@ -41,3 +41,24 @@ class UserQuery {
     return response.body;
   }
 }
+class QuestionNotice {
+
+  Future<List> notice() async {
+    var response = await http.get(Uri.parse("${DataList.url}selectNotice"));
+    return jsonDecode(response.body);
+  }
+  Future<List> faq() async {
+    var response = await http.get(Uri.parse("${DataList.url}selectFAQ"));
+    return jsonDecode(response.body);
+  }
+  Future<List> myQuestionList(String id) async {
+    var response = await http.get(Uri.parse("${DataList.url}selectMyQuestion?id=$id"));
+    return jsonDecode(response.body);
+  }
+  Future<String> qna(String head, String body, String category, String userId, {String? image}) async {
+    var response = await http.get(Uri.parse("${DataList.url}createQnA?head=$head&body=$body&category=$category&user_id=$userId${
+    image != null ? "&image=$image" : ""
+    }"));
+    return response.body;
+  }
+}

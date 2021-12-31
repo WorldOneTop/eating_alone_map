@@ -363,7 +363,7 @@ class Question{
   }
   bool setImage(String s){
     if(s.isNotEmpty && s.length <= 62){
-
+      _image = s;
       return true;
     }
     return false;

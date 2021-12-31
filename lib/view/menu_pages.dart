@@ -10,10 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'layouts/area_setting.dart';
 import 'layouts/info_house.dart';
 import 'layouts/inputfield.dart';
+import 'layouts/loading.dart';
 import 'layouts/my_review.dart';
 import 'layouts/notice_tile.dart';
 import 'package:provider/provider.dart';
 
+import 'login_page.dart';
 import 'main_app.dart';
 
 class AccountInfo extends StatelessWidget {
@@ -307,31 +309,43 @@ class _MyHouseState extends State<MyHouse> {
   }
 }
 
-class Notice extends StatelessWidget {
-  List<Widget> test = [
-    NoticeTile('리뷰 이벤트 당첨자 발표','보이는 것은 거친 모래뿐일 것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 ',
-        '${2021}-${11}-${19}',false),
-    NoticeTile('리뷰 이벤트 안내','굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기',
-        '${2021}-${11}-${19}',false),
-    NoticeTile('일부 서비스 중단 안내','도 보이는 것은 거친 모래뿐일 것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이',
-        '${2021}-${11}-${19}',false),
-    NoticeTile('개인정보 처리 방침 개정에 따른 안내 사항을 알려드립니다.','을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을\n\n\n\n아니한 목숨을 사는가 싶이 살았으며 그들의 그림자는 천고에 사라지지 않는 것이다 이것은 현저하게 일월과 같은 예가 되려니와 그',
-        '${2021}-${11}-${19}',false),
-  ];
+class Notice extends StatefulWidget {
+  @override
+  _NoticeState createState() => _NoticeState();
+}
+
+class _NoticeState extends State<Notice> {
+  List<Widget> tiles = [];
+
   @override
   Widget build(BuildContext context) {
+    if(tiles.isEmpty) {
+      getData();
+    }
     return Scaffold(
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '공지사항'),
-        body:ListView.separated(
-            physics: const BouncingScrollPhysics(),
-          itemCount: test.length,
-          separatorBuilder: (context, index){return Divider();},
+        body: tiles.isEmpty ? const Center(child: CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent)) : ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          itemCount: tiles.length,
+          separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, index){
-            return test[index];
-          }
-        ));
+          return tiles[index];
+        }
+    ));
+  }
+  void getData(){
+    QuestionNotice().notice().then((response) {
+      List<Widget> cache = [];
+      for(Map value in response){
+        cache.add(NoticeTile(value['head'],value['body'], value['time'],false));
+      }
+      setState(() {
+        tiles = cache;
+      });
+    });
   }
 }
+
 
 class Question extends StatelessWidget {
   @override
@@ -360,9 +374,17 @@ class Question extends StatelessWidget {
             appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, '문의하기',bottom: tabBar),
             body: TabBarView(physics: const BouncingScrollPhysics(),
                 children: [
-              QuestionReport(),MyQuestion(),FAQ(),
+                  context.read<UserProvider>().getId == "anonymous" ? anonymousLayout(context) : QuestionReport(),
+                  context.read<UserProvider>().getId == "anonymous" ? anonymousLayout(context) : MyQuestion(),
+                  FAQ(),
             ])
         ));
+  }
+  Widget anonymousLayout(BuildContext context){
+    return  Center(child: TextButton(child: const Text("로그인 이후 사용가능합니다.",style: TextStyle(fontSize: 18)),onPressed:  (){
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LoginPage()));
+    },));
   }
 }
 class QuestionReport extends StatefulWidget {
@@ -372,10 +394,11 @@ class QuestionReport extends StatefulWidget {
 
 class _QuestionReportState extends State<QuestionReport> {
   String? _selectedCategory;
-  bool emailReceive = false;
   bool checkTerm = false;
   bool openTerm = false;
   SizedBox? marginBottom;
+  TextEditingController headCtr = TextEditingController();
+  TextEditingController bodyCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -405,16 +428,21 @@ class _QuestionReportState extends State<QuestionReport> {
               )),
             ]),
             const SizedBox(height:8),
-            Row(children: [
-              Expanded(flex: 1,child: getTitleText('제목')),
-              const Expanded(flex: 1,child: SizedBox()),
-              Expanded(flex: 4,child: CustomTextField.normalInput(
-                hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black
-              )),
-            ]),
+//            Row(children: [
+//              Expanded(flex: 1,child: getTitleText('제목')),
+//              const Expanded(flex: 1,child: SizedBox()),
+//              Expanded(flex: 4,child: CustomTextField.normalInput(
+//                hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black,controller: headCtr
+//              )),
+//            ]),
+            getTitleText('제목'),
+            const SizedBox(height:8),
+            CustomTextField.normalInput(
+                hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black,controller: headCtr
+              ),
             getTitleText('문의 내용'),
             const SizedBox(height:8),
-            CustomTextField.textInput(minLines: 4,fillColor: 0xFFF8F8F8),
+            CustomTextField.textInput(hint:'내용을 입력해주세요.',minLines: 4,fillColor: 0xFFF8F8F8,controller: bodyCtr),
             Row(children: [getTitleText('첨부파일'),const Expanded(child: SizedBox()),imageUploadLayout(),imageUploadLayout(),imageUploadLayout()]),
             Row(children:const [Expanded(child:SizedBox()),Text('이미지는 최대 3장까지 업로드 가능합니다.', style: TextStyle(fontSize: 14,color: Colors.grey),textAlign: TextAlign.end,)]),
             const SizedBox(height:12),
@@ -470,7 +498,7 @@ class _QuestionReportState extends State<QuestionReport> {
     color: const Color(0xFF2ECC71),
     child: Center(child: getTitleText('작성 완료'))
     ),onTap: (){
-    Fluttertoast.showToast(msg: '작성 버튼');
+    questionSubmit();
     })),
     ])
           ]);
@@ -488,35 +516,76 @@ class _QuestionReportState extends State<QuestionReport> {
       Fluttertoast.showToast(msg: '이미지 업로드 버튼 ');
     });
   }
+
+  void questionSubmit(){
+    if(headCtr.text.isEmpty || bodyCtr.text.isEmpty || _selectedCategory == null){
+      Fluttertoast.showToast(msg: "내용을 모두 입력해주세요.");
+    }else if(!checkTerm){
+      Fluttertoast.showToast(msg: "개인정보 이용 약관에 동의해주세요.");
+    }else{
+      LoadingDialog(context);
+      QuestionNotice().qna(headCtr.text,bodyCtr.text,_selectedCategory!,context.read<UserProvider>().getId).then((value) {
+        if(value.isEmpty){
+          setState(() {
+            headCtr.text = "";
+            bodyCtr.text = "";
+            checkTerm = false;
+            _selectedCategory = null;
+            Fluttertoast.showToast(msg: "성공적으로 전달되었습니다.");
+          });
+        }else{
+          Fluttertoast.showToast(msg: value);
+        }
+        Navigator.pop(context);
+      });
+    }
+  }
 }
 
 
 
+class MyQuestion extends StatefulWidget {
+  @override
+  _MyQuestionState createState() => _MyQuestionState();
+}
 
-class MyQuestion extends StatelessWidget {
-  List<Widget> test =  [
-    NoticeTile('이벤트 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
-        '${2021}-${11}-${19}',false),
-    NoticeTile('버그 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
-        '${2021}-${11}-${19}',false),
-    NoticeTile('개인정보 관련 문의 개인 정보 관련 문의 개인정보관련문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
-        '${2021}-${11}-${19}',false,answer: NoticeTile('개인정보 관련 문의','어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는',
-            '${2021}-${11}-${19}',true)),
-  ];
+class _MyQuestionState extends State<MyQuestion> with AutomaticKeepAliveClientMixin {
+  List<Widget> data = [];
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemCount: test.length,
-          separatorBuilder: (context,index){
-            return const Divider();
-          },itemBuilder: (context,index){
-        return test[index];
-      })
+    if(data.isEmpty){
+      getData();
+    }
+    return data.isEmpty ? const Center(child: CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent)) :
+      Container(
+        margin: const EdgeInsets.only(top: 10),
+        child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemCount: data.length,
+            separatorBuilder: (context,index){
+              return const Divider();
+            },itemBuilder: (context,index){
+          return data[index];
+        })
     );
   }
+  void getData(){
+    QuestionNotice().myQuestionList(context.read<UserProvider>().getId).then((value) {
+      setState(() {
+        for(Map val in value){
+          bool addAnswer = val['answer'].isNotEmpty;
+          NoticeTile? answer = addAnswer ? NoticeTile('',val['answer'],'',true) : null;
+          data.add(
+            NoticeTile(val['head'],val['body'],val['time'],addAnswer, answer:answer)
+          );
+        }
+
+      });
+    });
+  }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class FAQ extends StatefulWidget {
@@ -524,70 +593,41 @@ class FAQ extends StatefulWidget {
   _FAQState createState() => _FAQState();
 }
 
-class _FAQState extends State<FAQ> {
-  List category = ['계정','이용문의','불편문의','정보등록','기타'];
+class _FAQState extends State<FAQ> with AutomaticKeepAliveClientMixin {
+  List category = DataList.questionCategory;
   int select = 0;
-  bool isSearchMode = false;
+  Map<String,List<List<String>>> data= {};
 
 
-  Map<String,List<List<String>>> test = {
-    '계정':[
-      ['계정','것이다 이것은 현저하게 일월과 같은 예가 되려니와 그와 같지 못하다 할지라도 창공에 반짝이는 뭇 별과 같이 산야'],
-      ['asdf','는 소금이라 할지니 인생에 가치를 주는 원질이 되는 것이다 그들은 앞이 긴지라 착목한는 곳이'],
-    ],
-    '이용문의':[
-      ['이용문의에 관해서','꽃이 피고 희망의 놀이 뜨고 열락의 새가 운다사랑의 풀이 없으면 인간은 사막이다 오아이스도 없는 사막이다 보이는 끝까지 찾아다녀도 목숨이 있는 때까지 방황하여도 보이는 것은 거친 모래뿐일 것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 '],
-    ],
-    '불편문의':[
-      ['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],['불편사항','ㅁㄹ'],
-    ],
-    '정보등록':[
-      ['정','ㅁㄴㅊㅁㅇㅁㅇㄹㅇㄴㅍㅇㄹㄴㅁㄹㅇㄼㄷㅈ'],['보','ㅊㅁㅋㅌㅌㅋㅊㅍㄴㅇㄹ퓽ㄴㅇㅍㄴㅍㅊㅌㅊㅌㅍ'],['등','gcfhujilbhgjkihjgjugcgfyhu'],['록','jbhxgtyjkg,kutyjgu67f576885645768'],
-    ],
-    '기타':[
-      ['기타','배우고싶다']
-    ]
-  };
 
-  List<Widget> a = [];
-  @override
-  void initState() {
-    for(int i=0;i<test[category[select]]!.length;i++){
-      a.add(NoticeTile(test[category[select]]![i][0],test[category[select]]![i][1],'',false));
-    }
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
+    if(data.isEmpty){
+      getData();
+    }
     Container gridCategory = Container(
         padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 20),
         margin: const EdgeInsets.only(bottom: 15),
         color: const Color(0xcacacaca),
-        child: isSearchMode ? null : GridView.builder(
+        child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 2/1,
-          ),itemCount: category.length+1,
+              crossAxisCount: 3,
+              childAspectRatio: 2/1,
+            ),itemCount: category.length+1,
             itemBuilder: (context, index){
               if(category.length <= index) return Container(color: Colors.white,margin: const EdgeInsets.all(1));
               return getGridItem(index, index == select);
             })
     );
-
-    return ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: test[category[select]]!.length+2,
-        separatorBuilder: (context,index){
-          if(index < 2) return const SizedBox();
-          return const Divider();
-        },itemBuilder: (context,index){
-          if(index == 0 ) return CustomTextField.normalInput(hint: '검색 내용 입력(제목 or 내용)',prefixIcon: const Icon(Icons.search),fillColor: 0xFCFCFCFC,onSubmited: searchSubmit);
-          if(index == 1) return gridCategory;
-          return a[index-2];
-    });
+    return Column(
+      children: [
+        gridCategory,
+        data.isEmpty ? const Expanded(child: Center(child: CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))) :
+        FAQList(data[category[select]]!)
+      ]
+    );
   }
   Container getGridItem(int index,bool isSelected) {
     return Container(
@@ -598,24 +638,43 @@ class _FAQState extends State<FAQ> {
           if(index != select) {
             setState(() {
               select = index;
-              a = [];
-              for(int i=0;i<test[category[select]]!.length;i++){
-                a.add(NoticeTile(test[category[select]]![i][0],test[category[select]]![i][1],'',false,sureFold: true,));
-              }
-              Fluttertoast.showToast(msg: '${category[index]} 카테고리 선택');
             });
           }
         },
         child: Center(child: Text(category[index]))
       ));
   }
-
-  void searchSubmit(String str) {
-    if(isSearchMode == false){
+  void getData(){
+    QuestionNotice().faq().then((response){
       setState(() {
-        isSearchMode = true;
+        for(String value in category){
+          data[value] = [];
+        }
+        for(Map value in response){
+            data[value['category']]!.add([value['head'], value['body']]);
+        }
       });
-    }
-    Fluttertoast.showToast(msg: '검색 : $str');
+    });
+  }
+  @override
+  bool get wantKeepAlive => true;
+}
+
+
+class FAQList extends StatelessWidget{
+  List<List<String>> tiles;
+  FAQList(this.tiles);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount:tiles.length,
+        separatorBuilder: (context,index){
+          return const Divider();
+        },itemBuilder: (context,index){
+          return NoticeTile(tiles[index][0],tiles[index][1],'',false);
+    });
   }
 }
