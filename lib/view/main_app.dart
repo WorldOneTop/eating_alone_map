@@ -1,7 +1,7 @@
 import 'package:eating_alone/model/providers.dart';
 import 'package:eating_alone/view/menu_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/src/provider.dart';
 import './layouts/export_all.dart';
 import './main_menu.dart';
@@ -32,7 +32,7 @@ class MainSelect extends StatelessWidget {
             TabBarView(children: [
               Container(child: MainMenu(), margin: const EdgeInsets.symmetric(horizontal: 15)),
               MainMap(context.read<LocationProvider>().getLoc())
-            ],physics: const BouncingScrollPhysics())
+            ],physics: const NeverScrollableScrollPhysics())
         ));
   }
 
@@ -105,7 +105,13 @@ class MainSelect extends StatelessWidget {
                 color: Colors.grey[850],),
               title: const Text("문의하기",style: TextStyle(height: 1.1)),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Question()));
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  ChangeNotifierProvider(
+                    create: (context) => QuestionUpdate(),
+                    child: Question(),
+                  )
+                ));
               }
           ),
           ListTile(

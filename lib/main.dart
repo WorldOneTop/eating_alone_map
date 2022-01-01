@@ -18,7 +18,6 @@ void main() {
           providers: [
             ChangeNotifierProvider(create: (context)=>UserProvider()),
             ChangeNotifierProvider(create: (context)=>LocationProvider()),
-            ChangeNotifierProvider(create: (context)=>SMSResponse()),
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,

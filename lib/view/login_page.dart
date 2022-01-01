@@ -93,10 +93,11 @@ class LoginPage extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
                     onPressed: () {
-                      context.read<SMSResponse>().setIsComplete = false;
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignupPage()),
+                        MaterialPageRoute(builder: (context) =>
+                          ChangeNotifierProvider(create: (context) => SMSResponse(), child: SignupPage())
+                        ),
                       );
                     },
                     child: const Text('회원가입')),
@@ -127,10 +128,12 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AccountFindPage()),
+                      MaterialPageRoute(builder: (context) =>
+                          ChangeNotifierProvider(create: (context) => SMSResponse(), child: AccountFindPage())
+                      ),
                     );
                   },
-                  child: const Text('비밀번호가 기억나지 않는다면')),
+                  child: const Text('비밀번호가 기억나지 않는다면',style: TextStyle(fontSize: 16),)),
               const SizedBox(height: 50),
             ])),
             const Expanded(

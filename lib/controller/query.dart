@@ -40,6 +40,10 @@ class UserQuery {
     var response = await http.get(Uri.parse("${DataList.url}updateNickname?id=${user.getId}&nickName=$name"));
     return response.body;
   }
+  Future<String> findAccount() async {
+    var response = await http.get(Uri.parse("${DataList.url}findAccount?id=${user.getId}"));
+    return response.body;
+  }
 }
 class QuestionNotice {
 

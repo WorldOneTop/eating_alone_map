@@ -55,3 +55,12 @@ class SMSResponse extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class QuestionUpdate extends ChangeNotifier {
+  bool isUpdate = false;
+
+  set setIsUpdate(val){
+    isUpdate = val;
+    notifyListeners();
+  }
+}

@@ -82,10 +82,13 @@ class AccountInfo extends StatelessWidget {
                       User user = User();
                       user.setId(context.read<UserProvider>().getId);
                       user.setPassword(ctrOld.text);
-                      UserQuery(user).updatePwd(ctrNew.text).then((response) {
+                      User newUser = User();
+                      newUser.setPassword(ctrNew.text);
+
+                      UserQuery(user).updatePwd(newUser.getPassword).then((response) {
                         if(response.isEmpty){
                           SharedPreferences.getInstance().then((storage){
-                            storage.setString('password', ctrNew.text);
+                            storage.setString('password', newUser.getPassword);
                             Fluttertoast.showToast(msg: '변경되었습니다.');
                             ctrOld.text = "";
                             ctrNew.text = "";
@@ -402,7 +405,7 @@ class _QuestionReportState extends State<QuestionReport> {
 
   @override
   Widget build(BuildContext context) {
-    marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 700 ? 20 : MediaQuery.of(context).size.height - 697);
+    marginBottom = SizedBox(height: MediaQuery.of(context).size.height < 700 ? 20 : MediaQuery.of(context).size.height - 685);
     return ListView(
         physics: const BouncingScrollPhysics(),
           children: [
@@ -486,13 +489,13 @@ class _QuestionReportState extends State<QuestionReport> {
           ])),
     marginBottom!,
     Row(children: [
-    Expanded(child: InkWell(child: Container(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    color: const Color(0xFFF0F0F0),
-    child: Center(child: getTitleText('취소'))
-    ),onTap: (){
-    Fluttertoast.showToast(msg: '취소 버튼');
-    })),
+//    Expanded(child: InkWell(child: Container(
+//    padding: const EdgeInsets.symmetric(vertical: 10),
+//    color: const Color(0xFFF0F0F0),
+//    child: Center(child: getTitleText('취소'))
+//    ),onTap: (){
+//    Fluttertoast.showToast(msg: '취소 버튼');
+//    })),
     Expanded(child: InkWell(child:Container(
     padding: const EdgeInsets.symmetric(vertical: 10),
     color: const Color(0xFF2ECC71),
@@ -532,6 +535,7 @@ class _QuestionReportState extends State<QuestionReport> {
             checkTerm = false;
             _selectedCategory = null;
             Fluttertoast.showToast(msg: "성공적으로 전달되었습니다.");
+            context.read<QuestionUpdate>().setIsUpdate = true;
           });
         }else{
           Fluttertoast.showToast(msg: value);
@@ -554,8 +558,9 @@ class _MyQuestionState extends State<MyQuestion> with AutomaticKeepAliveClientMi
 
   @override
   Widget build(BuildContext context) {
-    if(data.isEmpty){
+    if(data.isEmpty || context.watch<QuestionUpdate>().isUpdate){
       getData();
+      context.read<QuestionUpdate>().setIsUpdate = false;
     }
     return data.isEmpty ? const Center(child: CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent)) :
       Container(
@@ -573,6 +578,7 @@ class _MyQuestionState extends State<MyQuestion> with AutomaticKeepAliveClientMi
   void getData(){
     QuestionNotice().myQuestionList(context.read<UserProvider>().getId).then((value) {
       setState(() {
+        data = [];
         for(Map val in value){
           bool addAnswer = val['answer'].isNotEmpty;
           NoticeTile? answer = addAnswer ? NoticeTile('',val['answer'],'',true) : null;
@@ -580,7 +586,9 @@ class _MyQuestionState extends State<MyQuestion> with AutomaticKeepAliveClientMi
             NoticeTile(val['head'],val['body'],val['time'],addAnswer, answer:answer)
           );
         }
-
+        if(data.isEmpty){
+          data.add(const Center(child: Text("문의 내역이 없습니다.",style: TextStyle(fontSize: 18))));
+        }
       });
     });
   }
