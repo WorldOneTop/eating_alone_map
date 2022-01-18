@@ -66,3 +66,58 @@ class QuestionNotice {
     return response.body;
   }
 }
+
+class HouseModel{
+
+  Future<String> createHouse(House house) async {
+    String time='', number='';
+    if(house.time != null){
+      time = "&time=${house.time}";
+    }
+    if(house.number != null){
+      number = "&number=${house.number}";
+    }
+
+    var response = await http.get(Uri.parse("${DataList.url}createHouse?"
+        "name=${house.name}&location=${house.location}&category=${house.category}&info=${house.info}&lat=${house.lat}&lng=${house.lng}$time$number"
+        ));
+
+
+    return response.body;
+  }
+//  Future<List> selectSearchHouse(String name,String loc1, {String? loc2, String? loc3}) async {
+//    String l2 = '', l3 = '';
+//    if(loc2 != null){
+//      l2 = "&location_2=" + loc2;
+//    }
+//    if(loc3 != null){
+//      l3 = "&location_3=" + loc3;
+//    }
+//    var response = await http.get(Uri.parse("${DataList.url}selectSearchHouse?"
+//        "name=$name&location_1=$loc1" + l2 + l3
+//    ));
+//
+//    //id, rating, name, review_count, category, profile_image
+//    return jsonDecode(response.body);
+//  }
+  Future<List> selectLocationHouse(List<String> loc, {String? category}) async {
+    String l2 = '', l3 = '';
+    String cate = '';
+
+    if(loc[1].isNotEmpty){
+      l2 = "&location_2=" + loc[1];
+    }
+    if(loc[2].isNotEmpty){
+      l3 = "&location_3=" + loc[2];
+    }
+    if(category != null){
+      cate = "&category=" + category;
+    }
+    var response = await http.get(Uri.parse("${DataList.url}selectLocationHouse?location_1=" + loc[0] + l2 + l3 + cate));
+
+    //id, rating, name, review_count, profile_image, lat, lng, category
+    return jsonDecode(response.body);
+  }
+
+
+}

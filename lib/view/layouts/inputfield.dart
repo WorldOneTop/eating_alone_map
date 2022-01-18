@@ -4,7 +4,7 @@ class CustomTextField {
 
   static Container normalInput({double? width, String hint = '입력해주세요.', Icon? suffixIcon, Icon? prefixIcon, int size = 2,bool enable = true,
   Function(String)? onChange,Function(String)? onSubmited, TextEditingController? controller, int fillColor = 0xb2ffffff,Color? inputColor,
-  int? maxLines = 1, String? error}) {
+  int? maxLines = 1, String? error, int? maxLength}) {
 
     double height = 50, fontSize = 20;
     if(size == 1) { // 작은 사이즈
@@ -18,7 +18,7 @@ class CustomTextField {
         height: height,
         child:TextField(
           enabled: enable,
-          style: TextStyle(color: inputColor),
+          style: TextStyle(color: inputColor,fontSize: fontSize,height: size==1 ? 1.4 : 1),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(10),
           focusedBorder: InputBorder.none,
@@ -31,7 +31,8 @@ class CustomTextField {
           prefixIcon: prefixIcon,
           errorText: error,
       ),
-              maxLines: maxLines,
+          maxLines: maxLines,
+          maxLength: maxLength,
               onChanged: onChange,
           controller: controller,
         onSubmitted: onSubmited,
@@ -74,7 +75,7 @@ class CustomTextField {
         ));
   }
   static Container textInput({double? height, String hint = '입력해주세요.',  int size = 2,
-Function(String)? onChange, TextEditingController? controller, int fillColor = 0xb2ffffff, int? minLines})  {
+Function(String)? onChange, TextEditingController? controller, int fillColor = 0xb2ffffff, int? minLines,int? maxLines, int? maxLength})  {
     return Container(
         height: height,
         child:TextField(
@@ -87,8 +88,9 @@ Function(String)? onChange, TextEditingController? controller, int fillColor = 0
             filled: true,
             hintText: hint,
         ),
-        maxLines: null,
+        maxLines: maxLines,
         minLines: minLines,
+        maxLength: maxLength,
         onChanged: onChange,
         controller: controller,
 ));

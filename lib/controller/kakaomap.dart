@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KakaoMapItem {
-  final String imageFile,name;
+  final int id;
+  final String imageFile;
   final double lat,lng;
 
-  KakaoMapItem(this.name, this.lat, this.lng, this.imageFile);
+  KakaoMapItem(this.id, this.lat, this.lng, this.imageFile);
 
   @override
   String toString() {
-    return '{"name":"$name","lat":"$lat","lng":"$lng","image_file":"$imageFile.png"}';
+    return '{"name":"$id  ","lat":"$lat","lng":"$lng","image_file":"$imageFile.png"}';
   }
 }
 
@@ -27,8 +28,8 @@ class KakaoMap extends StatelessWidget {
   WebViewController? controller;
 
   final void Function(JavascriptMessage)? clickListener;
-
   final void Function(JavascriptMessage)? coordConvert;
+  final void Function(JavascriptMessage)? getLatLng;
 
   KakaoMap(
       {required this.width,
@@ -37,6 +38,7 @@ class KakaoMap extends StatelessWidget {
       required this.items,
       this.clickListener,
       this.coordConvert,
+        this.getLatLng,
       this.zoomLevel = 3,
       this.hasClickListener = false});
 
@@ -87,6 +89,10 @@ class KakaoMap extends StatelessWidget {
       channels.add(JavascriptChannel(
           name: 'CoordConvertListener', onMessageReceived: coordConvert!));
     }
+    if(getLatLng != null){
+      channels.add(JavascriptChannel(
+      name: 'latLngListener', onMessageReceived: getLatLng!));
+    }
     if (channels.isEmpty) {
       return null;
     }
@@ -105,6 +111,12 @@ class KakaoMap extends StatelessWidget {
   }
   void getMarkerAddr(){
     controller!.runJavascript('getMarkerAddr()');
+  }
+  void getMarkerLatLng(){
+    controller!.runJavascript('getMarkerLatLng()');
+  }
+  void createMarkers(List<KakaoMapItem> items){
+    controller!.runJavascript("postMessage('$items');");
   }
 
   String _getURL() {

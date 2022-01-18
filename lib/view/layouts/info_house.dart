@@ -6,6 +6,7 @@ import '../house_detail.dart';
 import 'enlarge_image.dart';
 
 class InfoHouse extends StatelessWidget{
+  int id;
   String title,heart='',category = '?';
   String? image;
   double? rating;
@@ -13,7 +14,7 @@ class InfoHouse extends StatelessWidget{
   double height = 110;
   bool onTap;
 
-  InfoHouse(this.title,this.onTap,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
+  InfoHouse(this.id,this.title,this.onTap,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class InfoHouse extends StatelessWidget{
           Fluttertoast.showToast(msg: "좋아요 처리");
         },onTap:(){
           if(onTap){
-            Navigator.push(context, MaterialPageRoute(builder:(context) => HouseDetail(title,image: image,category: category,rating: rating,review: review,heart: heart)),);
+            Navigator.push(context, MaterialPageRoute(builder:(context) => HouseDetail(id, title,image: image,category: category,rating: rating,review: review,heart: heart)),);
           }
     },child:
       Container(

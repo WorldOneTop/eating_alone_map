@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'layouts/area_setting.dart';
+import 'layouts/image_layout.dart';
 import 'layouts/info_house.dart';
 import 'layouts/inputfield.dart';
 import 'layouts/loading.dart';
@@ -292,14 +293,14 @@ class MyHouse extends StatefulWidget {
 
 class _MyHouseState extends State<MyHouse> {
   List<Widget> test = [
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-    InfoHouse('24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-    InfoHouse('강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse(1,'24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse(1,'강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse(1,'24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse(1,'강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse(1,'24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse(1,'강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
+    InfoHouse(1,'24시 전주 명가 콩나물국밥 강릉점',true,category: '한식',heart: '♥', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
+    InfoHouse(1,'강릉 육사시미',true,category: '한식',heart: '♥', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -343,7 +344,7 @@ class _NoticeState extends State<Notice> {
         cache.add(NoticeTile(value['head'],value['body'], value['time'],false));
       }
       setState(() {
-        tiles = cache;
+        tiles = cache.reversed.toList();
       });
     });
   }
@@ -431,13 +432,6 @@ class _QuestionReportState extends State<QuestionReport> {
               )),
             ]),
             const SizedBox(height:8),
-//            Row(children: [
-//              Expanded(flex: 1,child: getTitleText('제목')),
-//              const Expanded(flex: 1,child: SizedBox()),
-//              Expanded(flex: 4,child: CustomTextField.normalInput(
-//                hint: '제목을 입력해주세요.',fillColor: 0xFFF6F6F6,inputColor: Colors.black,controller: headCtr
-//              )),
-//            ]),
             getTitleText('제목'),
             const SizedBox(height:8),
             CustomTextField.normalInput(
@@ -446,7 +440,7 @@ class _QuestionReportState extends State<QuestionReport> {
             getTitleText('문의 내용'),
             const SizedBox(height:8),
             CustomTextField.textInput(hint:'내용을 입력해주세요.',minLines: 4,fillColor: 0xFFF8F8F8,controller: bodyCtr),
-            Row(children: [getTitleText('첨부파일'),const Expanded(child: SizedBox()),imageUploadLayout(),imageUploadLayout(),imageUploadLayout()]),
+            Row(children: [getTitleText('첨부파일'),const Expanded(child: SizedBox()),ImageUpload(35),const SizedBox(width: 8),ImageUpload(35),const SizedBox(width: 8),ImageUpload(35)]),
             Row(children:const [Expanded(child:SizedBox()),Text('이미지는 최대 3장까지 업로드 가능합니다.', style: TextStyle(fontSize: 14,color: Colors.grey),textAlign: TextAlign.end,)]),
             const SizedBox(height:12),
             Row(children: [
@@ -498,7 +492,7 @@ class _QuestionReportState extends State<QuestionReport> {
 //    })),
     Expanded(child: InkWell(child:Container(
     padding: const EdgeInsets.symmetric(vertical: 10),
-    color: const Color(0xFF2ECC71),
+    color: const Color(0xFF77bff8),
     child: Center(child: getTitleText('작성 완료'))
     ),onTap: (){
     questionSubmit();
@@ -589,6 +583,7 @@ class _MyQuestionState extends State<MyQuestion> with AutomaticKeepAliveClientMi
         if(data.isEmpty){
           data.add(const Center(child: Text("문의 내역이 없습니다.",style: TextStyle(fontSize: 18))));
         }
+        data = data.reversed.toList();
       });
     });
   }
@@ -676,6 +671,7 @@ class FAQList extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+        reverse: true,
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount:tiles.length,

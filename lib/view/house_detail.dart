@@ -1,4 +1,5 @@
 import 'package:eating_alone/model/enum.dart';
+import 'package:eating_alone/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -6,15 +7,17 @@ import 'create_review.dart';
 import 'layouts/appbar.dart';
 import 'layouts/info_house.dart';
 import 'layouts/review.dart';
+import 'update_house.dart';
 
 
 class HouseDetail extends StatefulWidget {
+  int id;
   String title,heart,category;
   String? image;
   double? rating;
   int review;
 
-  HouseDetail(this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
+  HouseDetail(this.id, this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
 
   @override
   _HouseDetailState createState() => _HouseDetailState();
@@ -30,7 +33,7 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
   void initState() {
     _scrollController = ScrollController();
     _tabController = TabController(vsync: this, length: 3,initialIndex: 1);
-    infoHouse = InfoHouse(widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
+    infoHouse = InfoHouse(widget.id,widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
     inputTabBottom= PreferredSize(
       preferredSize: const Size.fromHeight(40),
       child: Container(
@@ -120,7 +123,15 @@ class PageInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: const BouncingScrollPhysics(),
       children: [
+        Row(children:  [
+          const Expanded(child: SizedBox()),
+          TextButton(child: const Text('♡',style: TextStyle(color: Color(0xF0F86A5B), fontSize: 25)),
+              onPressed: (){
+                Fluttertoast.showToast(msg: '좋아요');
+          })
+        ]),
         _getTitleText(context, '가게 설명'),
         _getBodyText(context,mainInfo),
         _getTitleText(context, '전화번호'),
@@ -132,6 +143,21 @@ class PageInfo extends StatelessWidget {
         _getBodyText(context,location),
         _getTitleText(context, '비고'),
         _getBodyText(context,note),
+        Row(children: [
+          const Expanded(child: SizedBox()),
+          TextButton(child: const Text('잘못된 신고하기',style: TextStyle(fontSize: 17)),
+            onPressed: (){
+            Fluttertoast.showToast(msg: '신고');
+            })
+        ]),
+        Row(children: [
+          const Expanded(child: SizedBox()),
+          TextButton(child: const Text('정보 변경하기',style: TextStyle(fontSize: 17)),
+              onPressed: (){
+//            House house = House();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HouseUpdate(null)));
+              })
+        ]),
       ],
     );
   }
@@ -149,6 +175,9 @@ class PageInfo extends StatelessWidget {
       margin: const EdgeInsets.only(left: 8,bottom: 20),
         child:Text(str,style: Theme.of(context).textTheme.bodyText1)
     );
+  }
+  void changeHeart(){
+
   }
 }
 
@@ -219,7 +248,8 @@ class PageReview extends StatelessWidget {
 
 
     return ListView.separated(
-        itemCount: test.length,
+      physics: const BouncingScrollPhysics(),
+      itemCount: test.length,
         itemBuilder: (context, index) {
           return test[index];
         },

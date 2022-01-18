@@ -138,6 +138,15 @@ class ModelImage {
     return false;
   }
 }
+class House{
+  int? id;
+  String? name, location, category, info, time,number;
+  List<Map>? menus;
+  double? lat,lng;
+
+  House({this.id,this.name,this.location,this.category,this.info,this.time,this.number,this.menus,this.lat,this.lng});
+
+}
 class HouseMain {
   int? _id,_reviewCount;
   String? _name,_category,_location,_location_1,_location_2,_location_3,_priceImage,_profileImage;

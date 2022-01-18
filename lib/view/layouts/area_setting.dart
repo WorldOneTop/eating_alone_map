@@ -18,7 +18,6 @@ class _AreaSettingState extends State<AreaSetting> {
     return Row(
       children: [
         Row(children: [getLocText(0), getLocText(1), getLocText(2)]),
-//        Text(_selectedArea, style: Theme.of(context).textTheme.headline5),
         const Expanded(child: SizedBox()),
         InkWell(
             onTap: () { selectCurrentLocation(_locations);},

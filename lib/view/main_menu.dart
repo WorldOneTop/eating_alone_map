@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'layouts/area_setting.dart';
 import 'selected_menu.dart';
 import 'package:provider/provider.dart';
+
+import 'update_house.dart';
 class MainMenu extends StatelessWidget {
 
   @override
@@ -32,7 +34,10 @@ class MainMenu extends StatelessWidget {
               shrinkWrap: true,
               crossAxisCount: crossAxisCount,
               mainAxisSpacing: 20,
-              children: List.generate(DataList.menuName.length, (index) {
+              children: List.generate(DataList.menuName.length+1, (index) {
+                if(index == DataList.menuName.length){
+                  return MenuItem('assets/images/icons/add_house.png', '가게 등록',-1,size);
+                }
                 return MenuItem('assets/images/icons/${DataList.menuName[index]}.png', DataList.menuName[index],index,size);})
           ),
         ]
@@ -62,8 +67,11 @@ class MenuItem extends StatelessWidget {
         ]
     ),
       onTap: (){
+      if(index == -1){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HouseUpdate(null)));
+      }else{
         Navigator.push(context, MaterialPageRoute(builder: (context) => SelectMenu(name,index)));
-      },
+      }},
     );
   }
 }

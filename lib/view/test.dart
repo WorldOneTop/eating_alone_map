@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
               child: Text('검색창 페이지')),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseDetail('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
+//                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseDetail('24시전주명가콩나물국밥 강릉',category: '한식', rating: 4.0,review: 2 )));
               },
               child: Text('식당 정보 확인 페이지')),
           ElevatedButton(
@@ -339,7 +339,7 @@ class TestMapAPI extends StatelessWidget {
       width: width!,
       height: height!-300,
       centerAddr: '서울 중구',
-      items: [KakaoMapItem('테스트1',37.566826, 126.9786567,'한식'),KakaoMapItem('테스트2',37.566826, 126.9776587,'양식')],
+      items: [KakaoMapItem(1,37.566826, 126.9786567,'한식'),KakaoMapItem(2,37.566826, 126.9776587,'양식')],
       clickListener: (message){
         Fluttertoast.showToast(msg: message.message);
       },coordConvert: (message){
