@@ -56,7 +56,7 @@ class _HouseUpdateState extends State<HouseUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, "식당 등록"),
         bottomSheet:
             Container(height: 60,
@@ -74,7 +74,15 @@ class _HouseUpdateState extends State<HouseUpdate> {
                   const VerticalDivider(thickness: 2,color: Colors.white,),
                   Expanded(child: InkWell(child:
                   const Center(child: Text('메뉴 등록하기    →',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.black))),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MenuUpdate(widget.house!))))),
+                      onTap: () => {
+                    if(checkSubmit()){
+                      settingSubmit(),
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => MenuUpdate(widget.house!,
+                              null)))
+                    }
+                      }
+                  )),
                 ])),
         body: ListView(
             physics: const BouncingScrollPhysics(),
@@ -239,23 +247,33 @@ class _HouseUpdateState extends State<HouseUpdate> {
           );
         });
     }
-    void submitHouse(){
+    bool checkSubmit(){
       if(ctrName.text.isEmpty){
         Fluttertoast.showToast(msg: '가게 명을 입력해주세요.');
-        return;
+        return false;
       }else if(ctrInfo.text.isEmpty){
         Fluttertoast.showToast(msg: '가게 설명을 입력해주세요.');
-        return;
+        return false;
       }else if(widget.house!.location!.isEmpty){
         Fluttertoast.showToast(msg: '가게 위치를 입력해주세요.');
-        return;
+        return false;
       }
+      return true;
+    }
+    void settingSubmit(){
       widget.house!.name = ctrName.text;
       widget.house!.info = ctrInfo.text;
 
       if(ctrNumber.text.isNotEmpty){
-      widget.house!.number = ctrNumber.text;
+        widget.house!.number = ctrNumber.text;
       }
+    }
+    void submitHouse(){
+      if(!checkSubmit()){
+        return;
+      }
+      settingSubmit();
+
       LoadingDialog(context);
 
       HouseModel().createHouse(widget.house!).then((value) {
@@ -413,8 +431,9 @@ class _TimeContentState extends State<TimeContent> {
 
 class MenuUpdate extends StatefulWidget {
   House house;
+  List<HouseMenu>? menus;
 
-  MenuUpdate(this.house);
+  MenuUpdate(this.house,this.menus);
 
   @override
   _MenuUpdateState createState() => _MenuUpdateState();
@@ -430,10 +449,10 @@ class _MenuUpdateState extends State<MenuUpdate> {
   Widget build(BuildContext context) {
     if(bodyWidgets.isEmpty){
     bodyWidgets = [
-      const Text("메뉴 등록",style: TextStyle(fontSize: 32,fontWeight: FontWeight.bold)),
-      const SizedBox(),
-      const SizedBox(),
-      const SizedBox(height: 30),
+      // const Text("메뉴 등록",style: TextStyle(fontSize: 32,fontWeight: FontWeight.bold)),
+      // const SizedBox(),
+      // const SizedBox(),
+      // const SizedBox(height: 30),
       InkWell(
         child: Container(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -451,9 +470,17 @@ class _MenuUpdateState extends State<MenuUpdate> {
       },
       ),
       const SizedBox(height: 80),
-    ];}
+    ];
+
+    widget.menus ??= [];
+
+    for(HouseMenu menu in widget.menus!){
+      bodyWidgets.insert(bodyWidgets.length-2, menuAddWidget(bodyWidgets.length-2,name:menu.getName,price: menu.getPrice.toString()));
+    }
+
+    }
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, "식당 등록"),
         bottomSheet: InkWell(
           child: Container(
@@ -467,28 +494,32 @@ class _MenuUpdateState extends State<MenuUpdate> {
                   Icon(Icons.check,size: 30)
                 ])
           ),
-          onTap: submitHouse,
+          onTap: submitMenu,
         ),
         body: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(17, 14, 17, 0),
-            itemCount: bodyWidgets.length,
+            itemCount: bodyWidgets.length+2,
             itemBuilder: (context,index){
-              if(index == 1){
-                return Row(children: [
-                  const Expanded(child: SizedBox()),
-                  InkWell(child: Row(children: [
-                    const Text('메뉴판 사진 등록'),Icon(priceImageOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)
-                  ]),onTap: (){
-                    setState(() {
-                      priceImageOpen = !priceImageOpen;
-                    });
-                  }),
-                ]);
-              }else if(index == 2){
-                return Visibility(child: priceImage(),visible: priceImageOpen);
+              if(index == 0){
+                return const Text("메뉴 등록",style: TextStyle(fontSize: 32,fontWeight: FontWeight.bold));
+
+
+              //   return Row(children: [
+              //     const Expanded(child: SizedBox()),
+              //     InkWell(child: Row(children: [
+              //       const Text('메뉴판 사진 등록'),Icon(priceImageOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)
+              //     ]),onTap: (){
+              //       setState(() {
+              //         priceImageOpen = !priceImageOpen;
+              //       });
+              //     }),
+              //   ]);
+              }else if(index == 1){
+                return const SizedBox(height: 30);
+                // return Visibility(child: priceImage(),visible: priceImageOpen);
               }
-              return bodyWidgets[index];
+              return bodyWidgets[index-2];
             })
     );
   }
@@ -507,8 +538,8 @@ class _MenuUpdateState extends State<MenuUpdate> {
       )
     ],);
   }
-  Widget menuAddWidget(int index){
-    List<TextEditingController> ctr = [TextEditingController(), TextEditingController()];
+  Widget menuAddWidget(int index,{name="",price=""}){
+    List<TextEditingController> ctr = [TextEditingController(text: name), TextEditingController(text: price)];
     ctrs.add(ctr);
 
     return Column(
@@ -538,38 +569,88 @@ class _MenuUpdateState extends State<MenuUpdate> {
       ],
     );
   }
-  void submitHouse(){
-    if(ctrs.isEmpty){
-      return ;
-    }
-//    String result = "[";
-//    for(int i=0; i< ctrs.length; i++ ){
-//      result += '{"name":"${ctrs[i][0].text}","price":"${ctrs[i][1].text}"}';
-//      if(i < ctrs.length - 1 ){
-//        result += ',';
-//      }else{
-//        result += ']';
-//      }
-//    }
-//    print(result);
-//    List<Map> result = [];
-//    for(int i=0;i<ctrs.length; i++){
-//      result.add(
-//        {
-//          'name': ctrs[i][0],
-//          'price': ctrs[i][1],
-//        }
-//      );
-//    }
-//    for(int i=0;)
-//    int index = 0;
-//
-//    if(widget.house.menus != null){
-//      for(; index < widget.house.menus!.length; index++){
-//        widget.house.menus![index]['name'] = ;
-//        widget.house.menus![index]['name'] = "";
-//      }
-//    }
 
+  HouseMenu? getMenu(String name, String price){ // 이미지도
+    HouseMenu m = HouseMenu();
+    if(int.tryParse(price) == null) {
+      return null;
+    }
+    if(!m.setName(name) || !m.setPrice(int.parse(price))){
+      return null;
+    }
+    return m;
+  }
+  void submitMenu(){
+    List<HouseMenu> addMenu = [];
+    List<String> delMenu = [];
+    List<HouseMenu> updateMenu = [];
+
+    // removeMenu
+    for(int i=0; i < ctrs.length; i++){
+      if(i < widget.menus!.length){
+        if(bodyWidgets[i].toStringShort() == "SizedBox"){
+          delMenu.add(widget.menus![i].getId);
+        }else{
+          if(widget.menus![i].getName != ctrs[i][0].text || widget.menus![i].getPrice.toString() != ctrs[i][1].text){
+            HouseMenu? menu = getMenu(ctrs[i][0].text,ctrs[i][1].text);
+            if(menu == null){
+              Fluttertoast.showToast(msg: "올바르게 입력해주세요.");
+              return;
+            }
+            updateMenu.add(menu);
+          }
+        }
+      }else{
+        if(bodyWidgets[i].toStringShort() != "SizedBox"){
+          HouseMenu? menu = getMenu(ctrs[i][0].text,ctrs[i][1].text);
+          if(menu == null){
+            Fluttertoast.showToast(msg: "올바르게 입력해주세요.");
+            return;
+          }
+          addMenu.add(menu);
+        }
+      }
+    }
+
+
+    LoadingDialog(context);
+
+    if(widget.house.id == null){ // 메뉴랑 식당 동시 등록, 로딩다이얼로그, 등록 두개창 떠있는중(pop 3번)
+      HouseModel().createHouse(widget.house).then((value) {
+        if (int.tryParse(value) == null) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: value);
+        }else{
+          HouseModel().createHouseMenu(int.parse(value), addMenu).then((value) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Fluttertoast.showToast(msg: '등록이 완료되었습니다!');
+          });
+        }
+      });
+    }else{ // 기존 식당에 메뉴 업데이트
+        menuUpdate(widget.house.id!, addMenu, delMenu, updateMenu).then((value) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: '등록이 완료되었습니다!');
+        });
+      }
+    }
+  Future<String> menuUpdate(int id, List<HouseMenu> addMenu,List<String> delMenu, List<HouseMenu> updateMenu) async{
+    HouseModel hm = HouseModel();
+    if(addMenu.isNotEmpty){
+      await hm.createHouseMenu(id, addMenu);
+    }
+    if(delMenu.isNotEmpty){
+      await hm.deleteHouseMenu(delMenu);
+    }
+    if(updateMenu.isNotEmpty){
+      await hm.updateHouseMenu(updateMenu);
+    }
+    return "";
   }
 }
+
+

@@ -31,7 +31,7 @@ class MainSelect extends StatelessWidget {
           body:
             TabBarView(children: [
               Container(child: MainMenu(), margin: const EdgeInsets.symmetric(horizontal: 15)),
-              MainMap(context.read<LocationProvider>().getLoc())
+              MainMap()
             ],physics: const NeverScrollableScrollPhysics())
         ));
   }

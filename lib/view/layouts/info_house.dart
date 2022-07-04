@@ -7,14 +7,14 @@ import 'enlarge_image.dart';
 
 class InfoHouse extends StatelessWidget{
   int id;
-  String title,heart='',category = '?';
+  String title,heart='',category = '?',location;
   String? image;
   double? rating;
   int review=0;
   double height = 110;
   bool onTap;
 
-  InfoHouse(this.id,this.title,this.onTap,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
+  InfoHouse(this.id,this.title,this.onTap,this.location,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +38,9 @@ class InfoHouse extends StatelessWidget{
       inputImage = Image.network(image!,fit:BoxFit.cover,height: height);
     }
     return GestureDetector(
-        onLongPress: (){
-          Fluttertoast.showToast(msg: "좋아요 처리");
-        },onTap:(){
+        onTap:(){
           if(onTap){
-            Navigator.push(context, MaterialPageRoute(builder:(context) => HouseDetail(id, title,image: image,category: category,rating: rating,review: review,heart: heart)),);
+            Navigator.push(context, MaterialPageRoute(builder:(context) =>HouseDetail(this)));
           }
     },child:
       Container(

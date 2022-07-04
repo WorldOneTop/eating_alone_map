@@ -1,4 +1,7 @@
+import 'package:eating_alone/controller/query.dart';
+import 'package:eating_alone/model/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import './layouts/export_all.dart';
 import 'package:eating_alone/model/enum.dart';
 
@@ -18,6 +21,7 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
   List<ListView> tabBarView = [];
   Widget? selectSort;
   TabBarView? inputTabBarView;
+  Map<String,List<Widget>?> houseList= { for (var v in DataList.menuName) v : null };
 
 
 
@@ -25,7 +29,6 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
     super.initState();
     List<Text> tabList = [];
     TabBar initTabBar;
-
 
     ctr = TabController(vsync: this, length: DataList.menuName.length,initialIndex: widget.index);
     selectSort = SelectSort();
@@ -65,6 +68,7 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    print("그럼 이게 재실행?");
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.menu, widget.menu,bottom : tabBar),
@@ -78,34 +82,45 @@ class _SelectMenuState extends State<SelectMenu> with SingleTickerProviderStateM
   }
 
   ListView buildTabLayout(String menu) {
-    List<Widget> test = [
-      Row(mainAxisAlignment: MainAxisAlignment.end,children: [selectSort!]),
-      SizedBox(height: 20,),
-      InfoHouse(1,'강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-      SizedBox(height: 20,),
-      InfoHouse(1,'24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-      SizedBox(height: 20,),
-      InfoHouse(1,'강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-      SizedBox(height: 20,),
-      InfoHouse(1,'24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-      SizedBox(height: 20,),
-      InfoHouse(1,'강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-      SizedBox(height: 20,),
-      InfoHouse(1,'24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-      SizedBox(height: 20,),
-      InfoHouse(1,'강릉 육사시미',true,category: '한식', rating: 4.5,review: 93,image: 'https://picsum.photos/100'),
-      SizedBox(height: 20,),
-      InfoHouse(1,'24시 전주 명가 콩나물 국밥 강릉점',true,category: '한식',heart: '♡', rating: 4.3,review: 824,image: 'https://picsum.photos/100' ),
-      SizedBox(height: 20,),
-      SizedBox(height: 20,)];
+    if(houseList[menu] == null){
+      houseList[menu] = [const Center(child:  CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))];
+      getData(menu);
+    }
+    print(menu);
+    print(houseList[menu]!.length+1);
     return ListView.builder(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        itemCount: test.length,
+        itemCount: houseList[menu]!.length+1,
         itemBuilder: (BuildContext context, int index){
-          return Container(child:test[index]);
+          if(index==0){
+            return const SizedBox(height: 10);
+          }
+          return Container(child:houseList[menu]![index-1]);
         }
     );
+  }
+
+  void getData(String menu){
+
+    HouseModel().selectCategoryHouse(menu, context.read<LocationProvider>().getLoc()).then((value){
+      setState(() {
+        if(value.isEmpty){
+          houseList[menu] = [ Center(child:Text('주변에 위치한 $menu 식당이 없습니다.',style:const TextStyle(fontSize: 32,color: Colors.black),textAlign: TextAlign.center))];
+          return;
+        }
+        houseList[menu] = transformHouseList(value,menu);
+      });
+    });
+  }
+  List<InfoHouse> transformHouseList(List value, String menu){
+    List<InfoHouse> list = [];
+    for(Map val in value){
+      list.add(InfoHouse(val['id'], val['name'],true,val['location'],category: menu, rating: val['rating'],
+          review: val['review_count'], image: 'https://picsum.photos/100'));
+    }
+    print(list.toString());
+    return list;
   }
 }
 

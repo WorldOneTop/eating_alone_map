@@ -115,13 +115,14 @@ class _ReviewFootLayoutState extends State<ReviewFootLayout> {
 
 
 class ReviewContainer extends StatelessWidget {
+  int id;
   String name, text;
   DateTime time;
   String? profileImage;
   List<String>? hashtags, images;
   double? rating;
 
-  ReviewContainer(this.name, this.text, this.time, {this.profileImage, this.hashtags, this.images, this.rating});
+  ReviewContainer(this.id,this.name, this.text, this.time, {this.profileImage, this.hashtags, this.images, this.rating});
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+import 'package:eating_alone/controller/kakaomap.dart';
+import 'package:eating_alone/controller/query.dart';
 import 'package:eating_alone/model/enum.dart';
 import 'package:eating_alone/model/model.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +13,11 @@ import 'update_house.dart';
 
 
 class HouseDetail extends StatefulWidget {
-  int id;
-  String title,heart,category;
-  String? image;
-  double? rating;
-  int review;
-
-  HouseDetail(this.id, this.title,{this.image,  this.category = '기타', this.rating, this.review=0,this.heart=''});
+  InfoHouse infoHouse;
+  late int houseId;
+  HouseDetail(this.infoHouse) {
+    houseId = infoHouse.id;
+  }
 
   @override
   _HouseDetailState createState() => _HouseDetailState();
@@ -27,13 +27,16 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
   ScrollController? _scrollController;
   TabController? _tabController;
   PreferredSize? inputTabBottom;
-  InfoHouse? infoHouse;
+
+  PageInfo? pageInfo;
+  Widget? pageMenu;
+  Widget? pageReview;
+
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _tabController = TabController(vsync: this, length: 3,initialIndex: 1);
-    infoHouse = InfoHouse(widget.id,widget.title,false,image: widget.image, category: widget.category,rating: widget.rating, review: widget.review,heart: widget.heart);
     inputTabBottom= PreferredSize(
       preferredSize: const Size.fromHeight(40),
       child: Container(
@@ -65,15 +68,18 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    if(pageInfo == null && pageMenu == null && pageReview == null){
+      getData();
+    }
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.title),
+        appBar: CustomAppbar.getInstance().getAppBar(context, Appbar_mode.detail, widget.infoHouse.title),
         body: NestedScrollView(
           controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                title: infoHouse,
+                title: widget.infoHouse,
                 pinned: true,
                 floating: true,
                 snap: false,
@@ -89,37 +95,98 @@ class _HouseDetailState extends State<HouseDetail> with SingleTickerProviderStat
                 controller: _tabController,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25,vertical: 30),
-                    child: PageInfo('직접 업데이트하거나 없애거나 정보수정가능하게 하거나','033-1234-5678','월~금 05:00~22:00, 토 일 휴무 등등','강원 춘천시 삭주로 98 (우)24254')
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 25),
-                    child: PageMenu({
-                      '장칼국수':7000,
-                      '장칼국수옹심이':8000,
-                      '쥐눈이콩(약콩)냉콩국수':8000,
-                      '어린이를 위한 영양주먹밥어린이를 위한 영양주먹밥':3000
-                    })
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                    child: PageReview(context,infoHouse!)
-                  ),
+                      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                      child: pageInfo ?? const Center(child:  CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))
+                  ),Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                      child: pageMenu ?? const Center(child:  CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))
+                  ),Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: pageReview ?? const Center(child:  CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))
+                  )
                 ],
           ),
         ),
     );
   }
+  void getData(){
+    HouseModel().selectHouseInfo(widget.houseId).then((value){
+      setState(() {
+        pageInfo = PageInfo(House(
+            id:widget.houseId,
+            info:value['info'],
+            lat:double.parse(value['lat']),
+            lng:double.parse(value['lng']),
+            time:value['time'] ?? "\n",
+            number:value['number'] ?? "\n",
+            location:widget.infoHouse.location
+        ),KakaoMap(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width*2/3,
+          centerAddr: value['lat']+","+value['lng'],
+          zoomLevel: 6,
+          items: [KakaoMapItem(widget.houseId,double.parse(value['lat']),double.parse(value['lng']),widget.infoHouse.category)],
+        ));
+      });
+    });
+    HouseModel().selectHouseMenu(widget.houseId).then((value){ //[{name, price, image}]
+      setState(() {
+        List<HouseMenu> menus = [];
+        for(Map m in value){
+          HouseMenu h = HouseMenu();
+          h.setId(m['id']);
+          h.setName(m['name']);
+          h.setPrice(m['price']);
+          // h.setImage();
+          menus.add(h);
+        }//이미지필요
+        if(menus.isEmpty){
+          pageMenu = const Text("메뉴가 없습니다.");
+        }else {
+          pageMenu = PageMenu(menus);
+        }
+      });
+    });
+    HouseModel().selectHouseReview(widget.houseId).then((value){
+      setState(() {
+        List<ReviewContainer> reviews = [];
+        for(Map m in value){
+          ReviewContainer review = ReviewContainer(m['user_id'],m['user_nickName'],m['body'],m['time']);
+          if(m['hashtag'] != null){
+
+          }
+          if(m['images'] != null){
+
+          }
+          if(m['rating'] != null){
+
+          }
+          if(m['user_image'] != null){
+
+          }
+          reviews.add(review);
+        }
+        if(reviews.isEmpty){
+          pageReview = const Text("리뷰가 없습니다.");
+        }else {
+          pageReview = PageReview(widget.infoHouse, reviews);
+        }
+      });
+    });
+  }
 }
 
 
+class PageInfo extends StatefulWidget{
+  House house;
+  KakaoMap kakaoMap;
+  PageInfo(this.house,this.kakaoMap);
 
-class PageInfo extends StatelessWidget {
-  String mainInfo, number, time, location;
-  String note;
+  @override
+  _PageInfoState createState() => _PageInfoState();
+}
 
-  PageInfo(this.mainInfo, this.number, this.time, this.location, {this.note = ''});
-
+class _PageInfoState extends State<PageInfo> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -130,41 +197,36 @@ class PageInfo extends StatelessWidget {
           TextButton(child: const Text('♡',style: TextStyle(color: Color(0xF0F86A5B), fontSize: 25)),
               onPressed: (){
                 Fluttertoast.showToast(msg: '좋아요');
-          })
+              })
         ]),
         _getTitleText(context, '가게 설명'),
-        _getBodyText(context,mainInfo),
+        _getBodyText(context,widget.house.info),
         _getTitleText(context, '전화번호'),
-        _getBodyText(context,number),
+        _getBodyText(context,widget.house.number),
         _getTitleText(context, '영업시간'),
-        _getBodyText(context,time),
+        _getBodyText(context,widget.house.time),
         _getTitleText(context, '위치'),
-        Container(height: 80,color: Colors.blueGrey),
-        _getBodyText(context,location),
-        _getTitleText(context, '비고'),
-        _getBodyText(context,note),
+        widget.kakaoMap,
+        _getBodyText(context,widget.house.location),
         Row(children: [
           const Expanded(child: SizedBox()),
-          TextButton(child: const Text('잘못된 신고하기',style: TextStyle(fontSize: 17)),
-            onPressed: (){
-            Fluttertoast.showToast(msg: '신고');
-            })
+          TextButton(child: const Text('잘못된 정보 신고하기',style: TextStyle(fontSize: 17)),
+              onPressed: (){
+                Fluttertoast.showToast(msg: '신고');
+              })
         ]),
         Row(children: [
           const Expanded(child: SizedBox()),
           TextButton(child: const Text('정보 변경하기',style: TextStyle(fontSize: 17)),
               onPressed: (){
 //            House house = House();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => HouseUpdate(null)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HouseUpdate(null)));
               })
         ]),
       ],
     );
   }
   Text _getTitleText(BuildContext context, String str) {
-    if(str == '비고' || note == null) {
-      return const Text('');
-    }
     return Text(str,style: Theme.of(context).textTheme.subtitle1);
   }
   Container _getBodyText(BuildContext context, String? str) {
@@ -172,17 +234,78 @@ class PageInfo extends StatelessWidget {
       return Container();
     }
     return Container(
-      margin: const EdgeInsets.only(left: 8,bottom: 20),
+        margin: const EdgeInsets.only(left: 8,bottom: 20),
         child:Text(str,style: Theme.of(context).textTheme.bodyText1)
     );
   }
   void changeHeart(){
 
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
+
+// class PageInfoo extends StatelessWidget {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       physics: const BouncingScrollPhysics(),
+//       children: [
+//         Row(children:  [
+//           const Expanded(child: SizedBox()),
+//           TextButton(child: const Text('♡',style: TextStyle(color: Color(0xF0F86A5B), fontSize: 25)),
+//               onPressed: (){
+//                 Fluttertoast.showToast(msg: '좋아요');
+//           })
+//         ]),
+//         _getTitleText(context, '가게 설명'),
+//         _getBodyText(context,house.info),
+//         _getTitleText(context, '전화번호'),
+//         _getBodyText(context,house.number),
+//         _getTitleText(context, '영업시간'),
+//         _getBodyText(context,house.time),
+//         _getTitleText(context, '위치'),
+//         kakaoMap,
+//         _getBodyText(context,house.location),
+//         Row(children: [
+//           const Expanded(child: SizedBox()),
+//           TextButton(child: const Text('잘못된 정보 신고하기',style: TextStyle(fontSize: 17)),
+//             onPressed: (){
+//             Fluttertoast.showToast(msg: '신고');
+//             })
+//         ]),
+//         Row(children: [
+//           const Expanded(child: SizedBox()),
+//           TextButton(child: const Text('정보 변경하기',style: TextStyle(fontSize: 17)),
+//               onPressed: (){
+// //            House house = House();
+//             Navigator.push(context, MaterialPageRoute(builder: (context) => HouseUpdate(null)));
+//               })
+//         ]),
+//       ],
+//     );
+//   }
+//   Text _getTitleText(BuildContext context, String str) {
+//     return Text(str,style: Theme.of(context).textTheme.subtitle1);
+//   }
+//   Container _getBodyText(BuildContext context, String? str) {
+//     if(str == null) {
+//       return Container();
+//     }
+//     return Container(
+//       margin: const EdgeInsets.only(left: 8,bottom: 20),
+//         child:Text(str,style: Theme.of(context).textTheme.bodyText1)
+//     );
+//   }
+//   void changeHeart(){
+//
+//   }
+// }
+
 class PageMenu extends StatelessWidget {
-  Map<String,int> menu;
+  List<HouseMenu> menu;
 
   PageMenu(this.menu);
 
@@ -198,12 +321,12 @@ class PageMenu extends StatelessWidget {
 
 
 
-    for(String name in menu.keys) {
+    for(HouseMenu m in menu) {
       inputMenuList.add(
         Row(crossAxisAlignment:CrossAxisAlignment.start,children: [
           SizedBox(width: 20, child:Container(margin:const EdgeInsets.only(top: 5),child:const Icon(Icons.circle,size: 10,))),
-          Expanded(child:Text(name,style: const TextStyle(fontSize: 20,height: 1.2 ))),
-          Text('${NumberFormat.currency(locale: "ko_KR",symbol: '').format(menu[name])}원',style: const TextStyle(fontSize: 20,height: 1.2),textAlign: TextAlign.end,)]
+          Expanded(child:Text(m.getName,style: const TextStyle(fontSize: 20,height: 1.2 ))),
+          Text('${NumberFormat.currency(locale: "ko_KR",symbol: '').format(m.getPrice)}원',style: const TextStyle(fontSize: 20,height: 1.2),textAlign: TextAlign.end,)]
         ),
       );
     }
@@ -220,28 +343,11 @@ class PageMenu extends StatelessWidget {
 }
 
 class PageReview extends StatelessWidget {
-
-  BuildContext context;
   InfoHouse infoHouse;
 
-  List<Widget> test = [
-  ReviewContainer('이제일','글자만 있을 경우',DateTime.now()),
-  ReviewContainer('이제일','점수 4',DateTime.now(),rating: 4),
-  ReviewContainer('이제일','해쉬태그들',DateTime.now(),hashtags: ['#가나','#다라','asfdasdfadsfsadfas']),
-  ReviewContainer('이제일','긴 글자만 있을 경우 \n 제3항의 승인을 얻지 못한 때에는 그 처분 또는 명령은 그때부터 효력을 상실한다. 이 경우 그 명령에 의하여 개정 또는 폐지되었던 법률은 그 명령이 승인을 얻지 못한 때부터 당연히 효력을 회복한다. 모든 국민은 거주·이전의 자유를 가진다. 지방자치단체는 주민의 복리에 관한 사무를 처리하고 재산을 관리하며, 법령의 범위안에서 자치에 관한 규정을 제정할 수 있다. 국가는 대외무역을 육성하며, 이를 규제·조정할 수 있다. 국가는 과학기술의 혁신과 정보 및 인력의 개발을 통하여 국민경 제의 발전에 노력하여야 한다. 저작자·발명가·과학기술자와 예술가의 권리는 법률로써 보호한다. 제1항의 탄핵소추는 국회재적의원 3분의 1 이상의 발의가 있어야 하며, 그 의결은 국회재적의원 과반수의 찬성이 있어야 한다. 다만, 대통령에 대한 탄핵소추는 국회재적의원 과반수의 발의와 국회재적의원 3분의 2 이상의 찬성이 있어야 한다.',
-  DateTime.now()),
-  ReviewContainer('이제일','이미지 한장, 짧은 글',DateTime.now(),images:['https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_3_320x240.png']),
-  ReviewContainer('이제일','이미지 4장, 짧은 글',DateTime.now(),images:['https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_3_320x240.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_3_320x240.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_3_320x240.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_3_320x240.png']),
-  ReviewContainer('이제일',"이미지 여러장, 긴 글 \n 대통령은 조약을 체결·비준하고, 외교사절을 신임·접수 또는 파견하며, 선전포고와 강화를 한다. 모든 국민은 신속한 재판을 받을 권리를 가진다. 형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 국가는 주택개발정책등을 통하여 모든 국민이 쾌적한 주거생활을 할 수 있도록 노력하여야 한다. 대통령은 전시·사변 또는 이에 준하는 국가비상사태에 있어서 병력으로써 군사상의 필요에 응하거나 공공의 안녕질서를 유지할 필요가 있을 때에는 법률이 정하는 바에 의하여 계엄을 선포할 수 있다. 국가는 전통문화의 계승·발전과 민족문화의 창달에 노력하여야 한다. 농업생산성의 제고와 농지의 합리적인 이용을 위하거나 불가피한 사정으로 발생하는 농지의 임대차와 위탁경영은 법률이 정하는 바에 의하여 인정된다.",
-  DateTime.now(),images: ['https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png','https://mond-al.github.io/assets/images/forTest/ratio/all_ratio/image_6_640x480.png']),
-  ];
+  List<ReviewContainer> data;
 
-  PageReview(this.context,this.infoHouse){
-    test.insert(0,Row(children: [Expanded(child:Container()),
-      ElevatedButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview(infoHouse)));
-      }, child: const Text('리뷰 작성'))]));
-  }
+  PageReview(this.infoHouse,this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -249,9 +355,15 @@ class PageReview extends StatelessWidget {
 
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
-      itemCount: test.length,
+      itemCount: data.length+1,
         itemBuilder: (context, index) {
-          return test[index];
+          if(index==0){
+            return Row(children: [Expanded(child:Container()),
+              ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReview(infoHouse)));
+              }, child: const Text('리뷰 작성'))]);
+          }
+          return data[index-1];
         },
         separatorBuilder: (BuildContext context, int index) {
           return const Divider();

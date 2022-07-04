@@ -300,10 +300,11 @@ class HouseDetail {
 }
 
 class HouseMenu{
-  int? _houseId,_price;
+  int? _houseId,_price,_id;
   String? _name,_image;
 
   get getHouseId => _houseId;
+  get getId => _id;
   get getPrice => _price;
   get getName => _name;
   get getImage => _image;
@@ -315,6 +316,14 @@ class HouseMenu{
     }
     return false;
   }
+  bool setId(int i) {
+    if (0 <= i) {
+      _id = i;
+      return true;
+    }
+    return false;
+  }
+
   bool setPrice(int i){
     if(100 <= i && i < 1000000){
       _price = i;
@@ -335,6 +344,17 @@ class HouseMenu{
       return true;
     }
     return false;
+  }
+
+  @override
+  String toString() {
+    String result = '{"name":"$_name","price":"$_price"';
+    if(_id != null){
+      result += ',"id":"$_id"';
+    }
+    result += '}';
+    // 이미지 추가
+    return result;
   }
 }
 class Question{

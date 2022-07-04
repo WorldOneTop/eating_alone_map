@@ -100,6 +100,22 @@ class HouseModel{
 //    //id, rating, name, review_count, category, profile_image
 //    return jsonDecode(response.body);
 //  }
+
+  Future<List> selectCategoryHouse(String category, List<String>locations) async {
+    String args = "category=$category&location_1=${locations[0]}";
+
+    if(locations[1].isNotEmpty){
+      args += "&location_2=${locations[1]}";
+    }
+    if(locations[2].isNotEmpty){
+      args += "&location_3=${locations[2]}";
+    }
+    var response = await http.get(Uri.parse("${DataList.url}selectCategoryHouse?" + args));
+
+    // id, rating, name, review_count, profile_image, location
+    return jsonDecode(response.body);
+  }
+
   Future<List> selectLocationHouse(List<String> loc, {String? category}) async {
     String l2 = '', l3 = '';
     String cate = '';
@@ -116,6 +132,58 @@ class HouseModel{
     var response = await http.get(Uri.parse("${DataList.url}selectLocationHouse?location_1=" + loc[0] + l2 + l3 + cate));
 
     //id, rating, name, review_count, profile_image, lat, lng, category
+    return jsonDecode(response.body);
+  }
+
+  Future<String> createHouseMenu(int houseId, List<HouseMenu> menus) async {
+    String getUrl = "[";
+    for(HouseMenu m in menus){
+      getUrl += m.toString()+",";
+    }
+    getUrl = getUrl.replaceRange(getUrl.length-1,getUrl.length,"]");
+
+    var response = await http.get(Uri.parse("${DataList.url}createHouseMenu?"
+        "houseId=$houseId&menus="+getUrl
+    ));
+
+    return response.body;
+  }
+  Future<String> deleteHouseMenu(List<String> id) async {
+    String getUrl = "";
+
+    for(String s in id){
+      getUrl += s+"=&";
+    }
+
+    var response = await http.get(Uri.parse("${DataList.url}deleteHouseMenu?" +getUrl
+    ));
+
+    return response.body;
+  }
+  Future<String> updateHouseMenu(List<HouseMenu> menus) async { //id필요
+    String getUrl = "[";
+    for(HouseMenu m in menus){
+      getUrl += m.toString()+",";
+    }
+    getUrl = getUrl.replaceRange(getUrl.length-1,getUrl.length,"]");
+
+    var response = await http.get(Uri.parse("${DataList.url}updateHouseMenu?"
+        "menus="+getUrl
+    ));
+
+    return response.body;
+  }
+
+  Future<Map> selectHouseInfo(houseId) async {
+    var response = await http.get(Uri.parse("${DataList.url}selectHouseInfo?id=$houseId"));
+    return jsonDecode(response.body);
+  }
+  Future<List> selectHouseMenu(houseId) async { //[{name, price, image}]
+    var response = await http.get(Uri.parse("${DataList.url}selectHouseMenu?id=$houseId"));
+    return jsonDecode(response.body);
+  }
+  Future<List> selectHouseReview(houseId) async { // [user_id, user_image, user_nickName, time, body, hashtag, rating, images]
+    var response = await http.get(Uri.parse("${DataList.url}selectHouseReview?id=$houseId"));
     return jsonDecode(response.body);
   }
 

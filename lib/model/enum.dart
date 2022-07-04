@@ -9,4 +9,4 @@ enum URL{currentLocation, checkId, login, signUp, accoutOut, updateNickname, upd
   updatePassword, findAccount, selectMyReview, selectMyHouse, createQnA, selectMyQuestion,selectUserInfo,
   selectFAQ, createReview, deleteReview, createHouse, updateHouse, selectCategoryHouse,
   selectLocationHouse, selectSearchHouse, selectHouseName, selectHouseInfo, selectHouseMenu,
-  selectHouseReview, selectNotice}
+  selectHouseReview, selectNotice, deleteHouseMenu, updateHouseMenu}

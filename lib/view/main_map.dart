@@ -9,8 +9,6 @@ import 'layouts/loading.dart';
 import 'package:provider/provider.dart';
 
 class MainMap extends StatefulWidget {
-  List<String> location;
-  MainMap(this.location);
 
   @override
   _MainMapState createState() => _MainMapState();
@@ -19,15 +17,26 @@ class MainMap extends StatefulWidget {
 
 class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
   KakaoMap? kakao;
-
+  bool keepAlive = true;
+  List<String> loc = [];
   @override
   Widget build(BuildContext context) {
+    if(loc.isEmpty){
+      loc = context.read<LocationProvider>().getLoc().toList();
+    }
+    if(loc.toString() != context.watch<LocationProvider>().getLoc().toString()){
+      loc = context.read<LocationProvider>().getLoc().toList();
+
+      keepAlive = false;
+      updateKeepAlive();
+      keepAlive = true;
+    }
 
     kakao = KakaoMap(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width+80,
-      centerAddr: "${widget.location[0]} ${widget.location[1]} ${widget.location[2]}",
-      zoomLevel: widget.location[2].isNotEmpty ? 5 : widget.location[1].isNotEmpty ? 7 : 9,
+      height: MediaQuery.of(context).size.width+50,
+      centerAddr: "${loc[0]} ${loc[1]} ${loc[2]}",
+      zoomLevel: loc[2].isNotEmpty ? 5 : loc[1].isNotEmpty ? 7 : 9,
       items: [],
       clickListener: (message){
         Fluttertoast.showToast(msg: message.message);
@@ -35,10 +44,11 @@ class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
     );
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
+            const SizedBox(height: 15),
         Text('주변식당',style: Theme.of(context).textTheme.headline4),
         kakao!,
         const Divider(),
@@ -48,7 +58,10 @@ class _MainMapState extends State<MainMap> with AutomaticKeepAliveClientMixin {
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive {
+    // keepAlive = true;
+    return keepAlive;
+  }
 }
 
 class HouseList extends StatefulWidget {
@@ -63,13 +76,13 @@ class HouseList extends StatefulWidget {
 class _HouseListState extends State<HouseList> {
   List<Widget> houseList = [];
 
-
   @override
   Widget build(BuildContext context) {
     if(houseList.isEmpty){
       houseList = [const Center(child:  CircularProgressIndicator(strokeWidth: 5,color: Colors.amberAccent))];
       getData();
     }
+
     return ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -93,7 +106,7 @@ class _HouseListState extends State<HouseList> {
         List<KakaoMapItem> items = [];
         houseList = [];
         for(Map val in value){
-          houseList.add(InfoHouse(val['id'], val['name'],true,category: val['category'], rating: val['rating'],
+          houseList.add(InfoHouse(val['id'], val['name'],true,val['location'],category: val['category'], rating: val['rating'],
               review: val['review_count'], image: 'https://picsum.photos/100'));
           items.add(KakaoMapItem(val['id'],val['lat'], val['lng'],val['category']));
         }

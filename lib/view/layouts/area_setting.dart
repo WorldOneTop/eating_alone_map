@@ -10,11 +10,18 @@ class AreaSetting extends StatefulWidget {
 }
 
 class _AreaSettingState extends State<AreaSetting> {
+  bool isFirst = true;
 
   @override
   Widget build(BuildContext context) {
+    // if(isFirst) {
+    //   isFirst = false;
+    //   initLocation();
+    // }
     List<String> _locations = context.watch<LocationProvider>().getLoc();
-
+    // SharedPreferences.getInstance().then((storage){
+    //   storage.setStringList('location', _locations);
+    // });
     return Row(
       children: [
         Row(children: [getLocText(0), getLocText(1), getLocText(2)]),
@@ -31,7 +38,18 @@ class _AreaSettingState extends State<AreaSetting> {
       ]
     );
   }
-
+  void initLocation(){
+    SharedPreferences.getInstance().then((storage){
+      List<String>? locations = storage.getStringList('location');
+      if(locations == null){
+        SharedPreferences.getInstance().then((storage){
+          storage.setStringList('location', ['서울','','']);
+        });
+      }else{
+        context.read<LocationProvider>().setLoc = storage.getStringList('location')!;
+      }
+    });
+  }
   void selectCurrentLocation(List<String> _locations ){
 
     KakaoMap kakao = KakaoMap(
@@ -101,6 +119,10 @@ class _AreaSettingState extends State<AreaSetting> {
         if(index==1){
           context.read<LocationProvider>().setLocIndex('', 2);
         }
+
+        SharedPreferences.getInstance().then((storage){
+          storage.setStringList('location', context.read<LocationProvider>().getLoc());
+        });
       },
       child: Stack(
           children: [
